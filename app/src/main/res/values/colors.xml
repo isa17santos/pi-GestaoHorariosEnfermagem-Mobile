@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="bg_main">#FCF8FF</color>
+    <color name="text_primary">#432C68</color>
+    <color name="text_muted">#735E97</color>
+    <color name="primary_purple">#AC8AF1</color>
+    <color name="primary_strong">#7D53D5</color>
+    <color name="primary_soft">#CBB1F7</color>
+    <color name="accent_pink">#F2A2D1</color>
+    <color name="accent_peach">#FFC88B</color>
+    <color name="input_line">#297E5AB5</color> <!-- 16% opacidade -->
+    <color name="white_surface">#D1FFFFFF</color> <!-- 82% opacidade para o blur effect -->
+    <color name="white">#FFFFFF</color>
+    <color name="danger">#F79B32</color>
+    <color name="danger_background">#29F79B32</color> <!-- 16% opacidade da cor danger -->
+    <color name="success_bg">#72FDAEFD</color> <!-- rgba(253, 174, 253, 0.449) -->
+    <color name="success_border">#56FF9BF0</color> <!-- rgba(255, 155, 240, 0.337) -->
+    <color name="success_text">#F375DE</color> <!-- #f375de -->
 </resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 1. Fundo Base Branco Neve -->
+    <item>
+        <shape>
+            <solid android:color="#FCF8FF" />
+        </shape>
+    </item>
+
+    <!-- 2. Bola Roxa (Topo Esquerda) - 50% opacidade -->
+    <item>
+        <shape>
+            <gradient
+                android:type="radial"
+                android:centerX="0.1"
+                android:centerY="0.1"
+                android:gradientRadius="300dp"
+                android:startColor="#80CBB1F7"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- 3. Bola Rosa (Centro Direita) - 40% opacidade -->
+    <item>
+        <shape>
+            <gradient
+                android:type="radial"
+                android:centerX="0.9"
+                android:centerY="0.4"
+                android:gradientRadius="250dp"
+                android:startColor="#66F2A2D1"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+
+</layer-list>

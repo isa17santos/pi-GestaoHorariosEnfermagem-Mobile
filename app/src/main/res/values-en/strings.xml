@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">ShiftCare</string>
+
+    <!-- Brand Panel -->
+    <string name="brand_title">Nursing schedule management with clarity, balance and care.</string>
+    <string name="brand_text">Centralizes access, organizes shifts and simplifies the team’s daily routine.</string>
+    <string name="brand_card_title">Simpler planning</string>
+    <string name="brand_card_text">A platform designed for nursing teams, focused on speed and readability.</string>
+
+    <!-- Login Card -->
+    <string name="welcome">Welcome</string>
+    <string name="sign_in">Sign in</string>
+    <string name="login_subtitle">Sign in with your credentials to access the platform.</string>
+    <string name="email_label">Email</string>
+    <string name="email_placeholder">name@hospital.com</string>
+    <string name="password_label">Password</string>
+    <string name="password_placeholder">Enter your password</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="signing_in">Signing in...</string>
+
+    <!-- Validações -->
+    <string name="email_required">Please enter your email.</string>
+    <string name="email_invalid">Please enter a valid email address.</string>
+    <string name="password_required">Please enter your password.</string>
+    <string name="invalid_credentials">Invalid credentials. Please check your details and try again.</string>
+
+    <!-- Forgot Password -->
+    <string name="access_recovery">Access Recovery</string>
+    <string name="reset_password_title">Reset Password</string>
+    <string name="reset_password_subtitle">Enter your email and we will send you a link to reset your password.</string>
+    <string name="send_email">Send email</string>
+    <string name="back_to_signin">Back to sign in</string>
+    <string name="sending_email">Sending...</string>
+    <string name="recovery_email_sent_info">If the email exists, a recovery link will be sent.</string>
+
+    <!-- Reset Password -->
+    <string name="change_password_title">Change password</string>
+    <string name="change_password_subtitle">Enter your new password to complete the changing password process.</string>
+    <string name="new_password_label">New password</string>
+    <string name="new_password_placeholder">Enter your new password</string>
+    <string name="confirm_password_label">Confirm password</string>
+    <string name="confirm_password_placeholder">Confirm your new password</string>
+    <string name="password_requirements">Password must be at least 8 characters long and include uppercase, lowercase and a special character.</string>
+    <string name="save_new_password">Save new password</string>
+    <string name="saving_password">Saving...</string>
+    <string name="password_changed_success">Password reset successfully. You will be redirected to sign in.</string>
+    <string name="error_token_invalid">The link is invalid or has expired.</string>
+    <string name="password_required_field">Please enter your new password.</string>
+    <string name="password_confirmation_required">Please confirm your new password.</string>
+    <string name="password_mismatch">Password confirmation does not match.</string>
+</resources>

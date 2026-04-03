@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Cor quando está a ser pressionado (Laranja da web) -->
+    <item android:state_pressed="true" android:color="@color/danger" />
+    <!-- Cor padrão (Roxo) -->
+    <item android:color="@color/primary_strong" />
+</selector>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@color/primary_soft"
+                android:centerColor="@color/accent_pink"
+                android:endColor="@color/accent_peach"
+                android:angle="315" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+    <!-- Barra Horizontal (+ pequeno) -->
+    <item android:width="12dp" android:height="4dp" android:gravity="center">
+        <shape><solid android:color="@color/white"/><corners android:radius="999dp"/></shape>
+    </item>
+    <!-- Barra Vertical (+ pequeno) -->
+    <item android:width="4dp" android:height="12dp" android:gravity="center">
+        <shape><solid android:color="@color/white"/><corners android:radius="999dp"/></shape>
+    </item>
+</layer-list>

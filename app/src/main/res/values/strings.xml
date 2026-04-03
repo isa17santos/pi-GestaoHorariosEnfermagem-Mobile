@@ -1,3 +1,55 @@
 <resources>
-    <string name="app_name">GestaoHorariosEnfermagemMobile</string>
+    <string name="app_name">ShiftCare</string>
+
+    <!-- Configuração do Host para Deep Linking -->
+    <string name="config_web_host" translatable="false">192.168.100.13</string>
+    <string name="config_web_port" translatable="false">3000</string>
+
+    <!-- Brand Panel -->
+    <string name="brand_title">Gestão de horários de enfermagem com clareza, equilíbrio e cuidado.</string>
+    <string name="brand_text">Centraliza acessos, organiza turnos e simplifica o dia a dia da equipa.</string>
+    <string name="brand_card_title">Planeamento mais simples</string>
+    <string name="brand_card_text">Uma plataforma pensada para equipas de enfermagem, com foco em rapidez e legibilidade.</string>
+
+    <!-- Login Card -->
+    <string name="welcome">Bem-vindo</string>
+    <string name="sign_in">Iniciar sessão</string>
+    <string name="login_subtitle">Entra com as tuas credenciais para acederes à plataforma.</string>
+    <string name="email_label">Email</string>
+    <string name="email_placeholder">nome@hospital.pt</string>
+    <string name="password_label">Palavra-passe</string>
+    <string name="password_placeholder">Introduz a tua palavra-passe</string>
+    <string name="forgot_password">Esqueceste-te da palavra-passe?</string>
+    <string name="signing_in">A entrar...</string>
+
+    <!-- Validações -->
+    <string name="email_required">Introduz o teu email.</string>
+    <string name="email_invalid">Introduz um endereço de email válido.</string>
+    <string name="password_required">Introduz a tua palavra-passe.</string>
+    <string name="invalid_credentials">Credenciais inválidas. Verifica os teus dados e tenta novamente.</string>
+
+    <!-- Forgot Password -->
+    <string name="access_recovery">Recuperação de Acesso</string>
+    <string name="reset_password_title">Redefinição da palavra-passe</string>
+    <string name="reset_password_subtitle">Introduz o teu email e enviaremos um link para redefinir a tua palavra-passe.</string>
+    <string name="send_email">Enviar email</string>
+    <string name="back_to_signin">Voltar ao login</string>
+    <string name="sending_email">A enviar...</string>
+    <string name="recovery_email_sent_info">Se o email existir, será enviado um link de recuperação.</string>
+
+    <!-- Reset Password -->
+    <string name="change_password_title">Alterar palavra-passe</string>
+    <string name="change_password_subtitle">Introduz a nova palavra-passe para concluir o processo de alteração da palavra-passe.</string>
+    <string name="new_password_label">Nova palavra-passe</string>
+    <string name="new_password_placeholder">Introduz a nova palavra-passe</string>
+    <string name="confirm_password_label">Confirmar palavra-passe</string>
+    <string name="confirm_password_placeholder">Confirma a nova palavra-passe</string>
+    <string name="password_requirements">A palavra-passe deve ter pelo menos 8 caracteres, uma maiúscula, uma minúscula e um carácter especial.</string>
+    <string name="save_new_password">Guardar nova palavra-passe</string>
+    <string name="saving_password">A guardar...</string>
+    <string name="password_changed_success">Password redefinida com sucesso. Vais ser redirecionado para o login.</string>
+    <string name="error_token_invalid">O link é inválido ou expirou.</string>
+    <string name="password_required_field">Introduz a nova palavra-passe.</string>
+    <string name="password_confirmation_required">Confirma a nova palavra-passe.</string>
+    <string name="password_mismatch">A confirmação da palavra-passe não corresponde.</string>
 </resources>
