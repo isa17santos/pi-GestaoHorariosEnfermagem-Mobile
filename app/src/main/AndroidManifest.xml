@@ -34,23 +34,56 @@
         <activity android:name=".DashboardActivity" />
 
         <activity
-        android:name=".ResetPasswordActivity"
-        android:exported="true"
-        android:configChanges="locale|layoutDirection|orientation|screenSize">
+            android:name=".ResetPasswordActivity"
+            android:exported="true"
+            android:configChanges="locale|layoutDirection|orientation|screenSize">
 
-        <!-- Intent Filter para Deep Linking -->
-        <intent-filter android:autoVerify="true">
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
+            <!-- Intent Filter para Deep Linking -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-            <data android:scheme="http"
-                android:host="@string/config_web_host"
-                android:port="3000"
-                android:pathPrefix="/reset-password" />
+                <data android:scheme="http"
+                    android:host="@string/config_web_host"
+                    android:port="3000"
+                    android:pathPrefix="/reset-password" />
 
-        </intent-filter>
-    </activity>
+            </intent-filter>
+        </activity>
+
+        <!-- Dashboard específica para Administradores -->
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:exported="false" />
+
+        <!-- Página de Gestão de Recursos Humanos -->
+        <activity
+            android:name=".HumanResourcesActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:exported="false" />
+
+        <activity
+            android:name=".ProfileActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
+        <activity
+            android:name=".VacationsActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
+        <activity
+            android:name=".AbsencesActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
+        <activity
+            android:name=".ShiftTypesActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
+        <activity
+            android:name=".StatisticsActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
     </application>
 
 </manifest>

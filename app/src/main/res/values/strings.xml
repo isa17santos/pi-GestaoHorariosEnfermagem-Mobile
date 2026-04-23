@@ -52,4 +52,19 @@
     <string name="password_required_field">Introduz a nova palavra-passe.</string>
     <string name="password_confirmation_required">Confirma a nova palavra-passe.</string>
     <string name="password_mismatch">A confirmação da palavra-passe não corresponde.</string>
+
+
+    <!-- Dashboard Admin -->
+    <string name="dashboard_admin_greeting">Bem-vindo, %s.</string>
+    <string name="dashboard_ops_management">Gestão de Recursos Humanos e Operações</string>
+    <string name="hr_management">Gestão Recursos Humanos</string>
+    <string name="hr_subtitle">Gerir perfis e permissões</string>
+    <string name="vacations">Gestão férias</string>
+    <string name="vacations_subtitle">Aprovação e mapas de férias</string>
+    <string name="absences">Gestão baixas</string>
+    <string name="absences_subtitle">Registo e acompanhamento</string>
+    <string name="shift_types">Gestão tipos de turno</string>
+    <string name="shift_types_subtitle">Configuração de tipos de turnos</string>
+    <string name="statistics">Estatísticas</string>
+    <string name="statistics_subtitle">Controlo de serviços e recursos</string>
 </resources>

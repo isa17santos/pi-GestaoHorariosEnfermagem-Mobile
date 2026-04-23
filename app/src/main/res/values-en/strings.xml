@@ -48,4 +48,19 @@
     <string name="password_required_field">Please enter your new password.</string>
     <string name="password_confirmation_required">Please confirm your new password.</string>
     <string name="password_mismatch">Password confirmation does not match.</string>
+
+
+    <!-- Dashboard Admin -->
+    <string name="dashboard_admin_greeting">Welcome, %s.</string>
+    <string name="dashboard_ops_management">Human Resources and Operations Management</string>
+    <string name="hr_management">Human Resources Management</string>
+    <string name="hr_subtitle">Manage profiles and permissions</string>
+    <string name="vacations">Vacations</string>
+    <string name="vacations_subtitle">Leave approvals and tracking</string>
+    <string name="absences">Absences</string>
+    <string name="absences_subtitle">Recording and monitoring</string>
+    <string name="shift_types">Shift types</string>
+    <string name="shift_types_subtitle">Configuration of shift patterns</string>
+    <string name="statistics">Statistics</string>
+    <string name="statistics_subtitle">Service and resource control</string>
 </resources>

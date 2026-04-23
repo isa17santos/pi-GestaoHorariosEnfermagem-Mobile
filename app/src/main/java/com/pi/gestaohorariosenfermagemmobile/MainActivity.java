@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> handleLogin());
         btnLangSwitch.setOnClickListener(v -> toggleLanguage());
 
-        // Navegação para Esqueci-me da Password
+        // Navegação para Forget Password
         tvForgotPass.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void performLogin(String email, String password) {
-        // CORREÇÃO: Passar o contexto 'this' para o RetrofitClient
         ApiService apiService = RetrofitClient.getClient(this).create(ApiService.class);
         LoginRequest loginRequest = new LoginRequest(email, password);
 
@@ -191,8 +190,26 @@ public class MainActivity extends AppCompatActivity {
                                 .putString("token", loginRes.getToken())
                                 .apply();
 
-                        Toast.makeText(MainActivity.this, "Bem-vindo!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                        LoginResponse.UserData user = loginRes.getUser();
+                        String role = (user != null && user.getRole() != null) ? user.getRole().toLowerCase().trim() : "";
+
+                        Intent intent;
+
+                        // Roteamento baseado no Role
+                        if ("admin".equals(role)) {
+                            intent = new Intent(MainActivity.this, AdminDashboardActivity.class);
+                        } else {
+                            // Redireciona para a dashboard geral (Head Nurse / Nurse)
+                            // Você pode adicionar mais 'else if' aqui conforme criar as outras atividades
+                            intent = new Intent(MainActivity.this, DashboardActivity.class);
+                        }
+
+                        // Passar os dados do utilizador para a Dashboard
+                        if (user != null) {
+                            intent.putExtra("USER_NAME", user.getName());
+                            intent.putExtra("USER_ROLE", user.getRole());
+                        }
+
                         startActivity(intent);
                         finish(); // Impede voltar ao login
                     }
