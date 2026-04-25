@@ -188,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
                         getSharedPreferences("AUTH", MODE_PRIVATE)
                                 .edit()
                                 .putString("token", loginRes.getToken())
+                                .putString("user_name", loginRes.getUser().getName())
+                                .putString("user_role", loginRes.getUser().getRole())
                                 .apply();
 
                         LoginResponse.UserData user = loginRes.getUser();

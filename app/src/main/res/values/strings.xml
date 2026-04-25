@@ -67,4 +67,27 @@
     <string name="shift_types_subtitle">Configuração de tipos de turnos</string>
     <string name="statistics">Estatísticas</string>
     <string name="statistics_subtitle">Controlo de serviços e recursos</string>
+
+
+    <!-- Human Resources -->
+    <string name="hr_page_subtitle">Administração de perfis de enfermagem</string>
+    <string name="create_user">Criar novo utilizador</string>
+    <string name="confirm_removal">Confirmar Remoção</string>
+    <string name="delete_confirmation_msg">Tem a certeza que deseja remover este utilizador? Esta ação não pode ser revertida.</string>
+    <string name="yes_remove">Sim, Remover</string>
+    <string name="cancel">Cancelar</string>
+    <string name="back">Voltar</string>
+    <string name="search_hint">Pesquisar por nome...</string>
+    <string name="role_head_nurse">Enfermeiro Chefe</string>
+    <string name="role_nurse">Enfermeiro</string>
+    <string name="status_active">Ativo</string>
+    <string name="status_inactive">Inativo</string>
+    <string name="table_name">NOME</string>
+    <string name="table_role">CARGO</string>
+    <string name="table_status">ESTADO</string>
+    <string name="table_actions">AÇÕES</string>
+    <string name="prev">Anterior</string>
+    <string name="next">Próximo</string>
+
+
 </resources>
