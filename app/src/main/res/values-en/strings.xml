@@ -66,7 +66,7 @@
 
     <!-- Human Resources -->
     <string name="hr_page_subtitle">Nursing profiles administration</string>
-    <string name="create_user">Create new user</string>
+    <string name="create_user">+ Create new user</string>
     <string name="confirm_removal">Confirm Removal</string>
     <string name="delete_confirmation_msg">Are you sure you want to remove this user? This action cannot be undone.</string>
     <string name="yes_remove">Yes, Remove</string>
@@ -83,4 +83,11 @@
     <string name="table_actions">ACTIONS</string>
     <string name="prev">Previous</string>
     <string name="next">Next</string>
+    <string name="delete_success">User removed successfully!</string>
+    <string name="filter_all_roles">All Roles</string>
+    <string name="filter_nurse">Nurse</string>
+    <string name="filter_head_nurse">Head Nurse</string>
+    <string name="filter_all_status">All Status</string>
+    <string name="filter_active">Active</string>
+    <string name="filter_inactive">Inactive</string>
 </resources>

@@ -84,6 +84,15 @@
             android:name=".StatisticsActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
+        <activity
+            android:name=".UserEditActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".UserCreateActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

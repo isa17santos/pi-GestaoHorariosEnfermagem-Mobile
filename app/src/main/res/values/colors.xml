@@ -30,4 +30,9 @@
     <color name="bento_teal">#56D0CC</color>
     <color name="bento_stat_lavender">#A18CD1</color>
     <color name="bento_stat_pink">#FBC2EB</color>
+
+    <color name="bg_role_nurse">#F45FB3</color>
+    <color name="bg_role_head_nurse">#DE50FA</color>
+    <color name="bg_status_active">#F4A42C</color>
+    <color name="bg_status_inactive">#FA2FD8</color>
 </resources>

@@ -1,13 +1,18 @@
 package com.pi.gestaohorariosenfermagemmobile;
 
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.core.os.LocaleListCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +23,12 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 
 public class HumanResourcesActivity extends AppCompatActivity {
 
@@ -26,17 +37,21 @@ public class HumanResourcesActivity extends AppCompatActivity {
     private List<User> allUsers = new ArrayList<>();
     private List<User> filteredUsers = new ArrayList<>();
     private EditText etSearch;
+    private LinearLayout llPaginationNumbers;
     private String token;
 
     // Paginação
     private int currentPage = 1;
     private final int ITEMS_PER_PAGE = 6;
-    private TextView tvPageInfo;
 
     // Navbar & UI Strings
     private TextView tvUserName, tvUserRole, tvLangFlag, tvLangLabel;
     private TextView tvTitle, tvSubtitle, tvHeaderName, tvHeaderRole, tvHeaderStatus, tvHeaderActions;
     private MaterialButton btnBack, btnCreateUser;
+
+    private LinearLayout llNotification;
+
+    private Spinner spinnerRole, spinnerStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +63,9 @@ public class HumanResourcesActivity extends AppCompatActivity {
         initViews();
         setupNavbar();
         setupRecyclerView();
-        setupPagination();
+        setupPaginationActions();
+
+        btnCreateUser.setOnClickListener(v -> startActivity(new Intent(this, UserCreateActivity.class)));
 
         // Carregar dados e aplicar strings iniciais
         updateUIStrings();
@@ -69,7 +86,7 @@ public class HumanResourcesActivity extends AppCompatActivity {
     private void initViews() {
         rvUsers = findViewById(R.id.rv_users);
         etSearch = findViewById(R.id.et_search);
-        tvPageInfo = findViewById(R.id.tv_page_info);
+        llPaginationNumbers = findViewById(R.id.ll_pagination_numbers);
         tvUserName = findViewById(R.id.tv_user_name_nav);
         tvUserRole = findViewById(R.id.tv_user_role_nav);
         tvLangFlag = findViewById(R.id.tv_language_flag);
@@ -88,21 +105,77 @@ public class HumanResourcesActivity extends AppCompatActivity {
         tvHeaderStatus = findViewById(R.id.tv_header_status);
         tvHeaderActions = findViewById(R.id.tv_header_actions);
 
+        llNotification = findViewById(R.id.ll_notification_toast);
+
         // Carregar dados do utilizador
         android.content.SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         tvUserName.setText(prefs.getString("user_name", "Utilizador"));
         tvUserRole.setText(prefs.getString("user_role", "Admin"));
+
+        spinnerRole = findViewById(R.id.spinner_role);
+        spinnerStatus = findViewById(R.id.spinner_status);
+
+        setupFilterSpinners();
+
+        // Listener para o Spinner de Cargo
+        spinnerRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentPage = 1;
+                applyFilters();
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        // Listener para o Spinner de Estado
+        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentPage = 1;
+                applyFilters();
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
-    private void setupPagination() {
+    private void setupFilterSpinners() {
+        // Guardar as seleções atuais para não as perder ao mudar o idioma
+        int rolePos = spinnerRole != null ? spinnerRole.getSelectedItemPosition() : 0;
+        int statusPos = spinnerStatus != null ? spinnerStatus.getSelectedItemPosition() : 0;
+
+        // 1. Configuração do Dropdown de Cargo
+        String[] roles = {
+                getString(R.string.filter_all_roles),
+                getString(R.string.filter_nurse),
+                getString(R.string.filter_head_nurse)
+        };
+
+        ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(this, R.layout.spinner_item_selected, roles);
+        roleAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
+        spinnerRole.setAdapter(roleAdapter);
+        spinnerRole.setSelection(rolePos); // Restaura a posição
+
+        // 2. Configuração do Dropdown de Estado
+        String[] statusOptions = {
+                getString(R.string.filter_all_status),
+                getString(R.string.filter_active),
+                getString(R.string.filter_inactive)
+        };
+
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, R.layout.spinner_item_selected, statusOptions);
+        statusAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
+        spinnerStatus.setAdapter(statusAdapter);
+        spinnerStatus.setSelection(statusPos); // Restaura a posição
+    }
+
+    private void setupPaginationActions() {
         findViewById(R.id.btn_next).setOnClickListener(v -> {
-            List<User> searchFiltered = getSearchFilteredList();
-            if (currentPage * ITEMS_PER_PAGE < searchFiltered.size()) {
+            int maxPage = (int) Math.ceil((double) getSearchFilteredList().size() / ITEMS_PER_PAGE);
+            if (currentPage < maxPage) {
                 currentPage++;
                 applyFilters();
             }
         });
-
         findViewById(R.id.btn_prev).setOnClickListener(v -> {
             if (currentPage > 1) {
                 currentPage--;
@@ -145,8 +218,16 @@ public class HumanResourcesActivity extends AppCompatActivity {
         LocaleListCompat appLocales = LocaleListCompat.forLanguageTags(nextLang);
         AppCompatDelegate.setApplicationLocales(appLocales);
 
+        // Atualiza os textos fixos da página
         updateUIStrings();
+
+        // Atualiza o botão de idioma na Navbar
         updateLanguageButton();
+
+        // Notifica o adapter para redesenhar a lista com o novo idioma
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void updateUIStrings() {
@@ -156,6 +237,12 @@ public class HumanResourcesActivity extends AppCompatActivity {
         if (tvSubtitle != null) tvSubtitle.setText(R.string.hr_page_subtitle);
         if (etSearch != null) etSearch.setHint(R.string.search_hint);
         if (btnCreateUser != null) btnCreateUser.setText(R.string.create_user);
+        if (tvHeaderName != null) tvHeaderName.setText(R.string.table_name);
+        if (tvHeaderRole != null) tvHeaderRole.setText(R.string.table_role);
+        if (tvHeaderStatus != null) tvHeaderStatus.setText(R.string.table_status);
+        if (tvHeaderActions != null) tvHeaderActions.setText(R.string.table_actions);
+
+        setupFilterSpinners();
     }
 
     private void updateLanguageButton() {
@@ -205,14 +292,31 @@ public class HumanResourcesActivity extends AppCompatActivity {
 
     private List<User> getSearchFilteredList() {
         String query = etSearch.getText().toString().toLowerCase();
+        int selectedRolePos = spinnerRole.getSelectedItemPosition();
+        int selectedStatusPos = spinnerStatus.getSelectedItemPosition();
+
         List<User> temp = new ArrayList<>();
         for (User u : allUsers) {
-            if (u.getName().toLowerCase().contains(query)) {
+            // Filtro por Nome
+            boolean matchesName = u.getName().toLowerCase().contains(query);
+
+            // Filtro por Cargo
+            boolean matchesRole = true;
+            if (selectedRolePos == 1) matchesRole = u.getFormattedRole().equals("nurse");
+            else if (selectedRolePos == 2) matchesRole = u.getFormattedRole().equals("head_nurse");
+
+            // Filtro por Estado
+            boolean matchesStatus = true;
+            if (selectedStatusPos == 1) matchesStatus = u.isActive();
+            else if (selectedStatusPos == 2) matchesStatus = !u.isActive();
+
+            if (matchesName && matchesRole && matchesStatus) {
                 temp.add(u);
             }
         }
         return temp;
     }
+
 
     private void applyFilters() {
         List<User> searchFiltered = getSearchFilteredList();
@@ -236,28 +340,166 @@ public class HumanResourcesActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
 
-        // Atualiza o texto da página (ex: "1")
-        tvPageInfo.setText(String.valueOf(currentPage));
-
-        // Opcional: Desativar botões se não houver mais páginas
-        findViewById(R.id.btn_prev).setAlpha(currentPage > 1 ? 1.0f : 0.3f);
-        findViewById(R.id.btn_prev).setEnabled(currentPage > 1);
-
-        findViewById(R.id.btn_next).setAlpha(currentPage < maxPage ? 1.0f : 0.3f);
-        findViewById(R.id.btn_next).setEnabled(currentPage < maxPage);
+        renderPagination(maxPage);
     }
 
-    private void onEditUser(User user) { }
+    private void renderPagination(int maxPage) {
+        if (llPaginationNumbers == null) return;
+        llPaginationNumbers.removeAllViews();
+
+        for (int i = 1; i <= maxPage; i++) {
+            final int pageNum = i;
+            TextView tv = new TextView(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dpToPx(44), dpToPx(44));
+            params.setMargins(dpToPx(4), 0, dpToPx(4), 0);
+            tv.setLayoutParams(params);
+            tv.setGravity(Gravity.CENTER);
+            tv.setText(String.valueOf(i));
+            tv.setTextSize(16);
+            tv.setTypeface(null, Typeface.BOLD);
+
+            if (i == currentPage) {
+                tv.setBackgroundResource(R.drawable.bg_pagination);
+                tv.setTextColor(Color.WHITE);
+            } else {
+                tv.setBackgroundResource(R.drawable.bg_action_card);
+                tv.setTextColor(ContextCompat.getColor(this, R.color.primary_strong));
+            }
+
+            tv.setOnClickListener(v -> {
+                currentPage = pageNum;
+                applyFilters();
+            });
+            llPaginationNumbers.addView(tv);
+        }
+
+        findViewById(R.id.btn_prev).setEnabled(currentPage > 1);
+        findViewById(R.id.btn_prev).setAlpha(currentPage > 1 ? 1.0f : 0.3f);
+        findViewById(R.id.btn_next).setEnabled(currentPage < maxPage);
+        findViewById(R.id.btn_next).setAlpha(currentPage < maxPage ? 1.0f : 0.3f);
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round((float) dp * getResources().getDisplayMetrics().density);
+    }
+
+
+    private void onEditUser(User user) {
+        Intent intent = new Intent(this, UserEditActivity.class);
+        intent.putExtra("USER_ID", user.getId());
+        intent.putExtra("USER_NAME", user.getName());
+        intent.putExtra("USER_ROLE", user.getFormattedRole());
+        startActivity(intent);
+    }
 
     private void onDeleteUser(User user) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.confirm_removal)
-                .setMessage(R.string.delete_confirmation_msg)
-                .setPositiveButton(R.string.yes_remove, (dialog, which) -> {
-                    allUsers.remove(user);
-                    applyFilters();
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
+        // 1. Capturar ecrã completo (DecorView) para o Blur cobrir tudo
+        View decorView = getWindow().getDecorView();
+        Bitmap screenshot = Bitmap.createBitmap(decorView.getWidth(), decorView.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(screenshot);
+        decorView.draw(canvas);
+        Bitmap blurredBitmap = blur(screenshot);
+
+        // 2. Inflar layout do diálogo
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirm_delete, null);
+
+        // 3. Criar o diálogo (usando um tema básico, vamos customizar a janela manualmente)
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+
+        // 4. Configurações críticas de Janela para FULLSCREEN e CENTRAMENTO
+        dialog.show(); // Tem de ser chamado antes para configurar a Window
+
+        if (dialog.getWindow() != null) {
+            // Aplicar o blur como fundo total da janela
+            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(getResources(), blurredBitmap));
+
+            // Forçar a janela a ocupar o ecrã todo sem margens de sistema
+            dialog.getWindow().setLayout(android.view.WindowManager.LayoutParams.MATCH_PARENT,
+                    android.view.WindowManager.LayoutParams.MATCH_PARENT);
+
+            // Adicionar escurecimento (Dim) para destacar o pop-up branco
+            dialog.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            dialog.getWindow().setDimAmount(0.4f);
+        }
+
+        // 5. Definir o conteúdo da vista
+        dialog.setContentView(dialogView);
+
+        Button btnConfirm = dialogView.findViewById(R.id.btn_confirm_delete);
+        btnConfirm.setOnClickListener(v -> {
+            // Desativar o botão para evitar cliques duplicados
+            btnConfirm.setEnabled(false);
+
+            // CHAMADA À API (Remoção Real na Base de Dados)
+            ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
+            api.deleteUser("Bearer " + token, user.getId()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        // SUCESSO: Remover da lista local, atualizar filtros e mostrar notificação
+                        allUsers.remove(user);
+                        applyFilters();
+                        showSuccessNotification(getString(R.string.delete_success));
+                        dialog.dismiss();
+                    } else {
+                        btnConfirm.setEnabled(true);
+                        Toast.makeText(HumanResourcesActivity.this, "Erro no servidor ao remover", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    btnConfirm.setEnabled(true);
+                    Toast.makeText(HumanResourcesActivity.this, "Erro de rede", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+    private Bitmap blur(Bitmap image) {
+        if (image == null) return null;
+        Bitmap outputBitmap = Bitmap.createBitmap(image);
+        RenderScript rs = RenderScript.create(this);
+        ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+        Allocation allIn = Allocation.createFromBitmap(rs, image);
+        Allocation allOut = Allocation.createFromBitmap(rs, outputBitmap);
+        blurScript.setRadius(20f); // Intensidade do blur (0-25)
+        blurScript.setInput(allIn);
+        blurScript.forEach(allOut);
+        allOut.copyTo(outputBitmap);
+        rs.destroy();
+        return outputBitmap;
+    }
+
+    private Bitmap screenshot(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
+
+    private void showSuccessNotification(String message) {
+        TextView tvMsg = findViewById(R.id.tv_notification_msg);
+        tvMsg.setText(message);
+
+        llNotification.setVisibility(View.VISIBLE);
+        llNotification.setAlpha(0f);
+        llNotification.setTranslationY(-100f); // Começa um pouco acima do ecrã
+
+        // Animação de entrada
+        llNotification.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(400)
+                .setListener(null);
+
+        // Esconder automaticamente após 3 segundos
+        new android.os.Handler().postDelayed(() -> {
+            llNotification.animate()
+                    .alpha(0f)
+                    .translationY(-100f)
+                    .setDuration(400)
+                    .withEndAction(() -> llNotification.setVisibility(View.GONE));
+        }, 3000);
     }
 }

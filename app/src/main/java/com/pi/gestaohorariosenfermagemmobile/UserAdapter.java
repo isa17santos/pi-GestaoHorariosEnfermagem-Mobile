@@ -51,15 +51,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.tvRoleBadge.setText(context.getString(roleTextRes));
 
         holder.tvRoleBadge.setBackgroundResource(isHead ? R.drawable.bg_role_head_nurse : R.drawable.bg_role_nurse);
-        holder.tvRoleBadge.setTextColor(ContextCompat.getColor(context, isHead ? R.color.primary_strong : R.color.success_text));
+        holder.tvRoleBadge.setTextColor(ContextCompat.getColor(context, isHead ? R.color.bg_role_head_nurse : R.color.bg_role_nurse));
+        holder.tvRoleBadge.setTypeface(null, android.graphics.Typeface.BOLD);
 
         // Tradução do Estado (Bilingue)
         boolean isActive = user.isActive();
         int statusTextRes = isActive ? R.string.status_active : R.string.status_inactive;
         holder.tvStatus.setText(context.getString(statusTextRes));
+        holder.tvStatus.setTypeface(null, android.graphics.Typeface.BOLD);
 
         holder.tvStatus.setBackgroundResource(isActive ? R.drawable.bg_status_active : R.drawable.bg_status_inactive);
-        holder.tvStatus.setTextColor(ContextCompat.getColor(context, isActive ? R.color.danger : R.color.success_text));
+        holder.tvStatus.setTextColor(ContextCompat.getColor(context, isActive ? R.color.bg_status_active : R.color.bg_status_inactive));
 
         holder.btnEdit.setOnClickListener(v -> onEditListener.onUserClick(user));
         holder.btnDelete.setOnClickListener(v -> onDeleteListener.onUserClick(user));

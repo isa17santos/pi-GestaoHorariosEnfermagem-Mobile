@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -25,4 +26,7 @@ public interface ApiService {
 
     @DELETE("users/{id}")
     Call<Void> deleteUser(@Header("Authorization") String token, @Path("id") int userId);
+
+    @PATCH("users/{id}")
+    Call<Void> updateUser(@Header("Authorization") String token, @Path("id") int userId, @Body Map<String, Object> updates);
 }

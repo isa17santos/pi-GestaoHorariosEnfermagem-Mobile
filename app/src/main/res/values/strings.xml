@@ -71,7 +71,7 @@
 
     <!-- Human Resources -->
     <string name="hr_page_subtitle">Administração de perfis de enfermagem</string>
-    <string name="create_user">Criar novo utilizador</string>
+    <string name="create_user">+ Criar novo utilizador</string>
     <string name="confirm_removal">Confirmar Remoção</string>
     <string name="delete_confirmation_msg">Tem a certeza que deseja remover este utilizador? Esta ação não pode ser revertida.</string>
     <string name="yes_remove">Sim, Remover</string>
@@ -88,6 +88,13 @@
     <string name="table_actions">AÇÕES</string>
     <string name="prev">Anterior</string>
     <string name="next">Próximo</string>
+    <string name="delete_success">Utilizador removido com sucesso!</string>
+    <string name="filter_all_roles">Todos os Cargos</string>
+    <string name="filter_nurse">Enfermeiro</string>
+    <string name="filter_head_nurse">Enfermeiro Chefe</string>
+    <string name="filter_all_status">Todos os Estados</string>
+    <string name="filter_active">Ativo</string>
+    <string name="filter_inactive">Inativo</string>
 
 
 </resources>
