@@ -1,32 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center"
-    android:background="@drawable/bg_app_gradient">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Página em Desenvolvimento"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_app_gradient"
+        android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/tv_page_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PÁGINA CRIAÇÃO DE UTILIZADORES"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/text_muted" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-    <Button
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Voltar" />
-</LinearLayout>
+            <!-- 1. Header & Info Bar (Miguel Ferreira / Admin) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/logo_shiftcare"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_language_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#B8FFFFFF"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/img_logo">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingHorizontal="16dp">
+                        <TextView android:id="@+id/tv_language_flag" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_marginEnd="8dp" />
+                        <TextView android:id="@+id/tv_language_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ll_actions">
+                        <TextView android:id="@+id/tv_user_name_nav" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="17sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/tv_user_role_nav" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_muted" android:textSize="13sp" />
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/ll_actions" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent">
+                        <ImageButton android:id="@+id/btn_profile" android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/bg_action_btn" android:src="@drawable/ic_profile" />
+                        <ImageButton android:id="@+id/btn_logout" android:layout_width="48dp" android:layout_height="48dp" android:layout_marginStart="8dp" android:background="@drawable/bg_action_btn_danger" android:src="@drawable/ic_logout" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 2. Voltar & Títulos -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_back"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/back"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_strong"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconTint="@color/primary_strong"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                android:backgroundTint="#F8F5FF"
+                app:strokeColor="#E6E0F5"
+                app:strokeWidth="1dp"
+                app:cornerRadius="28dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+
+            <TextView android:id="@+id/tv_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="32sp" android:textStyle="bold" />
+            <TextView android:id="@+id/tv_subtitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_muted" android:textSize="16sp" android:layout_marginBottom="32dp"/>
+
+            <!-- 3. Card do Formulário -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white"
+                android:layout_marginBottom="40dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- NOTIFICAÇÃO GERAL DE ERRO -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cv_error_notification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:visibility="gone"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="#F36CC8"
+                        app:strokeWidth="2dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_clock"
+                                app:tint="#F36CC8" />
+                            <TextView android:id="@+id/tv_error_general" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:textColor="#F36CC8" android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Nome Completo -->
+                    <TextView android:id="@+id/tv_label_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_marginBottom="8dp"/>
+                    <EditText android:id="@+id/et_name" android:layout_width="match_parent" android:layout_height="56dp" android:background="@drawable/bg_edittext" android:paddingHorizontal="16dp" android:inputType="textPersonName"/>
+                    <TextView android:id="@+id/tv_error_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F36CC8" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp" android:visibility="gone" />
+                    <View android:id="@+id/spacer_name" android:layout_width="match_parent" android:layout_height="20dp" />
+
+                    <!-- Email -->
+                    <TextView android:id="@+id/tv_label_email" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_marginBottom="8dp"/>
+                    <EditText android:id="@+id/et_email" android:layout_width="match_parent" android:layout_height="56dp" android:background="@drawable/bg_edittext" android:paddingHorizontal="16dp" android:inputType="textEmailAddress"/>
+                    <TextView android:id="@+id/tv_error_email" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F36CC8" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp" android:visibility="gone" />
+                    <View android:id="@+id/spacer_email" android:layout_width="match_parent" android:layout_height="20dp" />
+
+                    <!-- Palavra-passe -->
+                    <TextView android:id="@+id/tv_label_password" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_marginBottom="8dp"/>
+                    <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" app:hintEnabled="false" app:passwordToggleEnabled="true">
+                        <EditText android:id="@+id/et_password" android:layout_width="match_parent" android:layout_height="56dp" android:background="@drawable/bg_edittext" android:paddingHorizontal="16dp" android:inputType="textPassword"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView android:id="@+id/tv_error_password" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F36CC8" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp" android:visibility="gone" />
+                    <View android:id="@+id/spacer_password" android:layout_width="match_parent" android:layout_height="20dp" />
+
+                    <!-- Confirmar Palavra-passe -->
+                    <TextView android:id="@+id/tv_label_confirm_password" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_marginBottom="8dp"/>
+                    <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" app:hintEnabled="false" app:passwordToggleEnabled="true">
+                        <EditText android:id="@+id/et_password_confirmation" android:layout_width="match_parent" android:layout_height="56dp" android:background="@drawable/bg_edittext" android:paddingHorizontal="16dp" android:inputType="textPassword"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView android:id="@+id/tv_error_confirm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F36CC8" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp" android:visibility="gone" />
+                    <View android:id="@+id/spacer_confirm" android:layout_width="match_parent" android:layout_height="20dp" />
+
+                    <!-- Cargo -->
+                    <TextView android:id="@+id/tv_label_role" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_marginBottom="8dp"/>
+                    <FrameLayout android:layout_width="match_parent" android:layout_height="56dp" android:background="@drawable/bg_edittext">
+                        <Spinner android:id="@+id/spinner_role" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@android:color/transparent" android:spinnerMode="dropdown" android:overlapAnchor="false" android:popupBackground="@drawable/bg_dropdown_popup" android:dropDownVerticalOffset="4dp" />
+                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="end|center_vertical" android:layout_marginEnd="16dp" android:src="@drawable/ic_chevron_down" android:padding="2dp"/>
+                    </FrameLayout>
+                    <TextView android:id="@+id/tv_error_role" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F36CC8" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp" android:visibility="gone" />
+                    <View android:id="@+id/spacer_role" android:layout_width="match_parent" android:layout_height="20dp" />
+
+                    <!-- Estado -->
+                    <TextView android:id="@+id/tv_label_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_marginBottom="8dp"/>
+                    <FrameLayout android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginBottom="30dp" android:background="@drawable/bg_edittext">
+                        <Spinner android:id="@+id/spinner_status" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@android:color/transparent" android:spinnerMode="dropdown" android:overlapAnchor="false" android:popupBackground="@drawable/bg_dropdown_popup" android:dropDownVerticalOffset="4dp" />
+                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="end|center_vertical" android:layout_marginEnd="16dp" android:src="@drawable/ic_chevron_down" android:padding="2dp"/>
+                    </FrameLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:background="@drawable/btn_login_gradient"
+                        app:backgroundTint="@null"
+                        app:cornerRadius="24dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textAllCaps="false"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Success Toast (Escondido) -->
+    <LinearLayout android:id="@+id/ll_notification_toast" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="top|center_horizontal" android:layout_marginTop="20dp" android:orientation="horizontal" android:gravity="center" android:paddingHorizontal="24dp" android:paddingVertical="12dp" android:background="@drawable/bg_notification_toast" android:elevation="10dp" android:visibility="gone">
+        <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_check_small" android:layout_marginEnd="12dp" />
+        <TextView android:id="@+id/tv_notification_msg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sucesso!" android:textColor="#F79B32" android:textStyle="bold" android:textSize="14sp" />
+    </LinearLayout>
+</FrameLayout>

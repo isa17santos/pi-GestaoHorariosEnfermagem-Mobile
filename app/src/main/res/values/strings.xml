@@ -96,5 +96,33 @@
     <string name="filter_active">Ativo</string>
     <string name="filter_inactive">Inativo</string>
 
+    <!-- Create User Page -->
+    <string name="create_user_title">Criar Novo Utilizador</string>
+    <string name="create_user_subtitle">Preencha os dados do novo profissional</string>
+    <string name="label_name">Nome Completo</string>
+    <string name="label_email">Email Profissional</string>
+    <string name="label_password">Palavra-passe</string>
+    <string name="label_confirm_password">Confirmar Palavra-passe</string>
+    <string name="label_role">Cargo</string>
+    <string name="label_status">Estado</string>
+    <string name="hint_name">Ex: Maria Silva</string>
+    <string name="hint_email">maria.silva@example.pt</string>
+    <string name="hint_password">Mínimo 8 caracteres, 1 maiúscula e 1 símbolo</string>
+    <string name="hint_confirm_password">Repita a palavra-passe</string>
+    <string name="btn_create_user_submit">Criar Utilizador</string>
+    <string name="select_role_default">Selecione um cargo</string>
+
+    <!-- Validações de Formulário Criação Utilizadores -->
+    <string name="err_form_general">Por favor, corrija os erros no formulário.</string>
+    <string name="err_name_required">O nome é obrigatório</string>
+    <string name="err_email_required">O email é obrigatório</string>
+    <string name="err_email_invalid">Introduza um email válido</string>
+    <string name="err_password_required">A palavra-passe é obrigatória</string>
+    <string name="err_password_weak">Mínimo 8 caracteres, 1 maiúscula e 1 símbolo</string>
+    <string name="err_confirm_required">A confirmação é obrigatória</string>
+    <string name="err_password_mismatch">As palavras-passe não coincidem</string>
+    <string name="err_role_required">O cargo é obrigatório</string>
+    <string name="create_user_success">Utilizador criado com sucesso!</string>
+
 
 </resources>

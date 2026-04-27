@@ -29,4 +29,7 @@ public interface ApiService {
 
     @PATCH("users/{id}")
     Call<Void> updateUser(@Header("Authorization") String token, @Path("id") int userId, @Body Map<String, Object> updates);
+
+    @POST("users")
+    Call<Void> createUser(@Header("Authorization") String token, @Body Map<String, Object> userData);
 }

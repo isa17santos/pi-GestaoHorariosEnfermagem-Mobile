@@ -203,8 +203,6 @@ public class HumanResourcesActivity extends AppCompatActivity {
             // Redirecionar para o Login limpando a pilha de atividades
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-
-            // Terminar esta atividade
             finish();
         });
 

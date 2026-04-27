@@ -90,4 +90,32 @@
     <string name="filter_all_status">All Status</string>
     <string name="filter_active">Active</string>
     <string name="filter_inactive">Inactive</string>
+
+    <!-- Create User Page -->
+    <string name="create_user_title">Create New User</string>
+    <string name="create_user_subtitle">Fill in the new professional details</string>
+    <string name="label_name">Full Name</string>
+    <string name="label_email">Professional Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_confirm_password">Confirm Password</string>
+    <string name="label_role">Role</string>
+    <string name="label_status">Status</string>
+    <string name="hint_name">e.g. Mary Johnson</string>
+    <string name="hint_email">mary.johnson@example.pt</string>
+    <string name="hint_password">Minimum 8 characters, 1 uppercase and 1 special character</string>
+    <string name="hint_confirm_password">Repeat the password</string>
+    <string name="btn_create_user_submit">Create User</string>
+    <string name="select_role_default">Select a role</string>
+
+    <!-- Validações de Formulário Criação Utilizadores -->
+    <string name="err_form_general">Please correct the errors in the form.</string>
+    <string name="err_name_required">Name is required</string>
+    <string name="err_email_required">Email is required</string>
+    <string name="err_email_invalid">Enter a valid email address</string>
+    <string name="err_password_required">Password is required</string>
+    <string name="err_password_weak">Min 8 chars, 1 uppercase and 1 symbol</string>
+    <string name="err_confirm_required">Confirmation is required</string>
+    <string name="err_password_mismatch">Passwords do not match</string>
+    <string name="err_role_required">Role is required</string>
+    <string name="create_user_success">User created successfully!</string>
 </resources>
