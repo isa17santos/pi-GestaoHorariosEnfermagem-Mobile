@@ -71,8 +71,6 @@ public class HumanResourcesActivity extends AppCompatActivity {
         updateUIStrings();
         updateLanguageButton();
 
-        loadUsers();
-
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) { applyFilters(); }
@@ -83,6 +81,11 @@ public class HumanResourcesActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUsers();
+    }
     private void initViews() {
         rvUsers = findViewById(R.id.rv_users);
         etSearch = findViewById(R.id.et_search);
