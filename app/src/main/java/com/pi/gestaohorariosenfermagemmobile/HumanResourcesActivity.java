@@ -188,6 +188,12 @@ public class HumanResourcesActivity extends AppCompatActivity {
     }
 
     private void setupNavbar() {
+        findViewById(R.id.img_logo).setOnClickListener(v -> {
+            Intent intent = new Intent(this, AdminDashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+
         MaterialCardView btnLang = findViewById(R.id.btn_language_switch);
         if (btnLang != null) {
             btnLang.setOnClickListener(v -> toggleLanguage());

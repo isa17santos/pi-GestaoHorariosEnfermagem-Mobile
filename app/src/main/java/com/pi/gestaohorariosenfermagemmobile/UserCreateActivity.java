@@ -165,6 +165,12 @@ public class UserCreateActivity extends AppCompatActivity {
     }
 
     private void setupNavbar() {
+        findViewById(R.id.img_logo).setOnClickListener(v -> {
+            Intent intent = new Intent(this, AdminDashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+
         findViewById(R.id.btn_language_switch).setOnClickListener(v -> toggleLanguage());
         findViewById(R.id.btn_profile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
         findViewById(R.id.btn_logout).setOnClickListener(v -> {

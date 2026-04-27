@@ -1,6 +1,7 @@
 package com.pi.gestaohorariosenfermagemmobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -24,8 +25,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
         initViews();
 
         // Receber dados
-        currentUserName = getIntent().getStringExtra("USER_NAME");
-        String role = getIntent().getStringExtra("USER_ROLE");
+        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+        currentUserName = prefs.getString("user_name", "Utilizador");
+        String role = prefs.getString("user_role", "Admin");
 
         // Configurar UI Inicial
         if (currentUserName != null) tvUserName.setText(currentUserName);
