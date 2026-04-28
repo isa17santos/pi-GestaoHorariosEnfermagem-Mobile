@@ -393,9 +393,11 @@ public class HumanResourcesActivity extends AppCompatActivity {
 
     private void onEditUser(User user) {
         Intent intent = new Intent(this, UserEditActivity.class);
-        intent.putExtra("USER_ID", user.getId());
-        intent.putExtra("USER_NAME", user.getName());
-        intent.putExtra("USER_ROLE", user.getFormattedRole());
+        intent.putExtra("user_id", user.getId());
+        intent.putExtra("user_name", user.getName());
+        intent.putExtra("user_email", user.getEmail());
+        intent.putExtra("user_role_slug", user.getFormattedRole());
+        intent.putExtra("user_active", user.isActive());
         startActivity(intent);
     }
 

@@ -118,4 +118,10 @@
     <string name="err_password_mismatch">Passwords do not match</string>
     <string name="err_role_required">Role is required</string>
     <string name="create_user_success">User created successfully!</string>
+
+    <!-- Edicao user -->
+    <string name="edit_user_title">Edit User</string>
+    <string name="edit_user_subtitle">Update the professional\'s information</string>
+    <string name="btn_update_user_submit">Update User</string>
+    <string name="update_user_success">User updated successfully!</string>
 </resources>
