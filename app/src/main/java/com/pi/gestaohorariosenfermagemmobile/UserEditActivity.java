@@ -139,7 +139,8 @@ public class UserEditActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
         tvUserName.setText(prefs.getString("user_name", "Utilizador"));
-        tvUserRole.setText(prefs.getString("user_role", "Admin"));
+
+        updateUIStrings();
     }
 
     private void setupNavbar() {
@@ -210,6 +211,19 @@ public class UserEditActivity extends AppCompatActivity {
         tvLabelEmail.setText(R.string.label_email);
         tvLabelRole.setText(R.string.label_role);
         tvLabelStatus.setText(R.string.label_status);
+
+        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+        String role = prefs.getString("user_role", "").toLowerCase();
+
+        if (role.equals("nurse")) {
+            tvUserRole.setText(R.string.role_nurse);
+        } else if (role.equals("head_nurse")) {
+            tvUserRole.setText(R.string.role_head_nurse);
+        } else if (role.equals("admin")) {
+            tvUserRole.setText(R.string.role_admin);
+        } else {
+            tvUserRole.setText(role);
+        }
 
         setupSpinners();
         updateLanguageButton();

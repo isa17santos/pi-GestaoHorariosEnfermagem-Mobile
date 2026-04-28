@@ -27,11 +27,24 @@ public class AdminDashboardActivity extends AppCompatActivity {
         // Receber dados
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         currentUserName = prefs.getString("user_name", "Utilizador");
-        String role = prefs.getString("user_role", "Admin");
+
 
         // Configurar UI Inicial
         if (currentUserName != null) tvUserName.setText(currentUserName);
-        if (role != null) tvUserRole.setText(role);
+
+        String role = prefs.getString("user_role", "").toLowerCase();
+        if (role != null){
+            if (role.equals("nurse")) {
+                tvUserRole.setText(R.string.role_nurse);
+                updateUIStrings();
+            } else if (role.equals("head_nurse")) {
+                tvUserRole.setText(R.string.role_head_nurse);
+                updateUIStrings();
+            } else {
+                tvUserRole.setText(R.string.role_admin);
+                updateUIStrings();
+            }
+        }
 
         updateUIStrings();
         updateLanguageButton();
@@ -66,6 +79,19 @@ public class AdminDashboardActivity extends AppCompatActivity {
         // Atualiza a saudação dinâmica
         tvGreeting.setText(getString(R.string.dashboard_admin_greeting, currentUserName));
         tvOpsSubtitle.setText(R.string.dashboard_ops_management);
+
+        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+        String role = prefs.getString("user_role", "").toLowerCase();
+
+        if (role.equals("nurse")) {
+            tvUserRole.setText(R.string.role_nurse);
+        } else if (role.equals("head_nurse")) {
+            tvUserRole.setText(R.string.role_head_nurse);
+        } else if (role.equals("admin")) {
+            tvUserRole.setText(R.string.role_admin);
+        } else {
+            tvUserRole.setText(role);
+        }
 
         // Atualiza textos dos cartões
         updateCardText(R.id.card_hr, R.string.hr_management, R.string.hr_subtitle);

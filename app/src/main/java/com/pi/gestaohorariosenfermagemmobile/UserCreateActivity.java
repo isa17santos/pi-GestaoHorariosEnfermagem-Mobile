@@ -161,7 +161,8 @@ public class UserCreateActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
         tvUserName.setText(prefs.getString("user_name", "Utilizador"));
-        tvUserRole.setText(prefs.getString("user_role", "Admin"));
+
+        updateUIStrings();
     }
 
     private void setupNavbar() {
@@ -229,6 +230,20 @@ public class UserCreateActivity extends AppCompatActivity {
         etEmail.setHint(R.string.hint_email);
         etPassword.setHint(R.string.hint_password);
         etConfirm.setHint(R.string.hint_confirm_password);
+
+        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+        String role = prefs.getString("user_role", "").toLowerCase();
+
+        if (role.equals("nurse")) {
+            tvUserRole.setText(R.string.role_nurse);
+        } else if (role.equals("head_nurse")) {
+            tvUserRole.setText(R.string.role_head_nurse);
+        } else if (role.equals("admin")) {
+            tvUserRole.setText(R.string.role_admin);
+        } else {
+            tvUserRole.setText(role);
+        }
+
 
         restoreErrorTexts();
         setupSpinners();

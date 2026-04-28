@@ -1,6 +1,7 @@
 package com.pi.gestaohorariosenfermagemmobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -113,10 +114,11 @@ public class HumanResourcesActivity extends AppCompatActivity {
         // Carregar dados do utilizador
         android.content.SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         tvUserName.setText(prefs.getString("user_name", "Utilizador"));
-        tvUserRole.setText(prefs.getString("user_role", "Admin"));
 
         spinnerRole = findViewById(R.id.spinner_role);
         spinnerStatus = findViewById(R.id.spinner_status);
+
+        updateUIStrings();
 
         setupFilterSpinners();
 
@@ -248,6 +250,19 @@ public class HumanResourcesActivity extends AppCompatActivity {
         if (tvHeaderRole != null) tvHeaderRole.setText(R.string.table_role);
         if (tvHeaderStatus != null) tvHeaderStatus.setText(R.string.table_status);
         if (tvHeaderActions != null) tvHeaderActions.setText(R.string.table_actions);
+
+        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+        String role = prefs.getString("user_role", "").toLowerCase();
+
+        if (role.equals("nurse")) {
+            tvUserRole.setText(R.string.role_nurse);
+        } else if (role.equals("head_nurse")) {
+            tvUserRole.setText(R.string.role_head_nurse);
+        } else if (role.equals("admin")) {
+            tvUserRole.setText(R.string.role_admin);
+        } else {
+            tvUserRole.setText(role);
+        }
 
         setupFilterSpinners();
     }

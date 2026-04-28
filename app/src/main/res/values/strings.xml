@@ -53,6 +53,10 @@
     <string name="password_confirmation_required">Confirma a nova palavra-passe.</string>
     <string name="password_mismatch">A confirmação da palavra-passe não corresponde.</string>
 
+    <!-- Navbar -->
+    <string name="role_head_nurse">Enfermeiro Chefe</string>
+    <string name="role_nurse">Enfermeiro</string>
+    <string name="role_admin">Administrador</string>
 
     <!-- Dashboard Admin -->
     <string name="dashboard_admin_greeting">Bem-vindo, %s.</string>
@@ -78,8 +82,6 @@
     <string name="cancel">Cancelar</string>
     <string name="back">Voltar</string>
     <string name="search_hint">Pesquisar por nome...</string>
-    <string name="role_head_nurse">Enfermeiro Chefe</string>
-    <string name="role_nurse">Enfermeiro</string>
     <string name="status_active">Ativo</string>
     <string name="status_inactive">Inativo</string>
     <string name="table_name">NOME</string>
