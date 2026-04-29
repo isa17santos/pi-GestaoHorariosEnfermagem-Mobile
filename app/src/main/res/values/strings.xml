@@ -84,6 +84,13 @@
     <string name="swaps_subtitle">Gerir pedidos de troca de turno</string>
     <string name="my_statistics_subtitle">As minhas estatísticas e horas</string>
 
+    <!-- Head Nurse Dashboard -->
+    <string name="dashboard_head_nurse_greeting">Bem-vindo, %1$s.</string>
+    <string name="dashboard_head_nurse_subtitle">Gestão de Equipas e Escalas</string>
+    <string name="consult_schedule">Consultar horário</string>
+    <string name="consult_schedule_subtitle">Visualizar o horário</string>
+    <string name="head_nurse_stats_subtitle">Relatórios de cobertura da equipa</string>
+
 
     <!-- Human Resources -->
     <string name="hr_page_subtitle">Administração de perfis de enfermagem</string>

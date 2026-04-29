@@ -74,6 +74,13 @@
     <string name="dashboard_nurse_greeting">Welcome, %1$s.</string>
     <string name="dashboard_nurse_subtitle">My Nursing Dashboard</string>
 
+    <!-- Head Nurse Dashboard -->
+    <string name="dashboard_head_nurse_greeting">Welcome, %1$s.</string>
+    <string name="dashboard_head_nurse_subtitle">Team and Schedule Management</string>
+    <string name="consult_schedule">View schedule</string>
+    <string name="consult_schedule_subtitle">View schedule</string>
+    <string name="head_nurse_stats_subtitle">Team coverage reports</string>
+
     <!-- Cards Nurse -->
     <string name="schedule">Schedule</string>
     <string name="schedule_subtitle">View schedule</string>

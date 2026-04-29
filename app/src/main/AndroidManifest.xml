@@ -65,15 +65,22 @@
             android:screenOrientation="portrait"
             android:configChanges="locale|layoutDirection|orientation|screenSize"/>
 
-        <!-- Página de Gestão de Recursos Humanos -->
+        <!-- Dashboard Head Nurse -->
         <activity
-            android:name=".HumanResourcesActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:exported="false" />
+            android:name=".HeadNurseDashboardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
         <activity
             android:name=".ProfileActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
+        <!-- Cards admin -->
+        <activity
+            android:name=".HumanResourcesActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:exported="false" />
 
         <activity
             android:name=".VacationsActivity"
@@ -103,6 +110,8 @@
             android:configChanges="locale|layoutDirection|orientation|screenSize"
             android:screenOrientation="portrait" />
 
+
+        <!-- Cards nurse -->
         <activity
             android:name=".ScheduleActivity"
             android:exported="false"
@@ -117,6 +126,11 @@
 
         <activity
             android:name=".NurseStatisticsActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
+        <!-- Cards head nurse -->
+        <activity
+            android:name=".HeadNurseStatisticsActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
     </application>
 
