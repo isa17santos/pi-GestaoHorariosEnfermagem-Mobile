@@ -69,6 +69,18 @@
     <string name="statistics">Statistics</string>
     <string name="statistics_subtitle">Service and resource control</string>
 
+
+    <!-- Nurse Dashboard -->
+    <string name="dashboard_nurse_greeting">Welcome, %1$s.</string>
+    <string name="dashboard_nurse_subtitle">My Nursing Dashboard</string>
+
+    <!-- Cards Nurse -->
+    <string name="schedule">Schedule</string>
+    <string name="schedule_subtitle">View schedule</string>
+    <string name="swaps">Shift Swaps</string>
+    <string name="swaps_subtitle">Manage shift swap requests</string>
+    <string name="my_statistics_subtitle">My statistics and hours</string>
+
     <!-- Human Resources -->
     <string name="hr_page_subtitle">Nursing profiles administration</string>
     <string name="create_user">+ Create new user</string>

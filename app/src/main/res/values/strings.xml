@@ -73,6 +73,18 @@
     <string name="statistics_subtitle">Controlo de serviços e recursos</string>
 
 
+    <!-- Nurse Dashboard -->
+    <string name="dashboard_nurse_greeting">Bem-vindo, %1$s.</string>
+    <string name="dashboard_nurse_subtitle">O meu Painel de Enfermagem</string>
+
+    <!-- Cards Nurse -->
+    <string name="schedule">Horário</string>
+    <string name="schedule_subtitle">Consultar o horário</string>
+    <string name="swaps">Trocas</string>
+    <string name="swaps_subtitle">Gerir pedidos de troca de turno</string>
+    <string name="my_statistics_subtitle">As minhas estatísticas e horas</string>
+
+
     <!-- Human Resources -->
     <string name="hr_page_subtitle">Administração de perfis de enfermagem</string>
     <string name="create_user">+ Criar novo utilizador</string>

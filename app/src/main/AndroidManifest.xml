@@ -52,11 +52,18 @@
             </intent-filter>
         </activity>
 
-        <!-- Dashboard específica para Administradores -->
+        <!-- Dashboard Admin -->
         <activity
             android:name=".AdminDashboardActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
             android:exported="false" />
+
+        <!-- Dashboard Nurse -->
+        <activity
+            android:name=".NurseDashboardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"/>
 
         <!-- Página de Gestão de Recursos Humanos -->
         <activity
@@ -81,18 +88,36 @@
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
         <activity
-            android:name=".StatisticsActivity"
+            android:name=".AdminStatisticsActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
         <activity
             android:name=".UserEditActivity"
             android:exported="false"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".UserCreateActivity"
             android:exported="false"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ScheduleActivity"
+            android:exported="false"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".SwapsActivity"
+            android:exported="false"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".NurseStatisticsActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
     </application>
 
 </manifest>

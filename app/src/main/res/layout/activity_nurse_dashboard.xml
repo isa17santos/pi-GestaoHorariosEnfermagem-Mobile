@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_app_gradient"
@@ -13,7 +12,7 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Header: Logo & Language Switcher -->
+        <!-- Header -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,11 +24,9 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:src="@drawable/logo_shiftcare"
-                android:contentDescription="ShiftCare Logo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Selector de Idioma Dinâmico -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btn_language_switch_dashboard"
                 android:layout_width="wrap_content"
@@ -48,8 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp">
+                    android:paddingHorizontal="16dp">
                     <TextView
                         android:id="@+id/tv_language_flag_dashboard"
                         android:layout_width="wrap_content"
@@ -68,16 +64,14 @@
             </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- User Info Bar -->
+        <!-- User Info -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/white"
-            app:strokeColor="#1A000000"
-            app:strokeWidth="1dp">
+            app:cardBackgroundColor="@color/white">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -98,7 +92,7 @@
                         android:id="@+id/tv_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Utilizador"
+                        android:text="Beatriz Sousa"
                         android:textColor="@color/text_primary"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -107,7 +101,7 @@
                         android:id="@+id/tv_user_role"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cargo"
+                        android:text="Enfermeiro"
                         android:textColor="@color/text_muted"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -127,8 +121,6 @@
                         android:layout_height="48dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/bg_action_btn"
-                        android:contentDescription="Perfil"
-                        android:padding="12dp"
                         android:src="@drawable/ic_profile"
                         android:scaleType="centerInside"/>
 
@@ -137,8 +129,6 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/bg_action_btn_danger"
-                        android:contentDescription="Logout"
-                        android:padding="12dp"
                         android:src="@drawable/ic_logout"
                         android:scaleType="centerInside"/>
                 </LinearLayout>
@@ -150,29 +140,29 @@
             android:id="@+id/tv_greeting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bem-vindo, ..."
+            android:text="Bem-vindo, Beatriz Sousa."
             android:textColor="@color/text_primary"
             android:textSize="32sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_ops_subtitle"
+            android:id="@+id/tv_nurse_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:text="Gestão de Recursos Humanos e Operações"
+            android:text="O meu Painel de Enfermagem"
             android:textColor="@color/text_muted"
             android:textSize="16sp" />
 
-        <!-- Bento List -->
+        <!-- Cards List -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Card HR -->
+            <!-- Card Horário -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_hr"
+                android:id="@+id/card_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -189,12 +179,12 @@
                         android:layout_height="56dp"
                         android:background="@drawable/bento_icon_hr"
                         android:padding="14dp"
-                        android:src="@drawable/ic_people" />
+                        android:src="@drawable/ic_calendar_nurse" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="Gestão Recursos Humanos"
+                        android:text="@string/schedule"
                         android:tag="title"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
@@ -204,14 +194,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:tag="subtitle"
-                        android:text="Gerir perfis e permissões"
+                        android:text="@string/schedule_subtitle"
                         android:textColor="@color/text_muted" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card Férias -->
+            <!-- Card Trocas -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_vacations"
+                android:id="@+id/card_swaps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -228,12 +218,12 @@
                         android:layout_height="56dp"
                         android:background="@drawable/bento_icon_vacations"
                         android:padding="14dp"
-                        android:src="@drawable/ic_sun" />
+                        android:src="@drawable/ic_shift_swaps" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="Gestão férias"
+                        android:text="@string/swaps"
                         android:tag="title"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
@@ -243,88 +233,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:tag="subtitle"
-                        android:text="Aprovação e mapas de férias"
+                        android:text="@string/swaps_subtitle"
                         android:textColor="@color/text_muted" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card Baixas -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_sick"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="28dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/white">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="32dp">
-                    <ImageView
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:background="@drawable/bento_icon_sick"
-                        android:padding="14dp"
-                        android:src="@drawable/ic_pulse" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="Gestão baixas"
-                        android:tag="title"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:tag="subtitle"
-                        android:text="Registo e acompanhamento"
-                        android:textColor="@color/text_muted" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Card Turnos -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_shifts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="28dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/white">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="32dp">
-                    <ImageView
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:background="@drawable/bento_icon_shifts"
-                        android:padding="14dp"
-                        android:src="@drawable/ic_clock" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="Gestão tipos de turno"
-                        android:tag="title"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:tag="subtitle"
-                        android:text="Configuração de tipos de turnos"
-                        android:textColor="@color/text_muted" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
             <!-- Card Estatísticas -->
             <com.google.android.material.card.MaterialCardView
@@ -350,7 +263,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="Estatísticas"
+                        android:text="@string/statistics"
                         android:tag="title"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
@@ -360,7 +273,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:tag="subtitle"
-                        android:text="Controlo de serviços e recursos"
+                        android:text="@string/my_statistics_subtitle"
                         android:textColor="@color/text_muted" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

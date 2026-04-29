@@ -200,9 +200,11 @@ public class MainActivity extends AppCompatActivity {
                         // Roteamento baseado no Role
                         if ("admin".equals(role)) {
                             intent = new Intent(MainActivity.this, AdminDashboardActivity.class);
+                        } else if ("nurse".equals(role)) {
+                            // Redireciona especificamente para a Dashboard de Enfermeiro
+                            intent = new Intent(MainActivity.this, NurseDashboardActivity.class);
                         } else {
-                            // Redireciona para a dashboard geral (Head Nurse / Nurse)
-                            // Você pode adicionar mais 'else if' aqui conforme criar as outras atividades
+                            // Caso padrão para outros cargos (ex: Head Nurse)
                             intent = new Intent(MainActivity.this, DashboardActivity.class);
                         }
 

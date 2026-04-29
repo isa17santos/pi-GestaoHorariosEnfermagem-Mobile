@@ -139,7 +139,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // Estatísticas
         findViewById(R.id.card_stats).setOnClickListener(v ->
-                startActivity(new Intent(this, StatisticsActivity.class)));
+                startActivity(new Intent(this, AdminStatisticsActivity.class)));
 
         // Logout
         findViewById(R.id.btn_logout).setOnClickListener(v -> {

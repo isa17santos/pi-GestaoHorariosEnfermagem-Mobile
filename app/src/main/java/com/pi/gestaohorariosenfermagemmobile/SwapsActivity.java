@@ -3,11 +3,11 @@ package com.pi.gestaohorariosenfermagemmobile;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class StatisticsActivity extends AppCompatActivity{
+public class SwapsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistics);
+        setContentView(R.layout.activity_swaps);
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
 }
