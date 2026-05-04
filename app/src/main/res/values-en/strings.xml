@@ -103,6 +103,15 @@
     <string name="table_role">ROLE</string>
     <string name="table_status">STATUS</string>
     <string name="table_actions">ACTIONS</string>
+    <string name="table_start_time">START</string>
+    <string name="table_end_time">END</string>
+    <string name="table_min_nurses">MIN. NURSES</string>
+    <string name="col_color">COLOR</string>
+    <string name="filter_work_shifts">Work shifts</string>
+    <string name="filter_all_shift_types">All shift types</string>
+    <string name="filter_non_work_shifts">Non-work shifts</string>
+    <string name="table_schedule">SCHEDULE</string>
+    <string name="create_shift_type">+ Create shift type</string>
     <string name="prev">Previous</string>
     <string name="next">Next</string>
     <string name="delete_success">User removed successfully!</string>
@@ -146,4 +155,28 @@
     <string name="edit_user_subtitle">Update the professional\'s information</string>
     <string name="btn_update_user_submit">Update User</string>
     <string name="update_user_success">User updated successfully!</string>
+
+    <!-- Shift Types -->
+    <string name="create_shift_type_title">Create Shift Type</string>
+    <string name="create_shift_type_subtitle">Add a new shift type</string>
+    <string name="edit_shift_type_title">Edit Shift Type</string>
+    <string name="edit_shift_type_subtitle">Modify the shift type data</string>
+    <string name="btn_create_shift_type_submit">Create Shift Type</string>
+    <string name="btn_edit_shift_type_submit">Update Shift Type</string>
+    <string name="btn_pick_color">Pick color</string>
+    <string name="hint_shift_type_name">e.g. Morning Shift</string>
+    <string name="hint_start_time">HH:mm</string>
+    <string name="hint_end_time">HH:mm</string>
+    <string name="hint_color">#FFFFFF</string>
+    <string name="hint_min_nurses">3</string>
+    <string name="create_shift_type_success">Shift type created successfully!</string>
+    <string name="edit_shift_type_success">Shift type updated successfully!</string>
+    <string name="err_loading_shift_types">Error loading shift types</string>
+    <string name="err_deleting_shift_type">Error deleting shift type</string>
+    <string name="success_shift_type_deleted">Shift type deleted successfully!</string>
+    <string name="err_connection">Connection error</string>
+    <string name="confirm_delete_title">Confirm Deletion</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this shift type? This action cannot be undone.</string>
+    <string name="confirm">Confirm</string>
+
 </resources>

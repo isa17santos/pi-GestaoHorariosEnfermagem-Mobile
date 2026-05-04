@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -32,4 +33,16 @@ public interface ApiService {
 
     @POST("users")
     Call<Void> createUser(@Header("Authorization") String token, @Body Map<String, Object> userData);
+
+    @GET("shift-types")
+    Call<ShiftTypesResponse> getShiftTypes(@Header("Authorization") String token);
+
+    @POST("shift-types")
+    Call<Void> createShiftType(@Header("Authorization") String token, @Body Map<String, Object> body);
+
+    @PUT("shift-types/{id}")
+    Call<Void> updateShiftType(@Header("Authorization") String token, @Path("id") int id, @Body Map<String, Object> body);
+
+    @DELETE("shift-types/{id}")
+    Call<Void> deleteShiftType(@Header("Authorization") String token, @Path("id") int id);
 }

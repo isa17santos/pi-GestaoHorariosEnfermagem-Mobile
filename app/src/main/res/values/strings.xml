@@ -107,6 +107,15 @@
     <string name="table_role">CARGO</string>
     <string name="table_status">ESTADO</string>
     <string name="table_actions">AÇÕES</string>
+    <string name="table_start_time">INÍCIO</string>
+    <string name="table_end_time">FIM</string>
+    <string name="table_min_nurses">MÍN. ENF.</string>
+    <string name="col_color">COR</string>
+    <string name="filter_work_shifts">Turnos laborais</string>
+    <string name="filter_all_shift_types">Todos os turnos</string>
+    <string name="filter_non_work_shifts">Turnos não laborais</string>
+    <string name="table_schedule">HORÁRIO</string>
+    <string name="create_shift_type">+ Criar tipo de turno</string>
     <string name="prev">Anterior</string>
     <string name="next">Próximo</string>
     <string name="delete_success">Utilizador removido com sucesso!</string>
@@ -151,5 +160,27 @@
     <string name="btn_update_user_submit">Atualizar Utilizador</string>
     <string name="update_user_success">Utilizador atualizado com sucesso!</string>
 
+    <!-- Shift Types -->
+    <string name="create_shift_type_title">Criar Tipo de Turno</string>
+    <string name="create_shift_type_subtitle">Adicione um novo tipo de turno</string>
+    <string name="edit_shift_type_title">Editar Tipo de Turno</string>
+    <string name="edit_shift_type_subtitle">Modifique os dados do tipo de turno</string>
+    <string name="btn_create_shift_type_submit">Criar Tipo de Turno</string>
+    <string name="btn_edit_shift_type_submit">Atualizar Tipo de Turno</string>
+    <string name="btn_pick_color">Escolher cor</string>
+    <string name="hint_shift_type_name">Ex: Turno Manhã</string>
+    <string name="hint_start_time">HH:mm</string>
+    <string name="hint_end_time">HH:mm</string>
+    <string name="hint_color">#FFFFFF</string>
+    <string name="hint_min_nurses">3</string>
+    <string name="create_shift_type_success">Tipo de turno criado com sucesso!</string>
+    <string name="edit_shift_type_success">Tipo de turno atualizado com sucesso!</string>
+    <string name="err_loading_shift_types">Erro ao carregar tipos de turno</string>
+    <string name="err_deleting_shift_type">Erro ao eliminar</string>
+    <string name="success_shift_type_deleted">Tipo de turno eliminado com sucesso!</string>
+    <string name="err_connection">Erro de conexão</string>
+    <string name="confirm_delete_title">Confirmar Eliminação</string>
+    <string name="confirm_delete_message">Tem a certeza que deseja eliminar este tipo de turno? Esta ação não pode ser revertida.</string>
+    <string name="confirm">Confirmar</string>
 
 </resources>
