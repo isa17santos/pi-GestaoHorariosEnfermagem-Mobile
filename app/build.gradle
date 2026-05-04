@@ -2,6 +2,12 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
+
 android {
     namespace 'com.pi.gestaohorariosenfermagemmobile'
     compileSdk 36 // Ajustado para versão estável
@@ -15,8 +21,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        // LER O IP DO GRADLE.PROPERTIES
-        buildConfigField "String", "BASE_URL", (project.findProperty("BASE_URL") ?: "\"http://192.168.100.13/api/\"")
+        // LER O IP DO LOCAL.PROPERTIES OU USAR O PADRÃO SE NÃO EXISTIR
+        buildConfigField "String", "BASE_URL", localProperties.getProperty("BASE_URL", "\"http://192.168.100.13/api/\"")
     }
 
     buildTypes {

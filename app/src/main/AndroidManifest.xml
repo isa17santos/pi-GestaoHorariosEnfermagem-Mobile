@@ -95,6 +95,16 @@
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
         <activity
+            android:name=".ShiftTypeCreateActivity"
+            android:exported="false"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
+        <activity
+            android:name=".ShiftTypeEditActivity"
+            android:exported="false"
+            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+
+        <activity
             android:name=".AdminStatisticsActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:gravity="center_vertical">
+
+    <!-- Nome -->
+    <LinearLayout android:layout_width="220dp" android:layout_height="wrap_content" android:gravity="center_vertical" android:paddingStart="16dp" android:paddingEnd="16dp">
+        <TextView android:id="@+id/tv_avatar" android:layout_width="44dp" android:layout_height="44dp"
+            android:background="@drawable/bg_avatar_gradient" android:gravity="center"
+            android:textColor="@android:color/white" android:textStyle="bold" android:textSize="18sp" />
+        <TextView android:id="@+id/tv_name" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginStart="16dp" android:textStyle="bold" android:textColor="@color/text_primary" android:textSize="15sp" tools:text="Turno Manhã"/>
+    </LinearLayout>
+
+    <!-- Cor -->
+    <FrameLayout android:layout_width="120dp" android:layout_height="wrap_content" android:paddingHorizontal="16dp" android:gravity="center">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center">
+            <View android:id="@+id/v_color_dot" android:layout_width="24dp" android:layout_height="24dp" android:background="@drawable/bg_action_card" android:layout_marginEnd="8dp"/>
+            <TextView android:id="@+id/tv_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:textStyle="bold" android:textColor="@color/text_primary" tools:text="#A78BFA"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Horário -->
+    <FrameLayout android:layout_width="160dp" android:layout_height="wrap_content" android:paddingHorizontal="16dp">
+        <TextView android:id="@+id/tv_schedule" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center" android:paddingVertical="6dp" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/text_primary" tools:text="08:00 - 16:00"/>
+    </FrameLayout>
+
+    <!-- Mín. Enfermeiros -->
+    <FrameLayout android:layout_width="140dp" android:layout_height="wrap_content" android:paddingHorizontal="16dp">
+        <TextView android:id="@+id/tv_min_nurses" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center" android:paddingVertical="6dp" android:textSize="12sp" android:textStyle="bold" tools:text="3"/>
+    </FrameLayout>
+
+    <!-- Ações -->
+    <LinearLayout android:layout_width="120dp" android:layout_height="wrap_content" android:gravity="center" android:orientation="horizontal">
+        <ImageButton android:id="@+id/btn_edit" android:layout_width="40dp" android:layout_height="40dp"
+            android:background="@drawable/bg_action_card" android:src="@drawable/ic_edit" android:padding="10dp" android:scaleType="centerInside" android:layout_marginEnd="8dp" android:contentDescription="Edit"/>
+        <ImageButton android:id="@+id/btn_delete" android:layout_width="40dp" android:layout_height="40dp"
+            android:background="@drawable/bg_action_card" android:src="@drawable/ic_delete" android:padding="10dp" android:scaleType="centerInside" android:contentDescription="Delete"/>
+    </LinearLayout>
+</LinearLayout>
