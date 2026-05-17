@@ -31,7 +31,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
-public class ShiftTypesActivity extends AppCompatActivity {
+public class ShiftTypesActivity extends BaseActivity {
     private RecyclerView rvShiftTypes;
     private ShiftTypeAdapter adapter;
     private List<ShiftType> allShiftTypes = new ArrayList<>();
@@ -232,7 +232,8 @@ public class ShiftTypesActivity extends AppCompatActivity {
     }
 
     // Update all translated texts on the screen
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         // Atualiza todos os textos da página usando as strings traduzidas
         if (btnBack != null) btnBack.setText(R.string.back);
         if (tvTitle != null) tvTitle.setText(R.string.shift_types);
@@ -262,7 +263,8 @@ public class ShiftTypesActivity extends AppCompatActivity {
     }
 
     // Update the language switch button
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = current.contains("en");
         if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");

@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserEditActivity extends AppCompatActivity {
+public class UserEditActivity extends BaseActivity {
     private EditText etName, etEmail;
     private Spinner spinnerRole, spinnerStatus;
     private Button btnSubmit;
@@ -201,7 +201,8 @@ public class UserEditActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
     }
 
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         tvTitle.setText(R.string.edit_user_title);
         tvSubtitle.setText(R.string.edit_user_subtitle);
         btnBack.setText(R.string.back);
@@ -261,7 +262,8 @@ public class UserEditActivity extends AppCompatActivity {
         spinnerStatus.setSelection(savedStatusPos);
     }
 
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         boolean isEn = AppCompatDelegate.getApplicationLocales().toLanguageTags().contains("en");
         tvLangFlag.setText(isEn ? "pt" : "en");
         tvLangLabel.setText(isEn ? "Português" : "English");

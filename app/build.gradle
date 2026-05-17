@@ -22,7 +22,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // LER O IP DO LOCAL.PROPERTIES OU USAR O PADRÃO SE NÃO EXISTIR
-        buildConfigField "String", "BASE_URL", localProperties.getProperty("BASE_URL", "\"http://192.168.100.13/api/\"")
+        buildConfigField "String", "BASE_URL", localProperties.getProperty("BASE_URL", "\"http://10.0.2.2:8000/api/\"")
+
+        resValue "string", "config_web_host", localProperties.getProperty("WEB_HOST", "10.0.2.2")
+        resValue "string", "config_web_port", localProperties.getProperty("WEB_PORT", "3000")
     }
 
     buildTypes {
@@ -35,6 +38,7 @@ android {
     // NECESSÁRIO PARA GERAR A CLASSE BUILDCONFIG NO JAVA
     buildFeatures {
         buildConfig true
+        resValues true
     }
 
     compileOptions {

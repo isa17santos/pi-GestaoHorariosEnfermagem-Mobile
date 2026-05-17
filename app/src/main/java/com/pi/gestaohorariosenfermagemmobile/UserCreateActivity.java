@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserCreateActivity extends AppCompatActivity {
+public class UserCreateActivity extends BaseActivity {
     private EditText etName, etEmail, etPassword, etConfirm;
     private Spinner spinnerRole, spinnerStatus;
     private Button btnSubmit;
@@ -212,7 +212,8 @@ public class UserCreateActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
     }
 
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         if (tvTitle != null) tvTitle.setText(R.string.create_user_title);
         if (tvSubtitle != null) tvSubtitle.setText(R.string.create_user_subtitle);
         btnBack.setText(R.string.back);
@@ -277,7 +278,8 @@ public class UserCreateActivity extends AppCompatActivity {
         cvErrorNotification.setVisibility(isGenErr ? View.VISIBLE : View.GONE);
     }
 
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         boolean isEn = AppCompatDelegate.getApplicationLocales().toLanguageTags().contains("en");
         tvLangFlag.setText(isEn ? "pt" : "en");
         tvLangLabel.setText(isEn ? "Português" : "English");

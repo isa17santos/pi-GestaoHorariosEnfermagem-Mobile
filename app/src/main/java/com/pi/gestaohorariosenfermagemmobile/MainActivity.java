@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private TextInputEditText etEmail, etPassword;
     private TextInputLayout tilEmail, tilPassword;
@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
         updateLanguageButton();
     }
 
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         if (tvBrandTitle == null) return;
         tvBrandTitle.setText(R.string.brand_title);
         tvBrandText.setText(R.string.brand_text);
@@ -119,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setText(R.string.sign_in);
     }
 
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         if (tvLangFlag != null && tvLangLabel != null) {
             boolean isEn = current.contains("en");

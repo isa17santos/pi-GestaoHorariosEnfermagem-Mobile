@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends BaseActivity {
 
     private TextInputEditText etEmail;
     private TextInputLayout tilEmail;
@@ -117,7 +117,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         updateLanguageButton();
     }
 
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         tvRecoveryLabel.setText(R.string.access_recovery);
         tvResetTitle.setText(R.string.reset_password_title);
         tvResetSubtitle.setText(R.string.reset_password_subtitle);
@@ -134,7 +135,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         tvInfoMessage.setText(R.string.recovery_email_sent_info);
     }
 
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = current.contains("en");
         tvLangFlag.setText(isEn ? "pt" : "en");

@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">ShiftCare</string>
 
-    <!-- Configuração do Host para Deep Linking -->
-    <string name="config_web_host" translatable="false">192.168.100.13</string>
-    <string name="config_web_port" translatable="false">3000</string>
-
     <!-- Brand Panel -->
     <string name="brand_title">Gestão de horários de enfermagem com clareza, equilíbrio e cuidado.</string>
     <string name="brand_text">Centraliza acessos, organiza turnos e simplifica o dia a dia da equipa.</string>

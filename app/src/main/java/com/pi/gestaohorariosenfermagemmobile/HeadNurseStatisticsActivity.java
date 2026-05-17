@@ -1,14 +1,33 @@
 package com.pi.gestaohorariosenfermagemmobile;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
-public class HeadNurseStatisticsActivity extends AppCompatActivity {
+public class HeadNurseStatisticsActivity extends BaseActivity {
+
+    private TextView tvLangFlag, tvLangLabel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_head_nurse_statistics);
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+    }
+
+    @Override
+    protected void updateUIStrings() {
+        // TO IMPLEMENT....
+
+    }
+
+    @Override
+    protected void updateLanguageButton() {
+        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
+        boolean isEn = current.contains("en");
+        if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
+        if (tvLangLabel != null) tvLangLabel.setText(isEn ? "Português" : "English");
     }
 }

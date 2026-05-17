@@ -21,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends BaseActivity {
 
     private TextInputEditText etNewPassword, etConfirmPassword;
     private TextInputLayout tilNewPassword, tilConfirmPassword;
@@ -168,7 +168,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         updateLanguageButton();
     }
 
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         tvRecoveryLabel.setText(R.string.access_recovery);
         tvResetTitle.setText(R.string.change_password_title);
         tvResetSubtitle.setText(R.string.change_password_subtitle);
@@ -180,7 +181,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         btnSave.setText(btnSave.isEnabled() ? R.string.save_new_password : R.string.saving_password);
     }
 
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = current.contains("en");
         tvLangFlag.setText(isEn ? "pt" : "en");

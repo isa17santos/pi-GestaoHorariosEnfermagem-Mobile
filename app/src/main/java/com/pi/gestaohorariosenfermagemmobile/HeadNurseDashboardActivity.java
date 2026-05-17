@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import com.google.android.material.card.MaterialCardView;
 
-public class HeadNurseDashboardActivity extends AppCompatActivity {
+public class HeadNurseDashboardActivity extends BaseActivity {
 
     private TextView tvUserName, tvUserRole, tvGreeting, tvHeadNurseSubtitle;
     private TextView tvLangFlag, tvLangLabel;
@@ -63,7 +63,8 @@ public class HeadNurseDashboardActivity extends AppCompatActivity {
         updateLanguageButton();
     }
 
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         tvGreeting.setText(getString(R.string.dashboard_head_nurse_greeting, currentUserName));
         tvHeadNurseSubtitle.setText(R.string.dashboard_head_nurse_subtitle);
         tvUserRole.setText(R.string.role_head_nurse);
@@ -80,7 +81,8 @@ public class HeadNurseDashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = current.contains("en");
         if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
