@@ -34,7 +34,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
-public class HumanResourcesActivity extends AppCompatActivity {
+public class HumanResourcesActivity extends BaseActivity {
 
     private RecyclerView rvUsers;
     private UserAdapter adapter;
@@ -251,7 +251,8 @@ public class HumanResourcesActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         // Atualiza todos os textos da página usando as strings traduzidas
         if (btnBack != null) btnBack.setText(R.string.back);
         if (tvTitle != null) tvTitle.setText(R.string.hr_management);
@@ -279,7 +280,8 @@ public class HumanResourcesActivity extends AppCompatActivity {
         setupFilterSpinners();
     }
 
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = current.contains("en");
         if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
@@ -429,20 +431,20 @@ public class HumanResourcesActivity extends AppCompatActivity {
     }
 
     private void onDeleteUser(User user) {
-        // 1. Capturar ecrã completo (DecorView) para o Blur cobrir tudo
+        // Capturar ecrã completo (DecorView) para o Blur cobrir tudo
         View decorView = getWindow().getDecorView();
         Bitmap screenshot = Bitmap.createBitmap(decorView.getWidth(), decorView.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(screenshot);
         decorView.draw(canvas);
         Bitmap blurredBitmap = blur(screenshot);
 
-        // 2. Inflar layout do diálogo
+        // Inflar layout do diálogo
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirm_delete, null);
 
-        // 3. Criar o diálogo (usando um tema básico, vamos customizar a janela manualmente)
+        // Criar o diálogo (usando um tema básico, vamos customizar a janela manualmente)
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
 
-        // 4. Configurações críticas de Janela para FULLSCREEN e CENTRAMENTO
+        // Configurações críticas de Janela para FULLSCREEN e CENTRAMENTO
         dialog.show(); // Tem de ser chamado antes para configurar a Window
 
         if (dialog.getWindow() != null) {
@@ -458,8 +460,10 @@ public class HumanResourcesActivity extends AppCompatActivity {
             dialog.getWindow().setDimAmount(0.4f);
         }
 
-        // 5. Definir o conteúdo da vista
+        // Definir o conteúdo da vista
         dialog.setContentView(dialogView);
+
+        dialogView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
 
         Button btnConfirm = dialogView.findViewById(R.id.btn_confirm_delete);
         btnConfirm.setOnClickListener(v -> {
@@ -489,6 +493,12 @@ public class HumanResourcesActivity extends AppCompatActivity {
                     Toast.makeText(HumanResourcesActivity.this, "Erro de rede", Toast.LENGTH_SHORT).show();
                 }
             });
+        });
+
+        Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(v -> {
+            // Fecha o pop-up e volta para a página anterior
+            dialog.dismiss();
         });
     }
 

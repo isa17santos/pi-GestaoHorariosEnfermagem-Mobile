@@ -31,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShiftTypeEditActivity extends AppCompatActivity {
+public class ShiftTypeEditActivity extends BaseActivity {
     private EditText etName, etStartTime, etEndTime, etColor, etMinNurses;
     private View vColorPreview;
     private MaterialButton btnPickColor;
@@ -243,7 +243,8 @@ public class ShiftTypeEditActivity extends AppCompatActivity {
     }
 
     // Update the language switch button
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = current.contains("en");
         if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
@@ -251,7 +252,8 @@ public class ShiftTypeEditActivity extends AppCompatActivity {
     }
 
     // Update all translated texts on the screen
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         if (tvTitle != null) tvTitle.setText(R.string.edit_shift_type_title);
         if (tvSubtitle != null) tvSubtitle.setText(R.string.edit_shift_type_subtitle);
         btnBack.setText(R.string.back);

@@ -35,7 +35,6 @@
             android:configChanges="locale|layoutDirection|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".DashboardActivity" />
 
         <!-- Password reset with new password input fields -->
         <activity
@@ -52,7 +51,7 @@
 
                 <data android:scheme="http"
                     android:host="@string/config_web_host"
-                    android:port="3000"
+                    android:port="@string/config_web_port"
                     android:pathPrefix="/reset-password" />
 
             </intent-filter>

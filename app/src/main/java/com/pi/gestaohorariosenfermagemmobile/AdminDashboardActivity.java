@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import com.google.android.material.card.MaterialCardView;
 
-public class AdminDashboardActivity extends AppCompatActivity {
+public class AdminDashboardActivity extends BaseActivity {
 
     private TextView tvUserName, tvUserRole, tvGreeting, tvOpsSubtitle;
     private TextView tvLangFlag, tvLangLabel;
@@ -75,7 +75,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
         updateLanguageButton();
     }
 
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         // Atualiza a saudação dinâmica
         tvGreeting.setText(getString(R.string.dashboard_admin_greeting, currentUserName));
         tvOpsSubtitle.setText(R.string.dashboard_ops_management);
@@ -109,7 +110,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = current.contains("en");
         if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
