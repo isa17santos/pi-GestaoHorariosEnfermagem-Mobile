@@ -2,15 +2,20 @@ package com.pi.gestaohorariosenfermagemmobile;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -22,6 +27,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -40,6 +47,7 @@ public class ProfileActivity extends BaseActivity {
 
     // UI Components - Profile Section
     private TextView tvTitle, tvSubtitle;
+    private TextView tvLabelName, tvLabelEmail;   // section labels — localised in updateUIStrings()
     private TextView tvNameValue;
     private EditText etEmail;
     private MaterialButton btnChangePassword, btnSaveProfile;
@@ -47,6 +55,7 @@ public class ProfileActivity extends BaseActivity {
     private TextView tvErrGeneral;
 
     // UI Components - Preferences Section
+    private MaterialCardView cvPreferencesSection;
     private TextView tvPreferencesTitle;
     private MaterialButton btnAddPreference;
     private EditText etSearchPreferences;
@@ -56,6 +65,8 @@ public class ProfileActivity extends BaseActivity {
     // UI Components - Toast
     private LinearLayout llNotificationToast;
     private TextView tvNotificationMsg;
+    private LinearLayout llErrorToast;
+    private TextView tvErrorToastMsg;
 
     // Data
     private String token;
@@ -96,6 +107,8 @@ public class ProfileActivity extends BaseActivity {
         // Profile Section
         tvTitle = findViewById(R.id.tv_title);
         tvSubtitle = findViewById(R.id.tv_subtitle);
+        tvLabelName = findViewById(R.id.tv_label_name);
+        tvLabelEmail = findViewById(R.id.tv_label_email);
         tvNameValue = findViewById(R.id.tv_name_value);
         etEmail = findViewById(R.id.et_email);
         btnChangePassword = findViewById(R.id.btn_change_password);
@@ -104,6 +117,7 @@ public class ProfileActivity extends BaseActivity {
         tvErrGeneral = findViewById(R.id.tv_error_general);
 
         // Preferences Section
+        cvPreferencesSection = findViewById(R.id.cv_preferences_section);
         tvPreferencesTitle = findViewById(R.id.tv_preferences_title);
         btnAddPreference = findViewById(R.id.btn_add_preference);
         etSearchPreferences = findViewById(R.id.et_search_preferences);
@@ -113,11 +127,18 @@ public class ProfileActivity extends BaseActivity {
         // Toast
         llNotificationToast = findViewById(R.id.ll_notification_toast);
         tvNotificationMsg = findViewById(R.id.tv_notification_msg);
+        llErrorToast = findViewById(R.id.ll_error_toast);
+        tvErrorToastMsg = findViewById(R.id.tv_error_toast_msg);
 
         // Load token and user info from SharedPreferences
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
+
+        // Pre-fill navbar name from the cached value so it shows before the API responds
         if (tvUserName != null) tvUserName.setText(prefs.getString("user_name", "Utilizador"));
+
+        // Pre-fill Full Name from cache — loadProfile() will overwrite with the API value
+        if (tvNameValue != null) tvNameValue.setText(prefs.getString("user_name", ""));
 
         String role = prefs.getString("user_role", "");
         if (tvUserRole != null) {
@@ -179,20 +200,34 @@ public class ProfileActivity extends BaseActivity {
     private void setupActions() {
         btnSaveProfile.setOnClickListener(v -> handleSaveProfile());
         btnChangePassword.setOnClickListener(v -> handleChangePassword());
-        btnAddPreference.setOnClickListener(v -> showAddPreferenceDialog());
 
-        // Search functionality
+        // Add new preference — only reachable by nurses (button is inside the nurse-only section)
+        btnAddPreference.setOnClickListener(v -> {
+            // Guard: only nurses should be able to add preferences
+            SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+            if (!"nurse".equals(prefs.getString("user_role", ""))) return;
+
+            PreferenceBottomSheet bottomSheet = new PreferenceBottomSheet(
+                null,  // No existing preference
+                false, // Not editing
+                this::savePreference // Save preference with callback data
+            );
+            bottomSheet.show(getSupportFragmentManager(), "add_preference");
+        });
+
+        // Search preferences — pattern mirrors HumanResourcesActivity:
+        // filter is called in afterTextChanged so the full committed text is available.
         etSearchPreferences.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterPreferences(s.toString());
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                filterPreferences(s.toString());
+            }
         });
     }
 
@@ -207,6 +242,9 @@ public class ProfileActivity extends BaseActivity {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             updateUIStrings();
             updateLanguageButton();
+            // Rebuild preference cards so pill labels, subtitle and notes
+            // prefix are rendered in the newly selected language
+            displayPreferences(allPreferences);
         }, 100);
     }
 
@@ -228,6 +266,11 @@ public class ProfileActivity extends BaseActivity {
         // Title and subtitle
         if (tvTitle != null) tvTitle.setText(isEn ? "My Profile" : "Meu Perfil");
         if (tvSubtitle != null) tvSubtitle.setText(isEn ? "Manage account information and preferences" : "Gerir informações da conta e preferências");
+
+        // Personal data section labels (first form)
+        if (tvLabelName  != null) tvLabelName.setText(isEn  ? "Full Name"  : "Nome Completo");
+        if (tvLabelEmail != null) tvLabelEmail.setText(isEn ? "Email"      : "Email");
+        if (etEmail      != null) etEmail.setHint(isEn      ? "email@example.com" : "email@exemplo.pt");
 
         // Buttons
         if (btnBack != null) btnBack.setText(isEn ? "Back" : "Voltar");
@@ -266,8 +309,10 @@ public class ProfileActivity extends BaseActivity {
         api.getProfile("Bearer " + token).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ProfileResponse profile = response.body();
+                if (response.isSuccessful() && response.body() != null
+                        && response.body().getData() != null) {
+                    // Unwrap the nested "data" object from the API envelope
+                    ProfileResponse.Data profile = response.body().getData();
 
                     // Populate UI with profile data
                     tvNameValue.setText(profile.getName());
@@ -287,8 +332,21 @@ public class ProfileActivity extends BaseActivity {
         });
     }
 
-    // Load user preferences from API and filter out past months
+    // Load user preferences from API and filter out past months.
+    // Only nurses have monthly shift preferences — hide the entire section for other roles.
     private void loadPreferences() {
+        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+        String role = prefs.getString("user_role", "");
+
+        // Non-nurse roles have no shift preferences — hide the section and return early
+        if (!"nurse".equals(role)) {
+            if (cvPreferencesSection != null) cvPreferencesSection.setVisibility(View.GONE);
+            return;
+        }
+
+        // Nurse role: ensure section is visible before fetching
+        if (cvPreferencesSection != null) cvPreferencesSection.setVisibility(View.VISIBLE);
+
         ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
         api.getProfilePreferences("Bearer " + token).enqueue(new Callback<NursePreferencesResponse>() {
             @Override
@@ -322,12 +380,16 @@ public class ProfileActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<NursePreferencesResponse> call, Throwable t) {
-                showErrorToast("Network error");
             }
         });
     }
 
     // Display preferences in the UI
+    /**
+     * Display preferences in the UI.
+     * Each preference card is clickable to edit via bottom sheet.
+     * Delete button allows removing preferences with confirmation.
+     */
     private void displayPreferences(List<NursePreference> preferences) {
         llPreferencesContainer.removeAllViews();
 
@@ -342,32 +404,29 @@ public class ProfileActivity extends BaseActivity {
             View cardView = LayoutInflater.from(this).inflate(R.layout.item_preference_card, llPreferencesContainer, false);
 
             // Bind data to card
-            TextView tvMonthYear = cardView.findViewById(R.id.tv_pref_month_year);
+            TextView tvMonthYear  = cardView.findViewById(R.id.tv_pref_month_year);
+            TextView tvSubtitle   = cardView.findViewById(R.id.tv_pref_subtitle);
             ImageButton btnChevron = cardView.findViewById(R.id.btn_pref_chevron);
-            ImageButton btnDelete = cardView.findViewById(R.id.btn_pref_delete);
-            TextView tvNotes = cardView.findViewById(R.id.tv_pref_notes);
+            ImageButton btnDelete  = cardView.findViewById(R.id.btn_pref_delete);
+            TextView tvNotes       = cardView.findViewById(R.id.tv_pref_notes);
+            ChipGroup cgPills      = cardView.findViewById(R.id.cg_pref_pills);
 
-            // Pills
-            TextView tvPillMorning = cardView.findViewById(R.id.tv_pill_morning);
-            TextView tvPillAfternoon = cardView.findViewById(R.id.tv_pill_afternoon);
-            TextView tvPillNight = cardView.findViewById(R.id.tv_pill_night);
-            TextView tvPillWeekends = cardView.findViewById(R.id.tv_pill_weekends);
-            TextView tvPillAvoidWeekends = cardView.findViewById(R.id.tv_pill_avoid_weekends);
-
-            // Get language for month names
+            // Get language for month names and all localised strings
             String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
             boolean isEn = currentLang.contains("en");
 
-            // Set month/year
+            // Set month/year title and section subtitle
             String monthName = getMonthName(preference.getMonth(), isEn);
             tvMonthYear.setText(monthName + " " + preference.getYear());
+            tvSubtitle.setText(isEn ? "Monthly Preferences" : "Preferências Mensais");
 
-            // Configure pills
-            configurePill(tvPillMorning, preference.prefersMorning(), isEn ? "Morning" : "Manhã");
-            configurePill(tvPillAfternoon, preference.prefersAfternoon(), isEn ? "Afternoon" : "Tarde");
-            configurePill(tvPillNight, preference.prefersNight(), isEn ? "Night" : "Noite");
-            configurePill(tvPillWeekends, preference.prefersWeekends(), isEn ? "Weekends" : "Fim de Semana");
-            configurePill(tvPillAvoidWeekends, preference.avoidsWeekends(), isEn ? "Avoid Weekends" : "Evitar Fim de Semana");
+            // Add only active pills — each is pill-shaped and sized to its content
+            cgPills.removeAllViews();
+            addPillChip(cgPills, preference.prefersMorning(),   isEn ? "Morning"        : "Manhã");
+            addPillChip(cgPills, preference.prefersAfternoon(), isEn ? "Afternoon"       : "Tarde");
+            addPillChip(cgPills, preference.prefersNight(),     isEn ? "Night"           : "Noite");
+            addPillChip(cgPills, preference.prefersWeekends(),  isEn ? "Weekends"        : "Fim de Semana");
+            addPillChip(cgPills, preference.avoidsWeekends(),   isEn ? "Avoid Weekends"  : "Evitar Fim de Semana");
 
             // Show notes if not empty
             if (preference.getNotes() != null && !preference.getNotes().isEmpty()) {
@@ -377,29 +436,48 @@ public class ProfileActivity extends BaseActivity {
                 tvNotes.setVisibility(View.GONE);
             }
 
-            // Chevron toggle (for future expansion - currently no edit form)
-            btnChevron.setOnClickListener(v -> {
-                // Toggle expanded/collapsed state (placeholder for future edit functionality)
+            // Hide chevron (no longer used for expand/collapse)
+            if (btnChevron != null) {
+                btnChevron.setVisibility(View.GONE);
+            }
+
+            // Make entire card clickable to edit preference
+            cardView.setOnClickListener(v -> {
+                PreferenceBottomSheet bottomSheet = new PreferenceBottomSheet(
+                    preference, // Existing preference to edit
+                    true,       // Edit mode
+                    this::savePreference // Save preference with callback data
+                );
+                bottomSheet.show(getSupportFragmentManager(), "edit_preference");
             });
 
-            // Delete button
+            // Delete button - show confirmation dialog
             btnDelete.setOnClickListener(v -> showDeleteConfirmation(preference));
 
             llPreferencesContainer.addView(cardView);
         }
     }
 
-    // Configure a preference pill (active or inactive)
-    private void configurePill(TextView pill, boolean isActive, String label) {
-        if (isActive) {
-            pill.setVisibility(View.VISIBLE);
-            pill.setText(label + " ✓");
-            pill.setBackgroundColor(Color.parseColor("#E8DEFF"));
-            pill.setTextColor(Color.parseColor("#7C3AED"));
-            pill.setTypeface(null, android.graphics.Typeface.BOLD);
-        } else {
-            pill.setVisibility(View.GONE);
-        }
+    // Add an active preference chip to the group — only shown when the flag is true
+    private void addPillChip(ChipGroup chipGroup, boolean isActive, String label) {
+        if (!isActive) return;
+
+        Chip chip = new Chip(this);
+        chip.setText(label + " ✓");
+        chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor("#E8DEFF")));
+        chip.setTextColor(Color.parseColor("#7C3AED"));
+        chip.setTypeface(null, Typeface.BOLD);
+        chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f);
+        chip.setChipStrokeWidth(0f);
+
+        // Disable interactivity — pills are informational only
+        chip.setClickable(false);
+        chip.setCheckable(false);
+        chip.setCheckedIconVisible(false);
+        chip.setChipIconVisible(false);
+        chip.setCloseIconVisible(false);
+
+        chipGroup.addView(chip);
     }
 
     // Get month name in current language
@@ -433,16 +511,19 @@ public class ProfileActivity extends BaseActivity {
         displayPreferences(filtered);
     }
 
-    // Handle save profile button
+    // Handle save profile button.
+    // Validates input, checks for actual changes, then fires the update API call.
     private void handleSaveProfile() {
+        // Cancel any in-flight auto-hide timer from a previous error before we might show a new one
         errorHideHandler.removeCallbacksAndMessages(null);
 
         String email = etEmail.getText().toString().trim();
 
         // Validate email not empty
         if (email.isEmpty()) {
-            cvErrorNotification.setVisibility(View.VISIBLE);
-            startHideTimer();
+            String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
+            boolean isEn = currentLang.contains("en");
+            showFormError(isEn ? "Email cannot be empty" : "O email não pode estar vazio");
             return;
         }
 
@@ -450,7 +531,7 @@ public class ProfileActivity extends BaseActivity {
         if (email.equals(originalEmail)) {
             String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
             boolean isEn = currentLang.contains("en");
-            showErrorToast(isEn ? "No changes to save" : "Não existem alterações para guardar");
+            showFormError(isEn ? "No changes to save" : "Não existem alterações para guardar");
             return;
         }
 
@@ -479,8 +560,9 @@ public class ProfileActivity extends BaseActivity {
                     // Show success toast
                     showSuccessToast(isEn ? "Profile updated successfully" : "Perfil atualizado com sucesso");
                 } else {
-                    cvErrorNotification.setVisibility(View.VISIBLE);
-                    startHideTimer();
+                    // API returned a non-2xx status; surface a localised error via the standard
+                    // toast helper so the message text is always set before the card is shown.
+                    showErrorToast(isEn ? "Failed to update profile" : "Falha ao atualizar perfil");
                 }
             }
 
@@ -497,253 +579,203 @@ public class ProfileActivity extends BaseActivity {
 
     // Handle change password button
     private void handleChangePassword() {
-        Intent intent = new Intent(this, ForgotPasswordActivity.class);
+        Intent intent = new Intent(this, ResetPasswordActivity.class);
         startActivity(intent);
     }
 
-    // Show delete confirmation dialog
+    /**
+     * Shows a custom confirmation dialog (dialog_confirm_delete.xml) before
+     * deleting a nurse preference. Follows the same pattern as
+     * HumanResourcesActivity.onDeleteUser():
+     *  - Inflate the shared layout
+     *  - Transparent background + full-screen window + dim
+     *  - btn_cancel   → dismiss
+     *  - btn_confirm_delete → call DELETE API, reload on success
+     * The confirm button is tinted purple (#7C3AED) to match the web profile page.
+     */
     private void showDeleteConfirmation(NursePreference preference) {
-        String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = currentLang.contains("en");
+        boolean isEn = AppCompatDelegate.getApplicationLocales()
+                .toLanguageTags().contains("en");
 
-        String monthName = getMonthName(preference.getMonth(), isEn);
-        String title = isEn ? "Delete Preference" : "Eliminar Preferência";
-        String message = isEn ?
-            "Are you sure you want to delete preferences for " + monthName + " " + preference.getYear() + "?" :
-            "Tem certeza que deseja eliminar as preferências de " + monthName + " " + preference.getYear() + "?";
+        // Inflate the shared custom delete-confirmation layout
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirm_delete, null);
 
-        new AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(isEn ? "Delete" : "Eliminar", (dialog, which) -> deletePreference(preference))
-            .setNegativeButton(isEn ? "Cancel" : "Cancelar", null)
-            .show();
-    }
+        // Build dialog without any built-in title/message chrome
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
 
-    // Delete preference via API
-    private void deletePreference(NursePreference preference) {
-        ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
-        api.deleteProfilePreference("Bearer " + token, preference.getId()).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-                    boolean isEn = currentLang.contains("en");
-                    showSuccessToast(isEn ? "Preference deleted" : "Preferência eliminada");
+        // Must call show() before configuring the Window
+        dialog.show();
 
-                    // Reload preferences
-                    loadPreferences();
-                } else {
-                    String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-                    boolean isEn = currentLang.contains("en");
-                    showErrorToast(isEn ? "Failed to delete" : "Falha ao eliminar");
-                }
-            }
+        if (dialog.getWindow() != null) {
+            // Transparent card background so the rounded MaterialCardView shows cleanly
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-                boolean isEn = currentLang.contains("en");
-                showErrorToast(isEn ? "Network error" : "Erro de rede");
-            }
-        });
-    }
+            // Centre the card on screen with natural wrap_content sizing
+            dialog.getWindow().setLayout(
+                    android.view.WindowManager.LayoutParams.MATCH_PARENT,
+                    android.view.WindowManager.LayoutParams.WRAP_CONTENT);
 
-    // Show add preference dialog
-    private void showAddPreferenceDialog() {
-        String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = currentLang.contains("en");
-
-        // Inflate custom dialog layout
-        View dialogView = LayoutInflater.from(this).inflate(android.R.layout.select_dialog_multichoice, null);
-        LinearLayout container = new LinearLayout(this);
-        container.setOrientation(LinearLayout.VERTICAL);
-        container.setPadding(dp(24), dp(24), dp(24), dp(24));
-
-        // Month spinner
-        TextView tvMonthLabel = new TextView(this);
-        tvMonthLabel.setText(isEn ? "Month" : "Mês");
-        tvMonthLabel.setTextSize(16);
-        tvMonthLabel.setPadding(0, 0, 0, dp(8));
-        container.addView(tvMonthLabel);
-
-        Spinner spMonth = new Spinner(this);
-        String[] monthsPt = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-                             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
-        String[] monthsEn = {"January", "February", "March", "April", "May", "June",
-                             "July", "August", "September", "October", "November", "December"};
-
-        // Get current date to disable past months
-        Calendar calendar = Calendar.getInstance();
-        int currentYear = calendar.get(Calendar.YEAR);
-        int currentMonth = calendar.get(Calendar.MONTH) + 1;
-
-        List<String> availableMonths = new ArrayList<>();
-        List<Integer> monthNumbers = new ArrayList<>();
-        String[] monthNames = isEn ? monthsEn : monthsPt;
-
-        for (int i = 0; i < 12; i++) {
-            availableMonths.add(monthNames[i]);
-            monthNumbers.add(i + 1);
+            // Dim the activity content behind the dialog
+            dialog.getWindow().addFlags(
+                    android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            dialog.getWindow().setDimAmount(0.4f);
         }
 
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, availableMonths);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spMonth.setAdapter(monthAdapter);
-        spMonth.setSelection(currentMonth - 1); // Select current month by default
-        container.addView(spMonth);
+        // Attach the inflated view as the dialog content
+        dialog.setContentView(dialogView);
 
-        // Add spacing
-        View spacer1 = new View(this);
-        spacer1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(16)));
-        container.addView(spacer1);
+        // Re-tint the confirm button to purple to match the web profile page style
+        Button btnConfirm = dialogView.findViewById(R.id.btn_confirm_delete);
+        btnConfirm.setBackgroundTintList(
+                ColorStateList.valueOf(Color.parseColor("#7C3AED")));
 
-        // Year spinner
-        TextView tvYearLabel = new TextView(this);
-        tvYearLabel.setText(isEn ? "Year" : "Ano");
-        tvYearLabel.setTextSize(16);
-        tvYearLabel.setPadding(0, 0, 0, dp(8));
-        container.addView(tvYearLabel);
+        // Cancel: simply close the dialog, no side-effects
+        dialogView.findViewById(R.id.btn_cancel)
+                .setOnClickListener(v -> dialog.dismiss());
 
-        Spinner spYear = new Spinner(this);
-        List<String> years = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            years.add(String.valueOf(currentYear + i));
+        // Confirm: call DELETE /api/profile/preferences/{id}, reload on success
+        btnConfirm.setOnClickListener(v -> {
+            // Disable button to prevent double-tap
+            btnConfirm.setEnabled(false);
+
+            ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
+            api.deleteProfilePreference("Bearer " + token, preference.getId())
+                    .enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                boolean en = AppCompatDelegate.getApplicationLocales()
+                                        .toLanguageTags().contains("en");
+                                showSuccessToast(en
+                                        ? "Preference deleted"
+                                        : "Preferência eliminada");
+                                dialog.dismiss();
+                                // Refresh the preferences list
+                                loadPreferences();
+                            } else {
+                                // Re-enable so the user can try again
+                                btnConfirm.setEnabled(true);
+                                boolean en = AppCompatDelegate.getApplicationLocales()
+                                        .toLanguageTags().contains("en");
+                                showErrorToast(en
+                                        ? "Failed to delete"
+                                        : "Falha ao eliminar");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            btnConfirm.setEnabled(true);
+                            boolean en = AppCompatDelegate.getApplicationLocales()
+                                    .toLanguageTags().contains("en");
+                            showErrorToast(en ? "Network error" : "Erro de rede");
+                        }
+                    });
+        });
+    }
+
+    /**
+     * Entry point called from PreferenceBottomSheet's save callback.
+     * Checks whether a preference for the chosen month/year already exists.
+     * If so, a confirmation dialog is shown before sending the request.
+     */
+    private void savePreference(Map<String, Object> data) {
+        int month = (int) data.get("month");
+        int year  = (int) data.get("year");
+
+        // Check for an existing preference on the same month/year
+        boolean monthExists = allPreferences.stream()
+                .anyMatch(p -> p.getMonth() == month && p.getYear() == year);
+
+        if (monthExists) {
+            showOverwriteConfirmation(data);
+            return;
         }
-        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, years);
-        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spYear.setAdapter(yearAdapter);
-        container.addView(spYear);
 
-        // Add spacing
-        View spacer2 = new View(this);
-        spacer2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(16)));
-        container.addView(spacer2);
-
-        // Preference switches
-        TextView tvPrefsLabel = new TextView(this);
-        tvPrefsLabel.setText(isEn ? "Preferences" : "Preferências");
-        tvPrefsLabel.setTextSize(16);
-        tvPrefsLabel.setTypeface(null, android.graphics.Typeface.BOLD);
-        container.addView(tvPrefsLabel);
-
-        Switch swMorning = new Switch(this);
-        swMorning.setText(isEn ? "Prefers Morning" : "Prefere Manhã");
-        container.addView(swMorning);
-
-        Switch swAfternoon = new Switch(this);
-        swAfternoon.setText(isEn ? "Prefers Afternoon" : "Prefere Tarde");
-        container.addView(swAfternoon);
-
-        Switch swNight = new Switch(this);
-        swNight.setText(isEn ? "Prefers Night" : "Prefere Noite");
-        container.addView(swNight);
-
-        Switch swPrefersWeekends = new Switch(this);
-        swPrefersWeekends.setText(isEn ? "Prefers Weekends" : "Prefere Fim de Semana");
-        container.addView(swPrefersWeekends);
-
-        Switch swAvoidWeekends = new Switch(this);
-        swAvoidWeekends.setText(isEn ? "Avoid Weekends" : "Evitar Fim de Semana");
-        container.addView(swAvoidWeekends);
-
-        // Mutual exclusivity for weekend preferences
-        swPrefersWeekends.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) swAvoidWeekends.setChecked(false);
-        });
-        swAvoidWeekends.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) swPrefersWeekends.setChecked(false);
-        });
-
-        // Add spacing
-        View spacer3 = new View(this);
-        spacer3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(16)));
-        container.addView(spacer3);
-
-        // Notes field
-        TextView tvNotesLabel = new TextView(this);
-        tvNotesLabel.setText(isEn ? "Notes (optional)" : "Notas (opcional)");
-        tvNotesLabel.setTextSize(16);
-        tvNotesLabel.setPadding(0, 0, 0, dp(8));
-        container.addView(tvNotesLabel);
-
-        EditText etNotes = new EditText(this);
-        etNotes.setHint(isEn ? "Additional notes..." : "Notas adicionais...");
-        etNotes.setMinLines(3);
-        container.addView(etNotes);
-
-        // Show dialog
-        new AlertDialog.Builder(this)
-            .setTitle(isEn ? "Add Preference" : "Adicionar Preferência")
-            .setView(container)
-            .setPositiveButton(isEn ? "Save" : "Guardar", (dialog, which) -> {
-                int selectedMonth = monthNumbers.get(spMonth.getSelectedItemPosition());
-                int selectedYear = Integer.parseInt(years.get(spYear.getSelectedItemPosition()));
-
-                // Check for duplicate
-                for (NursePreference pref : allPreferences) {
-                    if (pref.getMonth() == selectedMonth && pref.getYear() == selectedYear) {
-                        showOverwriteConfirmation(selectedMonth, selectedYear, swMorning.isChecked(),
-                            swAfternoon.isChecked(), swNight.isChecked(), swAvoidWeekends.isChecked(),
-                            swPrefersWeekends.isChecked(), etNotes.getText().toString());
-                        return;
-                    }
-                }
-
-                // No duplicate, save directly
-                savePreference(selectedMonth, selectedYear, swMorning.isChecked(),
-                    swAfternoon.isChecked(), swNight.isChecked(), swAvoidWeekends.isChecked(),
-                    swPrefersWeekends.isChecked(), etNotes.getText().toString());
-            })
-            .setNegativeButton(isEn ? "Cancel" : "Cancelar", null)
-            .show();
+        performSavePreference(data);
     }
 
-    // Show overwrite confirmation dialog
-    private void showOverwriteConfirmation(int month, int year, boolean morning, boolean afternoon,
-                                          boolean night, boolean avoidWeekends, boolean prefersWeekends, String notes) {
-        String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = currentLang.contains("en");
+    /**
+     * Shows a confirmation dialog when the selected month/year already has a
+     * saved preference and the user is creating a new one (not editing).
+     *
+     * Reuses dialog_confirm_delete.xml exactly — only the title, message, and
+     * confirm-button colour differ from the delete confirmation.
+     */
+    private void showOverwriteConfirmation(Map<String, Object> data) {
+        boolean isEn = AppCompatDelegate.getApplicationLocales()
+                .toLanguageTags().contains("en");
 
-        String monthName = getMonthName(month, isEn);
-        String message = isEn ?
-            "Preferences for " + monthName + " " + year + " already exist. Overwrite?" :
-            "Preferências para " + monthName + " " + year + " já existem. Sobrescrever?";
+        // Inflate the same shared layout used for the delete confirmation
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirm_delete, null);
 
-        new AlertDialog.Builder(this)
-            .setTitle(isEn ? "Overwrite Preference?" : "Sobrescrever Preferência?")
-            .setMessage(message)
-            .setPositiveButton(isEn ? "Overwrite" : "Sobrescrever", (dialog, which) ->
-                savePreference(month, year, morning, afternoon, night, avoidWeekends, prefersWeekends, notes))
-            .setNegativeButton(isEn ? "Cancel" : "Cancelar", null)
-            .show();
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.show();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.getWindow().setLayout(
+                    android.view.WindowManager.LayoutParams.MATCH_PARENT,
+                    android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            dialog.getWindow().setDimAmount(0.4f);
+        }
+
+        dialog.setContentView(dialogView);
+
+        // Override title and message for overwrite context
+        TextView tvTitle = dialogView.findViewById(R.id.tv_dialog_title);
+        TextView tvMsg   = dialogView.findViewById(R.id.tv_dialog_message);
+        if (tvTitle != null)
+            tvTitle.setText(isEn ? "Replace preference?" : "Substituir preferência?");
+        if (tvMsg != null)
+            tvMsg.setText(isEn
+                    ? "A preference for this month already exists. Do you want to replace it?"
+                    : "Já existe uma preferência para este mês. Deseja substitui-la?");
+
+        // Re-tint confirm button purple to match the profile page style
+        Button btnConfirm = dialogView.findViewById(R.id.btn_confirm_delete);
+        btnConfirm.setBackgroundTintList(
+                ColorStateList.valueOf(Color.parseColor("#7C3AED")));
+
+        // Override the button label — this is a replace action, not a delete
+        btnConfirm.setText(isEn ? "Yes, Replace" : "Sim, Substituir");
+
+        // Cancel: dismiss without saving
+        dialogView.findViewById(R.id.btn_cancel)
+                .setOnClickListener(v -> dialog.dismiss());
+
+        // Confirm: proceed with the API call
+        btnConfirm.setOnClickListener(v -> {
+            dialog.dismiss();
+            performSavePreference(data);
+        });
     }
 
-    // Save preference to API
-    private void savePreference(int month, int year, boolean morning, boolean afternoon,
-                               boolean night, boolean avoidWeekends, boolean prefersWeekends, String notes) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("month", month);
-        data.put("year", year);
-        data.put("prefers_morning", morning);
-        data.put("prefers_afternoon", afternoon);
-        data.put("prefers_night", night);
-        data.put("avoid_weekends", avoidWeekends);
-        data.put("prefers_weekends", prefersWeekends);
-        data.put("notes", notes);
-
+    /**
+     * Executes the actual save/update API call.
+     * Called directly when there is no month conflict, or after the user
+     * confirms the overwrite dialog.
+     */
+    private void performSavePreference(Map<String, Object> data) {
         ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
+
+        Log.d("PREF_DEBUG", "Saving preference: " + data.toString());
+
         api.updateProfilePreferences("Bearer " + token, data).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("PREF_DEBUG", "Response code: " + response.code());
+
                 if (response.isSuccessful()) {
                     String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
                     boolean isEn = currentLang.contains("en");
                     showSuccessToast(isEn ? "Preference saved" : "Preferência guardada");
-
-                    // Reload preferences
                     loadPreferences();
                 } else {
+                    try {
+                        Log.d("PREF_DEBUG", "Error body: " + response.errorBody().string());
+                    } catch (Exception ignored) {}
                     String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
                     boolean isEn = currentLang.contains("en");
                     showErrorToast(isEn ? "Failed to save" : "Falha ao guardar");
@@ -752,6 +784,7 @@ public class ProfileActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("PREF_DEBUG", "Failure: " + t.getMessage());
                 String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
                 boolean isEn = currentLang.contains("en");
                 showErrorToast(isEn ? "Network error" : "Erro de rede");
@@ -759,7 +792,8 @@ public class ProfileActivity extends BaseActivity {
         });
     }
 
-    // Show success toast notification
+    // All success feedback should go through this method to ensure consistent UI behaviour.
+    // Animates the toast banner in from the top and hides it after 2 seconds.
     private void showSuccessToast(String message) {
         if (tvNotificationMsg != null) tvNotificationMsg.setText(message);
         if (llNotificationToast != null) {
@@ -775,19 +809,33 @@ public class ProfileActivity extends BaseActivity {
         }
     }
 
-    // Show error toast notification
-    private void showErrorToast(String message) {
+    // Form validation errors — shown inline inside the profile card via cvErrorNotification.
+    // Auto-hides after 6 seconds.
+    private void showFormError(String message) {
         if (tvErrGeneral != null) tvErrGeneral.setText(message);
-        cvErrorNotification.setVisibility(View.VISIBLE);
-        startHideTimer();
+        if (cvErrorNotification != null) {
+            cvErrorNotification.setVisibility(View.VISIBLE);
+            errorHideHandler.removeCallbacksAndMessages(null);
+            errorHideHandler.postDelayed(() -> cvErrorNotification.setVisibility(View.GONE), 6000);
+        }
     }
 
-    // Hide the error notification after a delay
-    private void startHideTimer() {
-        errorHideHandler.removeCallbacksAndMessages(null);
-        errorHideHandler.postDelayed(() -> {
-            cvErrorNotification.setVisibility(View.GONE);
-        }, 6000);
+    // API errors — shown as an animated top-center toast banner.
+    // Animates the error toast banner in from the top and hides it after 3 seconds.
+    private void showErrorToast(String message) {
+        if (tvErrorToastMsg != null) tvErrorToastMsg.setText(message);
+        if (llErrorToast != null) {
+            llErrorToast.setVisibility(View.VISIBLE);
+            llErrorToast.setAlpha(0f);
+            llErrorToast.setTranslationY(-100f);
+            llErrorToast.animate().alpha(1f).translationY(0f).setDuration(400);
+
+            errorHideHandler.removeCallbacksAndMessages(null);
+            errorHideHandler.postDelayed(() -> {
+                llErrorToast.animate().alpha(0f).translationY(-100f).setDuration(400)
+                    .withEndAction(() -> llErrorToast.setVisibility(View.GONE));
+            }, 3000);
+        }
     }
 
     // Convert dp to px

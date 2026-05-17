@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Color selector for SwitchCompat track tint:
+     - Checked state: purple (#7C3AED)
+     - Unchecked state: light grey (#CCCCCC) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true"  android:color="#7C3AED" />
+    <item android:state_checked="false" android:color="#CCCCCC" />
+    <item                               android:color="#CCCCCC" />
+</selector>
+

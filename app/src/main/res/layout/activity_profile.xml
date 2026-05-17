@@ -162,23 +162,22 @@
                 app:cornerRadius="28dp"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
 
-            <!-- Title & Subtitle -->
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Meu Perfil"
                 android:textColor="@color/text_primary"
                 android:textSize="32sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Meu Perfil" />
             <TextView
                 android:id="@+id/tv_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gerir informações da conta e preferências"
                 android:textColor="@color/text_muted"
                 android:textSize="16sp"
-                android:layout_marginBottom="32dp" />
+                android:layout_marginBottom="32dp"
+                tools:text="Gerir informações da conta e preferências" />
 
             <!-- Section 1: Personal Data Card -->
             <com.google.android.material.card.MaterialCardView
@@ -227,12 +226,11 @@
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Name (Read-only) -->
+                    <!-- Name (Read-only) — label text set in updateUIStrings() -->
                     <TextView
                         android:id="@+id/tv_label_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nome Completo"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -247,12 +245,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="16dp" />
 
-                    <!-- Email -->
+                    <!-- Email — label text and hint set in updateUIStrings() -->
                     <TextView
                         android:id="@+id/tv_label_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Email"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp"
@@ -264,51 +261,61 @@
                         android:background="@drawable/bg_edittext"
                         android:paddingHorizontal="16dp"
                         android:inputType="textEmailAddress"
-                        tools:text="joao.silva@hospital.pt" />
+                        android:importantForAutofill="no"
+                        android:autofillHints="" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="16dp" />
 
-                    <!-- Action Buttons Row -->
+                    <!-- Action Buttons — text set in updateUIStrings().
+                         Stacked vertically so both are always match_parent width,
+                         equal in size, and no text is ever cut in any language. -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="end"
+                        android:orientation="vertical"
                         android:layout_marginTop="16dp">
+
+                        <!-- Secondary: soft-purple background, purple text -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_change_password"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="56dp"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="12dp"
-                            android:text="Alterar Senha"
+                            android:layout_marginBottom="12dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:minWidth="0dp"
                             android:textAllCaps="false"
                             android:textColor="@color/primary_strong"
                             android:textStyle="bold"
+                            android:backgroundTint="#F8F5FF"
+                            app:strokeColor="#E6E0F5"
+                            app:strokeWidth="1dp"
                             app:cornerRadius="20dp"
-                            app:strokeColor="@color/primary_strong"
-                            app:strokeWidth="2dp"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+
+                        <!-- Primary: gradient background, white text -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_save_profile"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="56dp"
-                            android:layout_weight="1"
-                            android:text="Guardar"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:minWidth="0dp"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:textSize="16sp"
                             android:background="@drawable/btn_login_gradient"
                             app:backgroundTint="@null"
-                            app:cornerRadius="20dp" />
+                            app:cornerRadius="20dp"
+                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Section 2: Monthly Preferences Card -->
+            <!-- Section 2: Monthly Preferences Card — only visible for nurses -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_preferences_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="32dp"
@@ -328,20 +335,20 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
+                        <!-- Preferences section - Text set in updateUIStrings() -->
                         <TextView
                             android:id="@+id/tv_preferences_title"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Preferências Mensais"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:text="Preferências Mensais" />
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_add_preference"
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
-                            android:text="Adicionar"
                             android:textAllCaps="false"
                             android:textColor="@color/primary_strong"
                             app:icon="@drawable/ic_add"
@@ -351,19 +358,27 @@
                             app:cornerRadius="16dp"
                             app:strokeColor="@color/primary_strong"
                             app:strokeWidth="1dp"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            tools:text="Adicionar" />
                     </LinearLayout>
 
-                    <!-- Search Input -->
+                    <!-- Search Input — same style as et_search in HumanResourcesActivity.
+                         Hint set programmatically in updateUIStrings(). -->
                     <EditText
                         android:id="@+id/et_search_preferences"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="50dp"
                         android:layout_marginTop="12dp"
                         android:background="@drawable/bg_edittext"
-                        android:paddingHorizontal="16dp"
-                        android:hint="Procurar preferências..."
-                        android:inputType="text" />
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:drawableStart="@drawable/ic_search"
+                        android:drawablePadding="12dp"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_muted"
+                        android:inputType="text"
+                        android:importantForAutofill="no"
+                        android:autofillHints="" />
 
                     <!-- Preferences Container (Dynamic) -->
                     <LinearLayout
@@ -373,17 +388,17 @@
                         android:orientation="vertical"
                         android:layout_marginTop="12dp" />
 
-                    <!-- No Preferences Message -->
+                    <!-- No Preferences Message - Text set in updateUIStrings() -->
                     <TextView
                         android:id="@+id/tv_no_preferences"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="Nenhuma preferência definida"
                         android:textColor="@color/text_muted"
                         android:textSize="16sp"
                         android:gravity="center"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:text="Nenhuma preferência definida" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -413,6 +428,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#F79B32"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Error Toast -->
+    <LinearLayout
+        android:id="@+id/ll_error_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:background="@drawable/bg_notification_toast_error"
+        android:elevation="10dp"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_clock"
+            android:layout_marginEnd="12dp"
+            app:tint="#F36CC8" />
+        <TextView
+            android:id="@+id/tv_error_toast_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#F36CC8"
             android:textStyle="bold"
             android:textSize="14sp" />
     </LinearLayout>
