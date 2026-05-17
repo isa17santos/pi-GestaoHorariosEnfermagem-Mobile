@@ -179,4 +179,88 @@
     <string name="confirm_delete_message">Are you sure you want to delete this shift type? This action cannot be undone.</string>
     <string name="confirm">Confirm</string>
 
+    <!-- Profile Activity -->
+    <!-- Page Title and Subtitle -->
+    <string name="profile_title">My Profile</string>
+    <string name="profile_subtitle">Manage account information and preferences</string>
+
+    <!-- Profile Section Labels -->
+    <string name="label_full_name">Full Name</string>
+    <string name="label_professional_email">Email</string>
+
+    <!-- Profile Buttons -->
+    <string name="btn_change_password">Change Password</string>
+    <string name="btn_save_profile">Save</string>
+
+    <!-- Preferences Section -->
+    <string name="preferences_title">Monthly Preferences</string>
+    <string name="btn_add_preference">Add</string>
+    <string name="search_preferences_hint">Search preferences...</string>
+    <string name="no_preferences_message">No preferences defined</string>
+    <string name="preferences_subtitle_card">Monthly Preferences</string>
+
+    <!-- Add/Edit Preference Dialog -->
+    <string name="dialog_add_preference_title">Add Preference</string>
+    <string name="dialog_edit_preference_title">Edit Preference</string>
+    <string name="label_month">Month</string>
+    <string name="label_year">Year</string>
+    <string name="label_preferences">Preferences</string>
+    <string name="label_notes_optional">Notes (optional)</string>
+    <string name="hint_notes">Additional notes...</string>
+
+    <!-- Preference Toggles -->
+    <string name="toggle_prefers_morning">Prefers Morning</string>
+    <string name="toggle_prefers_afternoon">Prefers Afternoon</string>
+    <string name="toggle_prefers_night">Prefers Night</string>
+    <string name="toggle_prefers_weekends">Prefers Weekends</string>
+    <string name="toggle_avoid_weekends">Avoid Weekends</string>
+
+    <!-- Month Names -->
+    <string name="month_january">January</string>
+    <string name="month_february">February</string>
+    <string name="month_march">March</string>
+    <string name="month_april">April</string>
+    <string name="month_may">May</string>
+    <string name="month_june">June</string>
+    <string name="month_july">July</string>
+    <string name="month_august">August</string>
+    <string name="month_september">September</string>
+    <string name="month_october">October</string>
+    <string name="month_november">November</string>
+    <string name="month_december">December</string>
+
+    <!-- Preference Pills Labels -->
+    <string name="pill_morning">Morning</string>
+    <string name="pill_afternoon">Afternoon</string>
+    <string name="pill_night">Night</string>
+    <string name="pill_weekends">Weekends</string>
+    <string name="pill_avoid_weekends">Avoid Weekends</string>
+    <string name="notes_prefix">Notes: </string>
+
+    <!-- Success Messages -->
+    <string name="profile_update_success">Profile updated successfully</string>
+    <string name="preference_saved_success">Preference saved</string>
+    <string name="preference_deleted_success">Preference deleted</string>
+
+    <!-- Error Messages -->
+    <string name="err_no_changes_to_save">No changes to save</string>
+    <string name="err_profile_load_failed">Failed to load profile</string>
+    <string name="err_preferences_load_failed">Failed to load preferences</string>
+    <string name="err_preference_save_failed">Failed to save</string>
+    <string name="err_preference_delete_failed">Failed to delete</string>
+    <string name="err_network">Network error</string>
+
+    <!-- Delete Preference Confirmation -->
+    <string name="confirm_delete_preference_title">Delete Preference</string>
+    <string name="confirm_delete_preference_message">Are you sure you want to delete preferences for %1$s %2$d?</string>
+    <string name="btn_delete">Delete</string>
+
+    <!-- Overwrite Preference Confirmation -->
+    <string name="confirm_overwrite_preference_title">Overwrite Preference?</string>
+    <string name="confirm_overwrite_preference_message">Preferences for %1$s %2$d already exist. Overwrite?</string>
+    <string name="btn_overwrite">Overwrite</string>
+
+    <!-- Dialog Actions -->
+    <string name="btn_save">Save</string>
+
 </resources>

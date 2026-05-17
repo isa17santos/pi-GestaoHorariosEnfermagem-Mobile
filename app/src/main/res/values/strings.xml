@@ -183,4 +183,88 @@
     <string name="confirm_delete_message">Tem a certeza que deseja eliminar este tipo de turno? Esta ação não pode ser revertida.</string>
     <string name="confirm">Confirmar</string>
 
+    <!-- Profile Activity -->
+    <!-- Page Title and Subtitle -->
+    <string name="profile_title">Meu Perfil</string>
+    <string name="profile_subtitle">Gerir informações da conta e preferências</string>
+
+    <!-- Profile Section Labels -->
+    <string name="label_full_name">Nome Completo</string>
+    <string name="label_professional_email">Email</string>
+
+    <!-- Profile Buttons -->
+    <string name="btn_change_password">Alterar Senha</string>
+    <string name="btn_save_profile">Guardar</string>
+
+    <!-- Preferences Section -->
+    <string name="preferences_title">Preferências Mensais</string>
+    <string name="btn_add_preference">Adicionar</string>
+    <string name="search_preferences_hint">Procurar preferências...</string>
+    <string name="no_preferences_message">Nenhuma preferência definida</string>
+    <string name="preferences_subtitle_card">Preferências Mensais</string>
+
+    <!-- Add/Edit Preference Dialog -->
+    <string name="dialog_add_preference_title">Adicionar Preferência</string>
+    <string name="dialog_edit_preference_title">Editar Preferência</string>
+    <string name="label_month">Mês</string>
+    <string name="label_year">Ano</string>
+    <string name="label_preferences">Preferências</string>
+    <string name="label_notes_optional">Notas (opcional)</string>
+    <string name="hint_notes">Notas adicionais...</string>
+
+    <!-- Preference Toggles -->
+    <string name="toggle_prefers_morning">Prefere Manhã</string>
+    <string name="toggle_prefers_afternoon">Prefere Tarde</string>
+    <string name="toggle_prefers_night">Prefere Noite</string>
+    <string name="toggle_prefers_weekends">Prefere Fim de Semana</string>
+    <string name="toggle_avoid_weekends">Evitar Fim de Semana</string>
+
+    <!-- Month Names -->
+    <string name="month_january">Janeiro</string>
+    <string name="month_february">Fevereiro</string>
+    <string name="month_march">Março</string>
+    <string name="month_april">Abril</string>
+    <string name="month_may">Maio</string>
+    <string name="month_june">Junho</string>
+    <string name="month_july">Julho</string>
+    <string name="month_august">Agosto</string>
+    <string name="month_september">Setembro</string>
+    <string name="month_october">Outubro</string>
+    <string name="month_november">Novembro</string>
+    <string name="month_december">Dezembro</string>
+
+    <!-- Preference Pills Labels -->
+    <string name="pill_morning">Manhã</string>
+    <string name="pill_afternoon">Tarde</string>
+    <string name="pill_night">Noite</string>
+    <string name="pill_weekends">Fim de Semana</string>
+    <string name="pill_avoid_weekends">Evitar Fim de Semana</string>
+    <string name="notes_prefix">Notas: </string>
+
+    <!-- Success Messages -->
+    <string name="profile_update_success">Perfil atualizado com sucesso</string>
+    <string name="preference_saved_success">Preferência guardada</string>
+    <string name="preference_deleted_success">Preferência eliminada</string>
+
+    <!-- Error Messages -->
+    <string name="err_no_changes_to_save">Não existem alterações para guardar</string>
+    <string name="err_profile_load_failed">Falha ao carregar perfil</string>
+    <string name="err_preferences_load_failed">Falha ao carregar preferências</string>
+    <string name="err_preference_save_failed">Falha ao guardar</string>
+    <string name="err_preference_delete_failed">Falha ao eliminar</string>
+    <string name="err_network">Erro de rede</string>
+
+    <!-- Delete Preference Confirmation -->
+    <string name="confirm_delete_preference_title">Eliminar Preferência</string>
+    <string name="confirm_delete_preference_message">Tem certeza que deseja eliminar as preferências de %1$s %2$d?</string>
+    <string name="btn_delete">Eliminar</string>
+
+    <!-- Overwrite Preference Confirmation -->
+    <string name="confirm_overwrite_preference_title">Sobrescrever Preferência?</string>
+    <string name="confirm_overwrite_preference_message">Preferências para %1$s %2$d já existem. Sobrescrever?</string>
+    <string name="btn_overwrite">Sobrescrever</string>
+
+    <!-- Dialog Actions -->
+    <string name="btn_save">Guardar</string>
+
 </resources>

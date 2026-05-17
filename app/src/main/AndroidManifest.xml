@@ -17,26 +17,32 @@
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config">
 
+        <!-- Login activity with email and password input fields -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:configChanges="locale|layoutDirection|keyboard|keyboardHidden">
+            android:configChanges="locale|layoutDirection|keyboard|keyboardHidden"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Password recovery with email input field -->
         <activity
             android:name=".ForgotPasswordActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity android:name=".DashboardActivity" />
 
+        <!-- Password reset with new password input fields -->
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="true"
-            android:configChanges="locale|layoutDirection|orientation|screenSize">
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize">
 
             <!-- Intent Filter para Deep Linking -->
             <intent-filter android:autoVerify="true">
@@ -77,10 +83,12 @@
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
         <!-- Cards admin -->
+        <!-- Human resources management with search input field -->
         <activity
             android:name=".HumanResourcesActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".VacationsActivity"
@@ -90,35 +98,45 @@
             android:name=".AbsencesActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
+        <!-- Shift types list with search input field -->
         <activity
             android:name=".ShiftTypesActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
 
+        <!-- Shift type creation with multiple input fields (name, times, duration) -->
         <activity
             android:name=".ShiftTypeCreateActivity"
             android:exported="false"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
 
+        <!-- Shift type editing with multiple input fields (name, times, duration) -->
         <activity
             android:name=".ShiftTypeEditActivity"
             android:exported="false"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".AdminStatisticsActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
+        <!-- User edit form with name and email input fields -->
         <activity
             android:name=".UserEditActivity"
             android:exported="false"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
+        <!-- User creation form with name input field -->
         <activity
             android:name=".UserCreateActivity"
             android:exported="false"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
 
         <!-- Cards nurse -->

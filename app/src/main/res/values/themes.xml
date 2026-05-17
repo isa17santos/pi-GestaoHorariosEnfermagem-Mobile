@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.GestaoHorariosEnfermagemMobile" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- Using MaterialComponents theme instead of Material3 for compatibility with existing dependencies.
+         This ensures proper support for Material Design components used throughout the app
+         while maintaining compatibility with AndroidX core libraries. -->
+    <style name="Base.Theme.GestaoHorariosEnfermagemMobile" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
