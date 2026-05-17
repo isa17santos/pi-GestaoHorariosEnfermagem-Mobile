@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import androidx.core.widget.NestedScrollView;
@@ -44,6 +43,9 @@ public class UserEditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit);
+
+        // Apply window insets for keyboard handling
+        applyWindowInsets(findViewById(android.R.id.content));
 
         // 1. Restaurar dados (Prioridade para o Intent que vem do toggleLanguage)
         restoreData(savedInstanceState);

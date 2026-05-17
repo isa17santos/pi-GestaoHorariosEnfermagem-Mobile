@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import androidx.core.widget.NestedScrollView;
@@ -54,6 +53,9 @@ public class ShiftTypeCreateActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shift_type_create);
+
+        // Apply window insets for keyboard handling
+        applyWindowInsets(findViewById(android.R.id.content));
 
         // Restore state
         if (savedInstanceState != null) {

@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.core.os.LocaleListCompat;
@@ -58,6 +57,9 @@ public class HumanResourcesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_human_resources);
+
+        // Apply window insets for keyboard handling
+        applyWindowInsets(findViewById(android.R.id.content));
 
         token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("token", "");
 

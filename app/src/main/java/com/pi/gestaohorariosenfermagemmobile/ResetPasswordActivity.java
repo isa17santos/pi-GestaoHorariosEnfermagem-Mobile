@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import com.google.android.material.button.MaterialButton;
@@ -39,6 +38,9 @@ public class ResetPasswordActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
+
+        // Apply window insets for keyboard handling
+        applyWindowInsets(findViewById(android.R.id.content));
 
         // Lógica para obter Token e Email de duas fontes possíveis
         Intent intent = getIntent();

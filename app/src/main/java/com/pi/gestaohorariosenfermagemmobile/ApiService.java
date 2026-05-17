@@ -45,4 +45,26 @@ public interface ApiService {
 
     @DELETE("shift-types/{id}")
     Call<Void> deleteShiftType(@Header("Authorization") String token, @Path("id") int id);
+
+    // Profile endpoints
+
+    // Get authenticated user's profile information
+    @GET("profile")
+    Call<ProfileResponse> getProfile(@Header("Authorization") String token);
+
+    // Update authenticated user's profile information
+    @PATCH("profile")
+    Call<Void> updateProfile(@Header("Authorization") String token, @Body Map<String, Object> updates);
+
+    // Get authenticated user's shift preferences
+    @GET("profile/preferences")
+    Call<NursePreferencesResponse> getProfilePreferences(@Header("Authorization") String token);
+
+    // Save (create or update) the authenticated user's shift preferences
+    @PATCH("profile/preferences")
+    Call<Void> updateProfilePreferences(@Header("Authorization") String token, @Body Map<String, Object> updates);
+
+    // Delete a specific preference by ID
+    @DELETE("profile/preferences/{id}")
+    Call<Void> deleteProfilePreference(@Header("Authorization") String token, @Path("id") int preferenceId);
 }

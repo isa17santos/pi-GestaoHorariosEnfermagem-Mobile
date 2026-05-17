@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bottom Sheet for adding or editing monthly nurse preferences -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet_rounded">
+
+    <!-- ── Handle Bar (pinned, outside the scroll) ───────────────────── -->
+    <!-- Always visible at the top; not part of the scrollable content -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_handle_bar"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="12dp" />
+
+    <!-- ── Scrollable content ────────────────────────────────────────── -->
+    <!-- NestedScrollView lets the form scroll when it exceeds screen height,
+         while still playing nicely with the parent BottomSheetBehavior. -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Single child LinearLayout holds all form content + buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingTop="8dp">
+
+            <!-- ── Sheet Title ────────────────────────────────────── -->
+            <TextView
+                android:id="@+id/tv_bs_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="20dp" />
+
+            <!-- ── Month / Year Row ───────────────────────────────── -->
+            <!-- Two equal-weight columns with 12dp gap (6dp each side) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:weightSum="2">
+
+                <!-- Month column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="6dp">
+
+                    <TextView
+                        android:id="@+id/tv_bs_label_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_month"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_edittext"
+                        android:paddingHorizontal="16dp" />
+                </LinearLayout>
+
+                <!-- Year column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="6dp">
+
+                    <TextView
+                        android:id="@+id/tv_bs_label_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_edittext"
+                        android:paddingHorizontal="16dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ── Preferences Section Label ─────────────────────── -->
+            <TextView
+                android:id="@+id/tv_bs_prefs_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- ── Switch Rows ────────────────────────────────────── -->
+            <!-- Each row: label (weight 1) + SwitchCompat, card-style background.
+                 Track tint uses @color/selector_switch_track (purple when on, grey when off).
+                 Thumb tint is always white. -->
+
+            <!-- Morning shift preference -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_edittext"
+                android:padding="14dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tv_morning"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_primary" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sw_morning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/selector_switch_track" />
+            </LinearLayout>
+
+            <!-- Afternoon shift preference -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_edittext"
+                android:padding="14dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tv_afternoon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_primary" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sw_afternoon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/selector_switch_track" />
+            </LinearLayout>
+
+            <!-- Night shift preference -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_edittext"
+                android:padding="14dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tv_night"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_primary" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sw_night"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/selector_switch_track" />
+            </LinearLayout>
+
+            <!-- Prefers weekends (mutually exclusive with avoid_weekends) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_edittext"
+                android:padding="14dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tv_prefers_weekends"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_primary" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sw_prefers_weekends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/selector_switch_track" />
+            </LinearLayout>
+
+            <!-- Avoid weekends (mutually exclusive with prefers_weekends) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_edittext"
+                android:padding="14dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tv_avoid_weekends"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_primary" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sw_avoid_weekends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/selector_switch_track" />
+            </LinearLayout>
+
+            <!-- ── Notes Section ──────────────────────────────────── -->
+            <TextView
+                android:id="@+id/tv_bs_notes_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/et_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edittext"
+                android:padding="16dp"
+                android:minLines="3"
+                android:maxLines="6"
+                android:gravity="top|start"
+                android:inputType="textMultiLine|textCapSentences"
+                android:layout_marginTop="8dp"
+                android:importantForAutofill="no"
+                android:autofillHints="" />
+
+            <!-- ── Inline validation error ────────────────────────── -->
+            <!-- Mirrors the cv_error_notification card used in ProfileActivity.
+                 Hidden by default; shown when validateInput() fails. -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_bs_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#F36CC8"
+                app:strokeWidth="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_clock"
+                        app:tint="#F36CC8" />
+
+                    <TextView
+                        android:id="@+id/tv_bs_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:textColor="#F36CC8"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── Action Buttons ─────────────────────────────────── -->
+            <!-- Buttons are inside the scroll so they are always reachable
+                 on small screens. Cancel (secondary) | Save (gradient). -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp">
+
+                <!-- Cancel: mirrors btn_cancel in dialog_confirm_delete.xml
+                     but with @color/primary_strong text and #F8F5FF background -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_bs_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="54dp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primary_strong"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="6dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:backgroundTint="#F8F5FF"
+                    app:cornerRadius="16dp"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+
+                <!-- Save: gradient background, white bold text.
+                     app:backgroundTint="@null" lets the gradient drawable show through. -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_bs_save"
+                    android:layout_width="0dp"
+                    android:layout_height="54dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:background="@drawable/btn_login_gradient"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="16dp"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
