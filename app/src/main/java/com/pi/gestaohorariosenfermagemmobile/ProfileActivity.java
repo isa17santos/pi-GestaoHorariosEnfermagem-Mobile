@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import com.google.android.material.button.MaterialButton;
@@ -32,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
     // UI Components - Navbar
     private TextView tvUserName, tvUserRole, tvLangFlag, tvLangLabel;
     private ImageButton btnProfile, btnLogout;
@@ -68,6 +67,9 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        // Apply window insets for keyboard handling
+        applyWindowInsets(findViewById(android.R.id.content));
 
         initViews();
         setupNavbar();
@@ -209,7 +211,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     // Update the language switch button
-    private void updateLanguageButton() {
+    @Override
+    protected void updateLanguageButton() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = current.contains("en");
         if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
@@ -217,7 +220,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     // Update all translated texts on the screen
-    private void updateUIStrings() {
+    @Override
+    protected void updateUIStrings() {
         String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = currentLang.contains("en");
 

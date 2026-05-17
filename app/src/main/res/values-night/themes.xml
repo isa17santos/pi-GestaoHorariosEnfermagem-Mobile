@@ -1,9 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme for dark mode. -->
-    <!-- Using MaterialComponents theme instead of Material3 for compatibility with existing dependencies.
-         This ensures proper support for Material Design components used throughout the app
-         while maintaining compatibility with AndroidX core libraries. -->
-    <style name="Base.Theme.GestaoHorariosEnfermagemMobile" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.GestaoHorariosEnfermagemMobile" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
