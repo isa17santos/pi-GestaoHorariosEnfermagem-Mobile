@@ -81,6 +81,12 @@
             android:name=".ProfileActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
+        <!-- Change password with current password and new password input fields -->
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
         <!-- Cards admin -->
         <!-- Human resources management with search input field -->
         <activity

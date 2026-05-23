@@ -49,6 +49,19 @@
     <string name="password_confirmation_required">Confirma a nova palavra-passe.</string>
     <string name="password_mismatch">A confirmação da palavra-passe não corresponde.</string>
 
+    <!-- Change Password (Profile) -->
+    <string name="current_password_label">Palavra-passe actual</string>
+    <string name="current_password_required">Introduz a palavra-passe actual.</string>
+    <string name="change_password_title_profile">Alterar palavra-passe</string>
+    <string name="change_password_subtitle_profile">Introduz a tua palavra-passe actual e define uma nova.</string>
+    <string name="account_settings">Definições de conta</string>
+    <string name="save_changes">Guardar alterações</string>
+    <string name="password_changed_profile_success">Palavra-passe alterada com sucesso!</string>
+    <string name="error_change_password_failed">Erro ao alterar a palavra-passe. Verifica os dados e tenta novamente.</string>
+    <string name="error_current_password_incorrect">A password introduzida não corresponde à password actual.</string>
+    <string name="error_new_password_same_as_current">A password nova não pode ser igual à password actual.</string>
+    <string name="error_password_complexity">A password deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula e um caracter especial.</string>
+
     <!-- Navbar -->
     <string name="role_head_nurse">Enfermeiro Chefe</string>
     <string name="role_nurse">Enfermeiro</string>
