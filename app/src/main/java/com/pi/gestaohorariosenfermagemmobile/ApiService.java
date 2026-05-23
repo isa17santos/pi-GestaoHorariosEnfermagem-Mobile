@@ -67,4 +67,8 @@ public interface ApiService {
     // Delete a specific preference by ID
     @DELETE("profile/preferences/{id}")
     Call<Void> deleteProfilePreference(@Header("Authorization") String token, @Path("id") int preferenceId);
+
+    // Change authenticated user's password
+    @POST("profile/change-password")
+    Call<Void> changePassword(@Body ChangePasswordRequest request);
 }

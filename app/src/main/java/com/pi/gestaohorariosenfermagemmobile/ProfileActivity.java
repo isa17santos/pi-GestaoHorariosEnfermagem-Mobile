@@ -579,7 +579,7 @@ public class ProfileActivity extends BaseActivity {
 
     // Handle change password button
     private void handleChangePassword() {
-        Intent intent = new Intent(this, ResetPasswordActivity.class);
+        Intent intent = new Intent(this, ChangePasswordActivity.class);
         startActivity(intent);
     }
 

@@ -49,6 +49,18 @@
     <string name="password_confirmation_required">Please confirm your new password.</string>
     <string name="password_mismatch">Password confirmation does not match.</string>
 
+    <!-- Change Password (Profile) -->
+    <string name="current_password_label">Current password</string>
+    <string name="current_password_required">Please enter your current password.</string>
+    <string name="change_password_title_profile">Change password</string>
+    <string name="change_password_subtitle_profile">Enter your current password and set a new one.</string>
+    <string name="account_settings">Account settings</string>
+    <string name="save_changes">Save changes</string>
+    <string name="password_changed_profile_success">Password changed successfully!</string>
+    <string name="error_change_password_failed">Failed to change password. Please check your details and try again.</string>
+    <string name="error_current_password_incorrect">The password entered does not match your current password.</string>
+    <string name="error_new_password_same_as_current">The new password cannot be the same as the current password.</string>
+    <string name="error_password_complexity">The password must be at least 8 characters long and include an uppercase letter, a lowercase letter, and a special character.</string>
 
     <!-- Navbar -->
     <string name="role_head_nurse">Head Nurse</string>
