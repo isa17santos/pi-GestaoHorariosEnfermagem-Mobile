@@ -61,25 +61,27 @@
         <activity
             android:name=".AdminDashboardActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- Dashboard Nurse -->
         <activity
             android:name=".NurseDashboardActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:configChanges="locale|layoutDirection|orientation|screenSize"/>
 
         <!-- Dashboard Head Nurse -->
         <activity
             android:name=".HeadNurseDashboardActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:configChanges="locale|layoutDirection|orientation|screenSize" />
 
         <activity
             android:name=".ProfileActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- Change password with current password and new password input fields -->
         <activity
@@ -97,11 +99,13 @@
 
         <activity
             android:name=".VacationsActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name=".AbsencesActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- Shift types list with search input field -->
         <activity
@@ -125,14 +129,14 @@
 
         <activity
             android:name=".AdminStatisticsActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- User edit form with name and email input fields -->
         <activity
             android:name=".UserEditActivity"
             android:exported="false"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
         <!-- User creation form with name input field -->
@@ -140,7 +144,6 @@
             android:name=".UserCreateActivity"
             android:exported="false"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
 
@@ -149,22 +152,24 @@
             android:name=".ScheduleActivity"
             android:exported="false"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".SwapsActivity"
             android:exported="false"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".NurseStatisticsActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- Cards head nurse -->
         <activity
             android:name=".HeadNurseStatisticsActivity"
-            android:configChanges="locale|layoutDirection|orientation|screenSize" />
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
