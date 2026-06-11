@@ -275,4 +275,38 @@
     <!-- Dialog Actions -->
     <string name="btn_save">Save</string>
 
+
+    <!-- Schedule -->
+    <!-- Schedule & Global View -->
+    <string name="schedule_page_subtitle">Check your shift schedule or the team\'s global view</string>
+    <string name="today">Today</string>
+    <string name="personal_view">Personal View</string>
+    <string name="global_view">Global View</string>
+    <string name="shifts_legend_label">Shifts:</string>
+    <string name="print">Print</string>
+    <string name="all_day_label">All\nday</string>
+
+    <!-- iCal Banner & Instructions -->
+    <string name="banner_ical_text">You can export your schedule to external applications with iCalendar support. Learn how by clicking here.</string>
+    <string name="banner_ical_link_text">Learn how by clicking here.</string>
+    <string name="ical_sync_title">How to sync the schedule?</string>
+    <string name="ical_btn_got_it">Got it</string>
+    <string name="ical_instructions_html"><![CDATA[
+        Follow these simple steps to keep your work schedule always up to date in your personal apps.<br><br>
+        1. Click the <b>iCal</b> button to download the schedule.<br>
+        2. Open the downloaded file.<br>
+        3. The calendar application will open. Click <b>Add all</b>.
+    ]]></string>
+
+    <!-- Shift Types Translation -->
+    <string name="shift_morning">Morning</string>
+    <string name="shift_afternoon">Afternoon</string>
+    <string name="shift_night">Night</string>
+    <string name="shift_dayoff">Dayoff</string>
+    <string name="shift_holidays">Holidays</string>
+    <string name="shift_sick_leave">Sick Leave</string>
+    <string name="shift_parental_leave">Parental Leave</string>
+
+    <string name="distribution_title">Shift Distribution by Day</string>
+
 </resources>

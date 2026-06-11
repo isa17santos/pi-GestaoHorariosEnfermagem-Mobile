@@ -276,4 +276,32 @@
     <!-- Dialog Actions -->
     <string name="btn_save">Guardar</string>
 
+    <!-- Schedule -->
+    <string name="schedule_page_subtitle">Consulte a sua escala de turnos ou a visão global da equipa</string>
+    <string name="today">Hoje</string>
+    <string name="personal_view">Vista Pessoal</string>
+    <string name="global_view">Vista Global</string>
+    <string name="shifts_legend_label">Turnos:</string>
+    <string name="print">Imprimir</string>
+    <string name="ical_sync_title">Como sincronizar o horário?</string>
+    <string name="ical_btn_got_it">Entendido</string>
+    <string name="all_day_label">Dia\ninteiro</string>
+    <string name="shift_morning">Manhã</string>
+    <string name="shift_afternoon">Tarde</string>
+    <string name="shift_night">Noite</string>
+    <string name="shift_dayoff">Folga</string>
+    <string name="shift_holidays">Férias</string>
+    <string name="shift_sick_leave">Baixa Médica</string>
+    <string name="shift_parental_leave">Licença Parental</string>
+    <string name="banner_ical_text">Pode exportar o seu horário para aplicações externas com suporte para iCalendar. Saiba como fazer carregando aqui.</string>
+    <string name="banner_ical_link_text">Saiba como fazer carregando aqui.</string>
+    <string name="ical_instructions_html"><![CDATA[
+        Siga estes passos simples para ter o seu horário de trabalho sempre atualizado nas suas aplicações pessoais.<br><br>
+        1. Carregue no botão <b>iCal</b> para descarregar o horário.<br>
+        2. Abra o ficheiro descarregado.<br>
+        3. Será aberta a aplicação do calendário. Carregue em <b>Adicionar todos</b>.
+    ]]></string>
+
+    <string name="distribution_title">Distribuição de Turnos por Dia</string>
+
 </resources>

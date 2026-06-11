@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Contorno do Livro Arredondado -->
+    <path
+        android:strokeColor="#F45FB3"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M7,4h10c0.55,0 1,0.45 1,1v14c0,0.55 -0.45,1 -1,1H7c-0.55,0 -1,-0.45 -1,-1V5C6,4.45 6.45,4 7,4z" />
+    <!-- Linha Horizontal Inferior -->
+    <path
+        android:strokeColor="#F45FB3"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M6,16h12" />
+</vector>

@@ -11,6 +11,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @POST("login")
@@ -71,4 +72,13 @@ public interface ApiService {
     // Change authenticated user's password
     @POST("profile/change-password")
     Call<Void> changePassword(@Body ChangePasswordRequest request);
+
+
+    @GET("schedules/weekly")
+    Call<WeeklyScheduleResponse> getWeeklySchedule(
+            @Header("Authorization") String token,
+            @Query("date") String date,
+            @Query("view") String view
+    );
+
 }
