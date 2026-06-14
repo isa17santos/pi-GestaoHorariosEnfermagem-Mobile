@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Cor de fundo laranja do badge -->
+    <solid android:color="#F59E0B" />
+
+    <!-- Torna o badge circular -->
+    <corners android:radius="50dp" />
+
+    <!-- Borda branca para destacar do ícone roxo -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/white" />
+</shape>

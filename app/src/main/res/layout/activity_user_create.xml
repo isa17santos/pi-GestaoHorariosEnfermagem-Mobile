@@ -18,68 +18,7 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- 1. Header & Info Bar (Miguel Ferreira / Admin) -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-                <ImageView
-                    android:id="@+id/img_logo"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/logo_shiftcare"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_language_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="#B8FFFFFF"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/img_logo">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingHorizontal="16dp">
-                        <TextView android:id="@+id/tv_language_flag" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:layout_marginEnd="8dp" />
-                        <TextView android:id="@+id/tv_language_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/white">
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/ll_actions">
-                        <TextView android:id="@+id/tv_user_name_nav" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="17sp" android:textStyle="bold" />
-                        <TextView android:id="@+id/tv_user_role_nav" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_muted" android:textSize="13sp" />
-                    </LinearLayout>
-                    <LinearLayout android:id="@+id/ll_actions" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent">
-                        <ImageButton android:id="@+id/btn_profile" android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/bg_action_btn" android:src="@drawable/ic_profile" />
-                        <ImageButton android:id="@+id/btn_logout" android:layout_width="48dp" android:layout_height="48dp" android:layout_marginStart="8dp" android:background="@drawable/bg_action_btn_danger" android:src="@drawable/ic_logout" />
-                    </LinearLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
+            <include layout="@layout/layout_navbar" />
 
             <!-- 2. Voltar & Títulos -->
             <com.google.android.material.button.MaterialButton

@@ -170,6 +170,12 @@
             android:name=".HeadNurseStatisticsActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
             android:windowSoftInputMode="adjustResize"/>
+
+        <!-- Notifications -->
+        <activity
+            android:name=".NotificationsActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

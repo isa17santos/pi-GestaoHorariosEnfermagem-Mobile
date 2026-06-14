@@ -10,12 +10,22 @@ public class NurseStatisticsActivity extends BaseActivity {
 
     private TextView tvLangFlag, tvLangLabel;
 
+    private NavbarManager navbarManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nurse_statistics);
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
+        //navbarManager = new NavbarManager(this);
     }
+
+    //@Override
+    //protected void onResume(){
+        //super.onResume();
+        //if(navbarManager != null) navbarManager.refreshUnreadCount();
+    //}
 
     @Override
     protected void updateUIStrings() {

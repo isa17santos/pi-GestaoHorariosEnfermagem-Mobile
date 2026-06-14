@@ -104,7 +104,7 @@
     <string name="hr_page_subtitle">Nursing profiles administration</string>
     <string name="create_user">+ Create new user</string>
     <string name="confirm_removal">Confirm Removal</string>
-    <string name="delete_confirmation_msg">Are you sure you want to remove this user? This action cannot be undone.</string>
+    <string name="delete_confirmation_msg">Are you sure you want to remove? This action cannot be undone.</string>
     <string name="yes_remove">Yes, Remove</string>
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
@@ -308,5 +308,16 @@
     <string name="shift_parental_leave">Parental Leave</string>
 
     <string name="distribution_title">Shift Distribution by Day</string>
+
+
+    <!-- notifications -->
+    <string name="notifications_title">Notification Center</string>
+    <string name="notifications_subtitle">View email messages and alerts sent by the system</string>
+    <string name="notifications_filter_all">All</string>
+    <string name="notifications_filter_unread">Unread</string>
+    <string name="notifications_filter_read">Read</string>
+    <string name="notifications_mark_all_read">✓ Mark all as read</string>
+    <string name="notifications_received_at">Received at</string>
+    <string name="notifications_empty">You have no notifications at the moment.</string>
 
 </resources>

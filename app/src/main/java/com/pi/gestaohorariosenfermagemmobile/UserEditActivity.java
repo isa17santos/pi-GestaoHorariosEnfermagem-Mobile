@@ -32,17 +32,21 @@ public class UserEditActivity extends BaseActivity {
     private TextView tvErrGeneral, tvErrName, tvErrEmail, tvErrRole;
     private View spacerName, spacerEmail, spacerRole;
 
-    private TextView tvUserName, tvUserRole, tvLangFlag, tvLangLabel;
+    private TextView tvLangFlag, tvLangLabel;
 
     // Flags de Persistência (Idêntico ao UserCreate)
     private boolean isNameErr, isEmailErr, isRoleErr, isGenErr;
     private String savedName, savedEmail;
+
+    private NavbarManager navbarManager;
     private int savedRolePos, savedStatusPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit);
+
+        navbarManager = new NavbarManager(this);
 
         // Apply window insets for keyboard handling
         applyWindowInsets(findViewById(android.R.id.content));
@@ -51,8 +55,13 @@ public class UserEditActivity extends BaseActivity {
         restoreData(savedInstanceState);
 
         initViews();
-        setupNavbar();
         updateUIStrings();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
     }
 
     private void restoreData(Bundle savedInstanceState) {
@@ -132,48 +141,15 @@ public class UserEditActivity extends BaseActivity {
         tvLabelEmail = findViewById(R.id.tv_label_email);
         tvLabelRole = findViewById(R.id.tv_label_role);
         tvLabelStatus = findViewById(R.id.tv_label_status);
-        tvUserName = findViewById(R.id.tv_user_name_nav);
-        tvUserRole = findViewById(R.id.tv_user_role_nav);
         tvLangFlag = findViewById(R.id.tv_language_flag);
         tvLangLabel = findViewById(R.id.tv_language_label);
+        btnBack.setOnClickListener(v -> finish());
         btnSubmit.setOnClickListener(v -> handleSubmit());
 
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
-        tvUserName.setText(prefs.getString("user_name", "Utilizador"));
 
         updateUIStrings();
-    }
-
-    private void setupNavbar() {
-        findViewById(R.id.img_logo).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AdminDashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
-
-        MaterialCardView btnLang = findViewById(R.id.btn_language_switch);
-        if (btnLang != null) {
-            btnLang.setOnClickListener(v -> toggleLanguage());
-        }
-
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
-
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            // Limpar SharedPreferences (Token Morre)
-            getSharedPreferences("AUTH", MODE_PRIVATE)
-                    .edit()
-                    .clear()
-                    .apply();
-
-            // Redirecionar para o Login limpando a pilha de atividades
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
 
     private void toggleLanguage() {
@@ -215,21 +191,7 @@ public class UserEditActivity extends BaseActivity {
         tvLabelRole.setText(R.string.label_role);
         tvLabelStatus.setText(R.string.label_status);
 
-        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        String role = prefs.getString("user_role", "").toLowerCase();
-
-        if (role.equals("nurse")) {
-            tvUserRole.setText(R.string.role_nurse);
-        } else if (role.equals("head_nurse")) {
-            tvUserRole.setText(R.string.role_head_nurse);
-        } else if (role.equals("admin")) {
-            tvUserRole.setText(R.string.role_admin);
-        } else {
-            tvUserRole.setText(role);
-        }
-
         setupSpinners();
-        updateLanguageButton();
         restoreErrors();
     }
 
@@ -262,13 +224,6 @@ public class UserEditActivity extends BaseActivity {
         sAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
         spinnerStatus.setAdapter(sAdapter);
         spinnerStatus.setSelection(savedStatusPos);
-    }
-
-    @Override
-    protected void updateLanguageButton() {
-        boolean isEn = AppCompatDelegate.getApplicationLocales().toLanguageTags().contains("en");
-        tvLangFlag.setText(isEn ? "pt" : "en");
-        tvLangLabel.setText(isEn ? "Português" : "English");
     }
 
     private void handleSubmit() {

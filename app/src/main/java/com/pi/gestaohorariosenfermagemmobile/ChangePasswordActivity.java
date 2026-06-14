@@ -36,10 +36,14 @@ public class ChangePasswordActivity extends BaseActivity {
     private Runnable clearFeedbackRunnable;
     private Runnable clearInfoRunnable;
 
+    private NavbarManager navbarManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+
+        navbarManager = new NavbarManager(this);
 
         // Apply window insets for keyboard handling
         applyWindowInsets(findViewById(android.R.id.content));
@@ -61,10 +65,6 @@ public class ChangePasswordActivity extends BaseActivity {
         tvRequirements = findViewById(R.id.tv_requirements);
         
         // Navbar and language selector
-        tvUserName = findViewById(R.id.tv_user_name_nav);
-        tvUserRole = findViewById(R.id.tv_user_role_nav);
-        btnProfile = findViewById(R.id.btn_profile);
-        btnLogout = findViewById(R.id.btn_logout);
         btnLangSwitch = findViewById(R.id.btn_language_switch);
         tvLangFlag = findViewById(R.id.tv_language_flag);
         tvLangLabel = findViewById(R.id.tv_language_label);
@@ -78,6 +78,12 @@ public class ChangePasswordActivity extends BaseActivity {
 
         updateUIStrings();
         updateLanguageButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
     }
 
     private void handleChangePassword() {

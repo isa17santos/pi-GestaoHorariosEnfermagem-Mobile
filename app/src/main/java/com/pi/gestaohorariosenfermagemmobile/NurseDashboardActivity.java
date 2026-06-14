@@ -12,56 +12,42 @@ import com.google.android.material.card.MaterialCardView;
 
 public class NurseDashboardActivity extends BaseActivity {
 
-    private TextView tvUserName, tvUserRole, tvGreeting, tvNurseSubtitle;
-    private TextView tvLangFlag, tvLangLabel;
+    private TextView tvGreeting, tvNurseSubtitle;
     private String currentUserName;
+    private NavbarManager navbarManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nurse_dashboard);
 
+        navbarManager = new NavbarManager(this);
+
         initViews();
 
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         currentUserName = prefs.getString("user_name", "Enfermeiro");
 
-        tvUserName.setText(currentUserName);
-        tvUserRole.setText(R.string.role_nurse);
-
         updateUIStrings();
-        updateLanguageButton();
         setupClickListeners();
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
+    }
+
     private void initViews() {
-        tvUserName = findViewById(R.id.tv_user_name);
-        tvUserRole = findViewById(R.id.tv_user_role);
         tvGreeting = findViewById(R.id.tv_greeting);
         tvNurseSubtitle = findViewById(R.id.tv_nurse_subtitle);
-
-        MaterialCardView btnLang = findViewById(R.id.btn_language_switch_dashboard);
-        tvLangFlag = findViewById(R.id.tv_language_flag_dashboard);
-        tvLangLabel = findViewById(R.id.tv_language_label_dashboard);
-
-        if (btnLang != null) btnLang.setOnClickListener(v -> toggleLanguage());
     }
 
-    private void toggleLanguage() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        String nextLang = current.contains("en") ? "pt" : "en";
-        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(nextLang));
-
-        updateUIStrings();
-        updateLanguageButton();
-
-    }
 
     @Override
     protected void updateUIStrings() {
         tvGreeting.setText(getString(R.string.dashboard_nurse_greeting, currentUserName));
         tvNurseSubtitle.setText(R.string.dashboard_nurse_subtitle);
-        tvUserRole.setText(R.string.role_nurse);
 
         // Atualiza textos dos cartões
         updateCardText(R.id.card_schedule, R.string.schedule, R.string.schedule_subtitle);
@@ -77,18 +63,7 @@ public class NurseDashboardActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void updateLanguageButton() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = current.contains("en");
-        if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
-        if (tvLangLabel != null) tvLangLabel.setText(isEn ? "Português" : "English");
-    }
-
     private void setupClickListeners() {
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
-
         findViewById(R.id.card_schedule).setOnClickListener(v -> {
             startActivity(new Intent(this, ScheduleActivity.class));
 
@@ -101,10 +76,5 @@ public class NurseDashboardActivity extends BaseActivity {
         findViewById(R.id.card_stats).setOnClickListener(v ->
                 startActivity(new Intent(this, NurseStatisticsActivity.class)));
 
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            getSharedPreferences("AUTH", MODE_PRIVATE).edit().clear().apply();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
     }
 }

@@ -12,87 +12,43 @@ import com.google.android.material.card.MaterialCardView;
 
 public class AdminDashboardActivity extends BaseActivity {
 
-    private TextView tvUserName, tvUserRole, tvGreeting, tvOpsSubtitle;
-    private TextView tvLangFlag, tvLangLabel;
+    private TextView tvGreeting, tvOpsSubtitle;
     private String currentUserName;
+    private NavbarManager navbarManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
 
+        navbarManager = new NavbarManager(this);
+
         // Inicializar Views
         initViews();
 
-        // Receber dados
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        currentUserName = prefs.getString("user_name", "Utilizador");
-
-
-        // Configurar UI Inicial
-        if (currentUserName != null) tvUserName.setText(currentUserName);
-
-        String role = prefs.getString("user_role", "").toLowerCase();
-        if (role != null){
-            if (role.equals("nurse")) {
-                tvUserRole.setText(R.string.role_nurse);
-                updateUIStrings();
-            } else if (role.equals("head_nurse")) {
-                tvUserRole.setText(R.string.role_head_nurse);
-                updateUIStrings();
-            } else {
-                tvUserRole.setText(R.string.role_admin);
-                updateUIStrings();
-            }
-        }
+        currentUserName = prefs.getString("user_name", "Administrador");
 
         updateUIStrings();
-        updateLanguageButton();
         setupClickListeners();
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
+    }
+
     private void initViews() {
-        tvUserName = findViewById(R.id.tv_user_name);
-        tvUserRole = findViewById(R.id.tv_user_role);
         tvGreeting = findViewById(R.id.tv_greeting);
         tvOpsSubtitle = findViewById(R.id.tv_ops_subtitle);
-
-        MaterialCardView btnLang = findViewById(R.id.btn_language_switch_dashboard);
-        tvLangFlag = findViewById(R.id.tv_language_flag_dashboard);
-        tvLangLabel = findViewById(R.id.tv_language_label_dashboard);
-
-        if (btnLang != null) btnLang.setOnClickListener(v -> toggleLanguage());
     }
-
-    private void toggleLanguage() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        String nextLang = current.contains("en") ? "pt" : "en";
-
-        LocaleListCompat appLocales = LocaleListCompat.forLanguageTags(nextLang);
-        AppCompatDelegate.setApplicationLocales(appLocales);
-
-        updateUIStrings();
-        updateLanguageButton();
-    }
-
     @Override
     protected void updateUIStrings() {
         // Atualiza a saudação dinâmica
         tvGreeting.setText(getString(R.string.dashboard_admin_greeting, currentUserName));
         tvOpsSubtitle.setText(R.string.dashboard_ops_management);
 
-        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        String role = prefs.getString("user_role", "").toLowerCase();
-
-        if (role.equals("nurse")) {
-            tvUserRole.setText(R.string.role_nurse);
-        } else if (role.equals("head_nurse")) {
-            tvUserRole.setText(R.string.role_head_nurse);
-        } else if (role.equals("admin")) {
-            tvUserRole.setText(R.string.role_admin);
-        } else {
-            tvUserRole.setText(role);
-        }
 
         // Atualiza textos dos cartões
         updateCardText(R.id.card_hr, R.string.hr_management, R.string.hr_subtitle);
@@ -110,19 +66,7 @@ public class AdminDashboardActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void updateLanguageButton() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = current.contains("en");
-        if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
-        if (tvLangLabel != null) tvLangLabel.setText(isEn ? "Português" : "English");
-    }
-
     private void setupClickListeners() {
-        // Perfil
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
-
         // Recursos Humanos
         findViewById(R.id.card_hr).setOnClickListener(v ->
                 startActivity(new Intent(this, HumanResourcesActivity.class)));
@@ -142,21 +86,5 @@ public class AdminDashboardActivity extends BaseActivity {
         // Estatísticas
         findViewById(R.id.card_stats).setOnClickListener(v ->
                 startActivity(new Intent(this, AdminStatisticsActivity.class)));
-
-        // Logout
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            // Limpar SharedPreferences (Token Morre)
-            getSharedPreferences("AUTH", MODE_PRIVATE)
-                    .edit()
-                    .clear()
-                    .apply();
-
-            // Redirecionar para o Login limpando a pilha de atividades
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-
-            // Terminar esta atividade
-            finish();
-        });
     }
 }

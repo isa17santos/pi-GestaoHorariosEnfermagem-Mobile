@@ -1,5 +1,6 @@
 package com.pi.gestaohorariosenfermagemmobile;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -81,4 +82,17 @@ public interface ApiService {
             @Query("view") String view
     );
 
+
+    // Notifications
+    @GET("notifications")
+    Call<NotificationsResponse> getNotifications();
+
+    @GET("notifications/unread-count")
+    Call<Map<String, Integer>> getUnreadCount();
+
+    @PATCH("notifications/{id}/read")
+    Call<Void> markAsRead(@Path("id") int id);
+
+    @POST("notifications/read-all")
+    Call<Void> markAllAsRead();
 }

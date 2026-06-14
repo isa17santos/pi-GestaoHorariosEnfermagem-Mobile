@@ -40,9 +40,9 @@ public class ShiftTypeCreateActivity extends BaseActivity {
     private MaterialButton btnBack;
     private MaterialCardView cvErrorNotification;
     private TextView tvErrGeneral;
-    private TextView tvUserName, tvUserRole, tvLangFlag, tvLangLabel;
-    private ImageButton btnProfile, btnLogout;
-    private MaterialCardView btnLanguageSwitch;
+    private TextView tvLangFlag, tvLangLabel;
+
+    private NavbarManager navbarManager;
     private final Handler errorHideHandler = new Handler(Looper.getMainLooper());
 
     // Saved form state
@@ -54,6 +54,8 @@ public class ShiftTypeCreateActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shift_type_create);
 
+        navbarManager = new NavbarManager(this);
+
         // Apply window insets for keyboard handling
         applyWindowInsets(findViewById(android.R.id.content));
 
@@ -63,8 +65,13 @@ public class ShiftTypeCreateActivity extends BaseActivity {
         }
 
         initViews();
-        setupNavbar();
         setupFormActions();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
     }
 
     // Restore values from the saved state bundle
@@ -114,11 +121,6 @@ public class ShiftTypeCreateActivity extends BaseActivity {
         tvLabelColor = findViewById(R.id.tv_label_color);
         tvLabelMinNurses = findViewById(R.id.tv_label_min_nurses);
         btnBack = findViewById(R.id.btn_back);
-        tvUserName = findViewById(R.id.tv_user_name_nav);
-        tvUserRole = findViewById(R.id.tv_user_role_nav);
-        btnProfile = findViewById(R.id.btn_profile);
-        btnLogout = findViewById(R.id.btn_logout);
-        btnLanguageSwitch = findViewById(R.id.btn_language_switch);
         tvLangFlag = findViewById(R.id.tv_language_flag);
         tvLangLabel = findViewById(R.id.tv_language_label);
 
@@ -127,62 +129,12 @@ public class ShiftTypeCreateActivity extends BaseActivity {
 
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
-        if (tvUserName != null) tvUserName.setText(prefs.getString("user_name", "Utilizador"));
-        String role = prefs.getString("user_role", "");
-        if (tvUserRole != null) {
-            String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-            boolean isEn = currentLang.contains("en");
-            String roleLabel;
-            switch (role) {
-                case "admin":
-                    roleLabel = isEn ? "Admin" : "Administrador";
-                    break;
-                case "head_nurse":
-                    roleLabel = isEn ? "Head Nurse" : "Enfermeiro Chefe";
-                    break;
-                case "nurse":
-                    roleLabel = isEn ? "Nurse" : "Enfermeiro";
-                    break;
-                default:
-                    roleLabel = role;
-            }
-            tvUserRole.setText(roleLabel);
-        }
+
+        btnBack.setOnClickListener(v -> finish());
+        btnSubmit.setOnClickListener(v -> handleSubmit());
 
         updateUIStrings();
         updateLanguageButton();
-    }
-
-    // Configure the navbar actions
-    private void setupNavbar() {
-        findViewById(R.id.img_logo).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AdminDashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
-
-        MaterialCardView btnLang = findViewById(R.id.btn_language_switch);
-        if (btnLang != null) {
-            btnLang.setOnClickListener(v -> toggleLanguage());
-        }
-
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
-
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            // Clear SharedPreferences
-            getSharedPreferences("AUTH", MODE_PRIVATE)
-                    .edit()
-                    .clear()
-                    .apply();
-
-            // Redirect to Login and clear the activity stack
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
 
     // Configure the form actions
@@ -205,15 +157,6 @@ public class ShiftTypeCreateActivity extends BaseActivity {
         }, 100);
     }
 
-    // Update the language switch button
-    @Override
-    protected void updateLanguageButton() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = current.contains("en");
-        if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
-        if (tvLangLabel != null) tvLangLabel.setText(isEn ? "Português" : "English");
-    }
-
     // Update all translated texts on the screen
     @Override
     protected void updateUIStrings() {
@@ -224,22 +167,8 @@ public class ShiftTypeCreateActivity extends BaseActivity {
         btnSubmit.setText(R.string.btn_create_shift_type_submit);
         tvErrGeneral.setText(R.string.err_form_general);
 
-        String role = getSharedPreferences("AUTH", MODE_PRIVATE).getString("user_role", "");
         String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = currentLang.contains("en");
-        switch (role) {
-            case "admin":
-                tvUserRole.setText(isEn ? "Admin" : "Administrador");
-                break;
-            case "head_nurse":
-                tvUserRole.setText(isEn ? "Head Nurse" : "Enfermeiro Chefe");
-                break;
-            case "nurse":
-                tvUserRole.setText(isEn ? "Nurse" : "Enfermeiro");
-                break;
-            default:
-                tvUserRole.setText(role);
-        }
 
         if (tvLabelName != null) tvLabelName.setText(isEn ? "Shift Type Name" : "Nome do Tipo de Turno");
         if (tvLabelStartTime != null) tvLabelStartTime.setText(isEn ? "Start Time (HH:mm)" : "Hora de Início (HH:mm)");

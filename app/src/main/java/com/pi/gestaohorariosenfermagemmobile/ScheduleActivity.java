@@ -51,11 +51,13 @@ public class ScheduleActivity extends BaseActivity {
     private List<Shift> allShifts = new ArrayList<>();
 
     private LinearLayout rowDaysHeader, rowAlldayContent, colHours, gridBackgroundLines, rowShiftColumns;
-    private TextView tvWeekRange, tvLangFlag, tvLangLabel, tvUserName, tvUserRole;
+    private TextView tvWeekRange, tvLangFlag, tvLangLabel;
     private View loader;
 
     private List<ShiftType> cachedShiftTypes = new ArrayList<>();
     private Handler timeHandler = new Handler(Looper.getMainLooper());
+
+    private NavbarManager navbarManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,8 +67,15 @@ public class ScheduleActivity extends BaseActivity {
         setupListeners();
         renderBaseGrid();
         fetchData();
+
+        navbarManager = new NavbarManager(this);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
+    }
     private void initViews() {
         rowDaysHeader = findViewById(R.id.row_days_header);
         rowAlldayContent = findViewById(R.id.row_allday_content);
@@ -75,9 +84,6 @@ public class ScheduleActivity extends BaseActivity {
         rowShiftColumns = findViewById(R.id.row_shift_columns);
         tvWeekRange = findViewById(R.id.tv_week_range);
 
-
-        tvUserName = findViewById(R.id.tv_user_name);
-        tvUserRole = findViewById(R.id.tv_user_role);
         loader = findViewById(R.id.loader);
 
         findViewById(R.id.btn_ical).setOnClickListener(v -> handleIcalExport());
@@ -85,26 +91,12 @@ public class ScheduleActivity extends BaseActivity {
 
         Button btnPrev = findViewById(R.id.btn_prev);
 
-        findViewById(R.id.btn_language_switch_dashboard).setOnClickListener(v -> updateLanguageButton());
 
         // Carregar dados do utilizador das SharedPreferences
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        String name = prefs.getString("user_name", "Utilizador");
-        String role = prefs.getString("user_role", "Enfermeiro");
-
-        tvUserName.setText(name);
-        tvUserRole.setText(role);
 
         // Configurar botões de navegação
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
-
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            getSharedPreferences("AUTH", MODE_PRIVATE).edit().clear().apply();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
 
         MaterialButtonToggleGroup toggleGroup = findViewById(R.id.toggle_view);
         MaterialButton btnPersonal = findViewById(R.id.btn_personal_view);
@@ -121,14 +113,6 @@ public class ScheduleActivity extends BaseActivity {
         // Aplicar estilo inicial (Vista Pessoal selecionada por defeito)
         updateToggleStyles(R.id.btn_personal_view, btnPersonal, btnGlobal);
 
-
-        // Inicializar botões de língua para evitar o aviso do compilador
-        tvLangFlag = findViewById(R.id.tv_language_flag_dashboard);
-        tvLangLabel = findViewById(R.id.tv_language_label_dashboard);
-        View btnLang = findViewById(R.id.btn_language_switch_dashboard);
-        if (btnLang != null) {
-            btnLang.setOnClickListener(v -> toggleLanguage());
-        }
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         View banner = findViewById(R.id.banner_ical);
@@ -678,18 +662,11 @@ public class ScheduleActivity extends BaseActivity {
         }
     }
 
-    private void toggleLanguage() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        String newLang = current.contains("en") ? "pt" : "en";
-        androidx.core.os.LocaleListCompat appLocales = androidx.core.os.LocaleListCompat.forLanguageTags(newLang);
-        AppCompatDelegate.setApplicationLocales(appLocales);;
-    }
 
     @Override
     protected void updateUIStrings() {
         // Role do Utilizador
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        if (tvUserRole != null) tvUserRole.setText(translateRole(prefs.getString("user_role", "")));
 
         // Títulos e Legend
         TextView tvTitle = findViewById(R.id.tv_page_title);
@@ -783,15 +760,6 @@ public class ScheduleActivity extends BaseActivity {
         }
 
         dialog.show();
-    }
-
-
-    @Override
-    protected void updateLanguageButton() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = current.contains("en");
-        if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
-        if (tvLangLabel != null) tvLangLabel.setText(isEn ? "Português" : "English");
     }
 
     private void renderDistribution() {

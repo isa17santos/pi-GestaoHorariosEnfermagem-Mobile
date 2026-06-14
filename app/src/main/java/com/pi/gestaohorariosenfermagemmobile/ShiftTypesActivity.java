@@ -39,6 +39,8 @@ public class ShiftTypesActivity extends BaseActivity {
     private LinearLayout llPaginationNumbers;
     private String token;
 
+    private NavbarManager navbarManager;
+
     // Pagination
     private int currentPage = 1;
     private final int ITEMS_PER_PAGE = 8;
@@ -58,21 +60,23 @@ public class ShiftTypesActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shift_types);
 
+        navbarManager = new NavbarManager(this);
+
         // Apply window insets for keyboard handling
         applyWindowInsets(findViewById(android.R.id.content));
 
         token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("token", "");
 
         initViews();
-        setupNavbar();
         setupRecyclerView();
         setupPaginationActions();
+
+        btnBack.setOnClickListener(v -> finish());
 
         btnCreate.setOnClickListener(v -> startActivity(new Intent(this, ShiftTypeCreateActivity.class)));
 
         // Load data and apply initial strings
         updateUIStrings();
-        updateLanguageButton();
 
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -89,6 +93,7 @@ public class ShiftTypesActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         loadShiftTypes();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
     }
 
     // Bind all views from the layout
@@ -96,10 +101,6 @@ public class ShiftTypesActivity extends BaseActivity {
         rvShiftTypes = findViewById(R.id.rv_shift_types);
         etSearch = findViewById(R.id.et_search);
         llPaginationNumbers = findViewById(R.id.ll_pagination_numbers);
-        tvUserName = findViewById(R.id.tv_user_name_nav);
-        tvUserRole = findViewById(R.id.tv_user_role_nav);
-        tvLangFlag = findViewById(R.id.tv_language_flag);
-        tvLangLabel = findViewById(R.id.tv_language_label);
 
         // References for texts that need language updates
         btnBack = findViewById(R.id.btn_back);
@@ -116,10 +117,6 @@ public class ShiftTypesActivity extends BaseActivity {
         tvHeaderActions = findViewById(R.id.tv_header_actions);
 
         llNotification = findViewById(R.id.ll_notification_toast);
-
-        // Load user data
-        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        tvUserName.setText(prefs.getString("user_name", "Utilizador"));
 
         spinnerFilter = findViewById(R.id.spinner_filter);
 
@@ -180,59 +177,6 @@ public class ShiftTypesActivity extends BaseActivity {
         rvShiftTypes.setAdapter(adapter);
     }
 
-
-    // Configure the navbar actions
-    private void setupNavbar() {
-        findViewById(R.id.img_logo).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AdminDashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
-
-        MaterialCardView btnLang = findViewById(R.id.btn_language_switch);
-        if (btnLang != null) {
-            btnLang.setOnClickListener(v -> toggleLanguage());
-        }
-
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
-
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            // Clear SharedPreferences
-            getSharedPreferences("AUTH", MODE_PRIVATE)
-                    .edit()
-                    .clear()
-                    .apply();
-
-            // Redirect to Login and clear the activity stack
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-    }
-
-    // Toggle the application language
-    private void toggleLanguage() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        String nextLang = current.contains("en") ? "pt" : "en";
-
-        LocaleListCompat appLocales = LocaleListCompat.forLanguageTags(nextLang);
-        AppCompatDelegate.setApplicationLocales(appLocales);
-
-        // Atualiza os textos fixos da página
-        updateUIStrings();
-
-        // Atualiza o botão de idioma na Navbar
-        updateLanguageButton();
-
-        // Notifica o adapter para redesenhar a lista com o novo idioma
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
-    }
-
     // Update all translated texts on the screen
     @Override
     protected void updateUIStrings() {
@@ -248,30 +192,9 @@ public class ShiftTypesActivity extends BaseActivity {
         if (tvHeaderMinNurses != null) tvHeaderMinNurses.setText(R.string.table_min_nurses);
         if (tvHeaderActions != null) tvHeaderActions.setText(R.string.table_actions);
 
-        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        String role = prefs.getString("user_role", "").toLowerCase();
-
-        if (role.equals("nurse")) {
-            tvUserRole.setText(R.string.role_nurse);
-        } else if (role.equals("head_nurse")) {
-            tvUserRole.setText(R.string.role_head_nurse);
-        } else if (role.equals("admin")) {
-            tvUserRole.setText(R.string.role_admin);
-        } else {
-            tvUserRole.setText(role);
-        }
-
         setupFilterSpinner();
     }
 
-    // Update the language switch button
-    @Override
-    protected void updateLanguageButton() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = current.contains("en");
-        if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
-        if (tvLangLabel != null) tvLangLabel.setText(isEn ? "Português" : "English");
-    }
 
     // Load shift types from the API
     private void loadShiftTypes() {

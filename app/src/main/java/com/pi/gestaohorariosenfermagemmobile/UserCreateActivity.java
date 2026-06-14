@@ -25,6 +25,8 @@ public class UserCreateActivity extends BaseActivity {
     private String token;
     private NestedScrollView nsvForm;
 
+    private NavbarManager navbarManager;
+
     private TextView tvTitle, tvSubtitle;
     private TextView tvLabelName, tvLabelEmail, tvLabelPass, tvLabelConfirm, tvLabelRole, tvLabelStatus;
     private MaterialButton btnBack;
@@ -35,7 +37,7 @@ public class UserCreateActivity extends BaseActivity {
     private View spacerName, spacerEmail, spacerPass, spacerConfirm, spacerRole;
 
     // Elementos da Navbar
-    private TextView tvUserName, tvUserRole, tvLangFlag, tvLangLabel;
+    private TextView tvLangFlag, tvLangLabel;
 
     // Flags de Persistência
     private boolean isNameErr, isEmailErr, isPassErr, isConfirmErr, isRoleErr, isGenErr;
@@ -50,6 +52,8 @@ public class UserCreateActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_create);
 
+        navbarManager = new NavbarManager(this);
+
         // Apply window insets for keyboard handling
         applyWindowInsets(findViewById(android.R.id.content));
 
@@ -61,10 +65,15 @@ public class UserCreateActivity extends BaseActivity {
         }
 
         initViews();
-        setupNavbar();
         updateUIStrings();
 
         if (isGenErr) startHideTimer();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
     }
 
     private void restoreFromBundle(Bundle b) {
@@ -134,6 +143,9 @@ public class UserCreateActivity extends BaseActivity {
         tvSubtitle = findViewById(R.id.tv_subtitle);
         btnBack = findViewById(R.id.btn_back);
 
+        btnBack.setOnClickListener(v -> finish());
+        btnSubmit.setOnClickListener(v -> handleSubmit());
+
         cvErrorNotification = findViewById(R.id.cv_error_notification);
         tvErrGeneral = findViewById(R.id.tv_error_general);
         tvErrName = findViewById(R.id.tv_error_name);
@@ -155,34 +167,13 @@ public class UserCreateActivity extends BaseActivity {
         tvLabelRole = findViewById(R.id.tv_label_role);
         tvLabelStatus = findViewById(R.id.tv_label_status);
 
-        tvUserName = findViewById(R.id.tv_user_name_nav);
-        tvUserRole = findViewById(R.id.tv_user_role_nav);
         tvLangFlag = findViewById(R.id.tv_language_flag);
         tvLangLabel = findViewById(R.id.tv_language_label);
 
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
-        tvUserName.setText(prefs.getString("user_name", "Utilizador"));
 
         updateUIStrings();
-    }
-
-    private void setupNavbar() {
-        findViewById(R.id.img_logo).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AdminDashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.btn_language_switch).setOnClickListener(v -> toggleLanguage());
-        findViewById(R.id.btn_profile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            getSharedPreferences("AUTH", MODE_PRIVATE).edit().clear().apply();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
-        btnBack.setOnClickListener(v -> finish());
-        btnSubmit.setOnClickListener(v -> handleSubmit());
     }
 
     private void toggleLanguage() {
@@ -234,19 +225,6 @@ public class UserCreateActivity extends BaseActivity {
         etPassword.setHint(R.string.hint_password);
         etConfirm.setHint(R.string.hint_confirm_password);
 
-        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        String role = prefs.getString("user_role", "").toLowerCase();
-
-        if (role.equals("nurse")) {
-            tvUserRole.setText(R.string.role_nurse);
-        } else if (role.equals("head_nurse")) {
-            tvUserRole.setText(R.string.role_head_nurse);
-        } else if (role.equals("admin")) {
-            tvUserRole.setText(R.string.role_admin);
-        } else {
-            tvUserRole.setText(role);
-        }
-
 
         restoreErrorTexts();
         setupSpinners();
@@ -278,13 +256,6 @@ public class UserCreateActivity extends BaseActivity {
         spacerRole.setVisibility(isRoleErr ? View.GONE : View.VISIBLE);
 
         cvErrorNotification.setVisibility(isGenErr ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    protected void updateLanguageButton() {
-        boolean isEn = AppCompatDelegate.getApplicationLocales().toLanguageTags().contains("en");
-        tvLangFlag.setText(isEn ? "pt" : "en");
-        tvLangLabel.setText(isEn ? "Português" : "English");
     }
 
     private void setupSpinners() {

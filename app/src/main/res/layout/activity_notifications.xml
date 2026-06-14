@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_app_gradient"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Navbar -->
+            <include layout="@layout/layout_navbar" />
+
+            <!-- Botão Voltar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_back_notif"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/back"
+                android:textAllCaps="false"
+                android:textColor="#7C3AED"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconTint="#7C3AED"
+                app:iconGravity="textStart"
+                android:backgroundTint="#F8F5FF"
+                app:strokeColor="#E6E0F5"
+                app:strokeWidth="1dp"
+                app:cornerRadius="28dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+
+            <!-- Títulos -->
+            <TextView
+                android:id="@+id/tv_notif_page_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notifications_title"
+                android:textColor="#3D3066"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_notif_page_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/notifications_subtitle"
+                android:textColor="#8E87A3"
+                android:textSize="16sp" />
+
+            <!-- Tabs Filtro -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/white_surface"
+                android:padding="4dp"
+                android:orientation="horizontal">
+                <Button android:id="@+id/btn_all" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="@string/notifications_filter_all" android:textColor="#7C3AED" android:backgroundTint="@color/white" style="@style/Widget.MaterialComponents.Button.UnelevatedButton" app:cornerRadius="12dp"/>
+                <Button android:id="@+id/btn_unread" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="@string/notifications_filter_unread" android:textColor="#8E87A3" style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                <Button android:id="@+id/btn_read" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="@string/notifications_filter_read" android:textColor="#8E87A3" style="@style/Widget.MaterialComponents.Button.TextButton"/>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_mark_all"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/notifications_mark_all_read"
+                android:textColor="#7C3AED"
+                android:backgroundTint="@color/white"
+                app:strokeColor="#E6E0F5"
+                app:strokeWidth="1dp"
+                app:cornerRadius="12dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+
+            <!-- Card de Estado Vazio (Escondido por defeito) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="1dp"
+                app:strokeColor="#1A000000"
+                android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="32dp">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@drawable/ic_notifications"
+                            android:alpha="0.3"
+                            app:tint="#7C3AED" />
+
+                        <TextView
+                            android:id="@+id/tv_empty_msg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/notifications_empty"
+                            android:textColor="#8E87A3"
+                            android:textSize="18sp"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Lista de Notificações -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_notifs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>

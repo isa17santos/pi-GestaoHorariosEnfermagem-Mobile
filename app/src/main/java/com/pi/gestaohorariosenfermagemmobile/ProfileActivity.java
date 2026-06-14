@@ -40,10 +40,10 @@ import retrofit2.Response;
 
 public class ProfileActivity extends BaseActivity {
     // UI Components - Navbar
-    private TextView tvUserName, tvUserRole, tvLangFlag, tvLangLabel;
-    private ImageButton btnProfile, btnLogout;
-    private MaterialCardView btnLanguageSwitch;
+    private TextView tvLangFlag, tvLangLabel;
     private MaterialButton btnBack;
+
+    private NavbarManager navbarManager;
 
     // UI Components - Profile Section
     private TextView tvTitle, tvSubtitle;
@@ -79,11 +79,12 @@ public class ProfileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        navbarManager = new NavbarManager(this);
+
         // Apply window insets for keyboard handling
         applyWindowInsets(findViewById(android.R.id.content));
 
         initViews();
-        setupNavbar();
         setupActions();
         updateUIStrings();
 
@@ -92,14 +93,14 @@ public class ProfileActivity extends BaseActivity {
         loadPreferences();
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
+    }
+
     // Bind all views from the layout
     private void initViews() {
-        // Navbar
-        tvUserName = findViewById(R.id.tv_user_name_nav);
-        tvUserRole = findViewById(R.id.tv_user_role_nav);
-        btnProfile = findViewById(R.id.btn_profile);
-        btnLogout = findViewById(R.id.btn_logout);
-        btnLanguageSwitch = findViewById(R.id.btn_language_switch);
         tvLangFlag = findViewById(R.id.tv_language_flag);
         tvLangLabel = findViewById(R.id.tv_language_label);
         btnBack = findViewById(R.id.btn_back);
@@ -134,67 +135,14 @@ public class ProfileActivity extends BaseActivity {
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
 
-        // Pre-fill navbar name from the cached value so it shows before the API responds
-        if (tvUserName != null) tvUserName.setText(prefs.getString("user_name", "Utilizador"));
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
 
         // Pre-fill Full Name from cache — loadProfile() will overwrite with the API value
         if (tvNameValue != null) tvNameValue.setText(prefs.getString("user_name", ""));
 
-        String role = prefs.getString("user_role", "");
-        if (tvUserRole != null) {
-            String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-            boolean isEn = currentLang.contains("en");
-            String roleLabel;
-            switch (role) {
-                case "admin":
-                    roleLabel = isEn ? "Admin" : "Administrador";
-                    break;
-                case "head_nurse":
-                    roleLabel = isEn ? "Head Nurse" : "Enfermeiro Chefe";
-                    break;
-                case "nurse":
-                    roleLabel = isEn ? "Nurse" : "Enfermeiro";
-                    break;
-                default:
-                    roleLabel = role;
-            }
-            tvUserRole.setText(roleLabel);
-        }
-
-        updateLanguageButton();
     }
 
-    // Configure the navbar actions
-    private void setupNavbar() {
-        findViewById(R.id.img_logo).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AdminDashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
-
-        MaterialCardView btnLang = findViewById(R.id.btn_language_switch);
-        if (btnLang != null) {
-            btnLang.setOnClickListener(v -> toggleLanguage());
-        }
-
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
-
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            // Clear SharedPreferences
-            getSharedPreferences("AUTH", MODE_PRIVATE)
-                    .edit()
-                    .clear()
-                    .apply();
-
-            // Redirect to Login and clear the activity stack
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-    }
 
     // Setup button actions
     private void setupActions() {
@@ -231,32 +179,6 @@ public class ProfileActivity extends BaseActivity {
         });
     }
 
-    // Toggle the application language
-    private void toggleLanguage() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        String nextLang = current.contains("en") ? "pt" : "en";
-
-        LocaleListCompat appLocales = LocaleListCompat.forLanguageTags(nextLang);
-        AppCompatDelegate.setApplicationLocales(appLocales);
-
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            updateUIStrings();
-            updateLanguageButton();
-            // Rebuild preference cards so pill labels, subtitle and notes
-            // prefix are rendered in the newly selected language
-            displayPreferences(allPreferences);
-        }, 100);
-    }
-
-    // Update the language switch button
-    @Override
-    protected void updateLanguageButton() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = current.contains("en");
-        if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
-        if (tvLangLabel != null) tvLangLabel.setText(isEn ? "Português" : "English");
-    }
-
     // Update all translated texts on the screen
     @Override
     protected void updateUIStrings() {
@@ -286,21 +208,6 @@ public class ProfileActivity extends BaseActivity {
         // Error message
         if (tvErrGeneral != null) tvErrGeneral.setText(isEn ? "Please fill all required fields correctly" : "Por favor preencha todos os campos corretamente");
 
-        // Update user role
-        String role = getSharedPreferences("AUTH", MODE_PRIVATE).getString("user_role", "");
-        switch (role) {
-            case "admin":
-                tvUserRole.setText(isEn ? "Admin" : "Administrador");
-                break;
-            case "head_nurse":
-                tvUserRole.setText(isEn ? "Head Nurse" : "Enfermeiro Chefe");
-                break;
-            case "nurse":
-                tvUserRole.setText(isEn ? "Nurse" : "Enfermeiro");
-                break;
-            default:
-                tvUserRole.setText(role);
-        }
     }
 
     // Load user profile data from API
@@ -385,11 +292,6 @@ public class ProfileActivity extends BaseActivity {
     }
 
     // Display preferences in the UI
-    /**
-     * Display preferences in the UI.
-     * Each preference card is clickable to edit via bottom sheet.
-     * Delete button allows removing preferences with confirmation.
-     */
     private void displayPreferences(List<NursePreference> preferences) {
         llPreferencesContainer.removeAllViews();
 

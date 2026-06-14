@@ -34,6 +34,8 @@ public class HumanResourcesActivity extends BaseActivity {
 
     private RecyclerView rvUsers;
     private UserAdapter adapter;
+
+    private NavbarManager navbarManager;
     private List<User> allUsers = new ArrayList<>();
     private List<User> filteredUsers = new ArrayList<>();
     private EditText etSearch;
@@ -44,8 +46,6 @@ public class HumanResourcesActivity extends BaseActivity {
     private int currentPage = 1;
     private final int ITEMS_PER_PAGE = 6;
 
-    // Navbar & UI Strings
-    private TextView tvUserName, tvUserRole, tvLangFlag, tvLangLabel;
     private TextView tvTitle, tvSubtitle, tvHeaderName, tvHeaderRole, tvHeaderStatus, tvHeaderActions;
     private MaterialButton btnBack, btnCreateUser;
 
@@ -58,21 +58,23 @@ public class HumanResourcesActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_human_resources);
 
+        navbarManager = new NavbarManager(this);
+
         // Apply window insets for keyboard handling
         applyWindowInsets(findViewById(android.R.id.content));
 
         token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("token", "");
 
         initViews();
-        setupNavbar();
         setupRecyclerView();
         setupPaginationActions();
 
         btnCreateUser.setOnClickListener(v -> startActivity(new Intent(this, UserCreateActivity.class)));
 
+        btnBack.setOnClickListener(v -> finish());
+
         // Carregar dados e aplicar strings iniciais
         updateUIStrings();
-        updateLanguageButton();
 
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,15 +90,12 @@ public class HumanResourcesActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         loadUsers();
+        if(navbarManager != null) navbarManager.refreshUnreadCount();
     }
     private void initViews() {
         rvUsers = findViewById(R.id.rv_users);
         etSearch = findViewById(R.id.et_search);
         llPaginationNumbers = findViewById(R.id.ll_pagination_numbers);
-        tvUserName = findViewById(R.id.tv_user_name_nav);
-        tvUserRole = findViewById(R.id.tv_user_role_nav);
-        tvLangFlag = findViewById(R.id.tv_language_flag);
-        tvLangLabel = findViewById(R.id.tv_language_label);
 
         // Referências para textos que precisam de mudar de idioma
         btnBack = findViewById(R.id.btn_back);
@@ -112,10 +111,6 @@ public class HumanResourcesActivity extends BaseActivity {
         tvHeaderActions = findViewById(R.id.tv_header_actions);
 
         llNotification = findViewById(R.id.ll_notification_toast);
-
-        // Carregar dados do utilizador
-        android.content.SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        tvUserName.setText(prefs.getString("user_name", "Utilizador"));
 
         spinnerRole = findViewById(R.id.spinner_role);
         spinnerStatus = findViewById(R.id.spinner_status);
@@ -191,55 +186,6 @@ public class HumanResourcesActivity extends BaseActivity {
         });
     }
 
-    private void setupNavbar() {
-        findViewById(R.id.img_logo).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AdminDashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
-
-        MaterialCardView btnLang = findViewById(R.id.btn_language_switch);
-        if (btnLang != null) {
-            btnLang.setOnClickListener(v -> toggleLanguage());
-        }
-
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfileActivity.class)));
-
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            // Limpar SharedPreferences (Token Morre)
-            getSharedPreferences("AUTH", MODE_PRIVATE)
-                    .edit()
-                    .clear()
-                    .apply();
-
-            // Redirecionar para o Login limpando a pilha de atividades
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-    }
-
-    private void toggleLanguage() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        String nextLang = current.contains("en") ? "pt" : "en";
-
-        LocaleListCompat appLocales = LocaleListCompat.forLanguageTags(nextLang);
-        AppCompatDelegate.setApplicationLocales(appLocales);
-
-        // Atualiza os textos fixos da página
-        updateUIStrings();
-
-        // Atualiza o botão de idioma na Navbar
-        updateLanguageButton();
-
-        // Notifica o adapter para redesenhar a lista com o novo idioma
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
-    }
 
     @Override
     protected void updateUIStrings() {
@@ -254,28 +200,7 @@ public class HumanResourcesActivity extends BaseActivity {
         if (tvHeaderStatus != null) tvHeaderStatus.setText(R.string.table_status);
         if (tvHeaderActions != null) tvHeaderActions.setText(R.string.table_actions);
 
-        SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-        String role = prefs.getString("user_role", "").toLowerCase();
-
-        if (role.equals("nurse")) {
-            tvUserRole.setText(R.string.role_nurse);
-        } else if (role.equals("head_nurse")) {
-            tvUserRole.setText(R.string.role_head_nurse);
-        } else if (role.equals("admin")) {
-            tvUserRole.setText(R.string.role_admin);
-        } else {
-            tvUserRole.setText(role);
-        }
-
         setupFilterSpinners();
-    }
-
-    @Override
-    protected void updateLanguageButton() {
-        String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-        boolean isEn = current.contains("en");
-        if (tvLangFlag != null) tvLangFlag.setText(isEn ? "pt" : "en");
-        if (tvLangLabel != null) tvLangLabel.setText(isEn ? "Português" : "English");
     }
 
     private void setupRecyclerView() {
