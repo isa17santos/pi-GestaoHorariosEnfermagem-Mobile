@@ -682,12 +682,10 @@ public class ScheduleActivity extends BaseActivity {
         // Botões
         MaterialButton btnBack = findViewById(R.id.btn_back);
         MaterialButton btnToday = findViewById(R.id.btn_today);
-        MaterialButton btnPrint = findViewById(R.id.btn_print);
         MaterialButton btnPersonal = findViewById(R.id.btn_personal_view);
         MaterialButton btnGlobal = findViewById(R.id.btn_global_view);
         if (btnBack != null) btnBack.setText(R.string.back);
         if (btnToday != null) btnToday.setText(R.string.today);
-        if (btnPrint != null) btnPrint.setText(R.string.print);
         if (btnPersonal != null) btnPersonal.setText(R.string.personal_view);
         if (btnGlobal != null) btnGlobal.setText(R.string.global_view);
 
