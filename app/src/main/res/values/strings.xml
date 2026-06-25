@@ -314,4 +314,32 @@
     <string name="notifications_received_at">Recebido a</string>
     <string name="notifications_empty">Não tem notificações de momento.</string>
 
+    <!-- Medical Leave -->
+    <string name="medical_leaves_title">Gestão de Baixas Médicas</string>
+    <string name="medical_leaves_subtitle">Administração de ausências médicas dos profissionais</string>
+    <string name="assign_leave">+ Atribuir Baixa Médica</string>
+    <string name="table_start_date">DATA DE INÍCIO</string>
+    <string name="table_end_date">DATA DE FIM</string>
+    <string name="table_reason">MOTIVO</string>
+    <string name="status_ongoing">A Decorrer</string>
+    <string name="status_future">Datas Futuras</string>
+    <string name="status_past">Já Passou</string>
+
+    <string name="assign_leave_title">Atribuir Baixa Médica</string>
+    <string name="assign_leave_subtitle">Registe o período de ausência médica de um profissional</string>
+    <string name="label_nurse">Enfermeiro</string>
+    <string name="select_nurse">Selecione um enfermeiro</string>
+    <string name="label_reason_optional">Motivo (Opcional)</string>
+    <string name="reason_hint">Ex: Recuperação de cirurgia, gripe, etc.</string>
+    <string name="label_start_date">Data de Início</string>
+    <string name="label_end_date">Data de Fim</string>
+    <string name="save_medical_leave">Gravar Baixa Médica</string>
+    <string name="medical_leave_select_required">Por favor preencha os campos obrigatórios</string>
+    <string name="medical_leave_save_success">Baixa médica registada com sucesso</string>
+    <string name="medical_leave_save_error">Erro ao gravar a baixa médica</string>
+
+    <string name="edit_medical_leave_title">Editar Baixa Médica</string>
+    <string name="edit_medical_leave_subtitle">Atualize as informações do período de ausência médica</string>
+    <string name="update_medical_leave">Atualizar Baixa Médica</string>
+    <string name="medical_leave_update_success">Baixa médica atualizada com sucesso</string>
 </resources>

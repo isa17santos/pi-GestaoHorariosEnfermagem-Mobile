@@ -77,7 +77,7 @@ public class AdminDashboardActivity extends BaseActivity {
 
         // Baixas
         findViewById(R.id.card_sick).setOnClickListener(v ->
-                startActivity(new Intent(this, AbsencesActivity.class)));
+                startActivity(new Intent(this, MedicalLeavesActivity.class)));
 
         // Tipos de Turno
         findViewById(R.id.card_shifts).setOnClickListener(v ->

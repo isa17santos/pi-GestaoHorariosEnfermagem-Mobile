@@ -320,4 +320,35 @@
     <string name="notifications_received_at">Received at</string>
     <string name="notifications_empty">You have no notifications at the moment.</string>
 
+
+    <!-- Medical Leave -->
+    <string name="medical_leaves_title">Medical Leave Management</string>
+    <string name="medical_leaves_subtitle">Administration of medical absences for professionals</string>
+    <string name="assign_leave">+ Assign Medical Leave</string>
+    <string name="table_start_date">START DATE</string>
+    <string name="table_end_date">END DATE</string>
+    <string name="table_reason">REASON</string>
+    <string name="status_ongoing">Ongoing</string>
+    <string name="status_future">Future Dates</string>
+    <string name="status_past">Past</string>
+
+    <string name="assign_leave_title">Assign Medical Leave</string>
+    <string name="assign_leave_subtitle">Register a professional\'s medical absence period</string>
+    <string name="label_nurse">Nurse</string>
+    <string name="select_nurse">Select a nurse</string>
+    <string name="label_reason_optional">Reason (Optional)</string>
+    <string name="reason_hint">E.g.: Recovery from surgery, flu, etc.</string>
+    <string name="label_start_date">Start Date</string>
+    <string name="label_end_date">End Date</string>
+    <string name="save_medical_leave">Save Medical Leave</string>
+
+    <string name="medical_leave_select_required">Please fill in all required fields</string>
+    <string name="medical_leave_save_success">Medical leave registered successfully</string>
+    <string name="medical_leave_save_error">Error saving medical leave</string>
+
+    <string name="edit_medical_leave_title">Edit Medical Leave</string>
+    <string name="edit_medical_leave_subtitle">Update the medical absence period information</string>
+    <string name="update_medical_leave">Update Medical Leave</string>
+    <string name="medical_leave_update_success">Medical leave updated successfully</string>
+
 </resources>

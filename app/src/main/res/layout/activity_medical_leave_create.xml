@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_app_gradient"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <include layout="@layout/layout_navbar" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_back"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/back"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_strong"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconTint="@color/primary_strong"
+                app:iconGravity="textStart"
+                android:backgroundTint="#F8F5FF"
+                app:strokeColor="#E6E0F5"
+                app:strokeWidth="1dp"
+                app:cornerRadius="28dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+
+            <TextView android:id="@+id/tv_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="32sp" android:textStyle="bold" />
+            <TextView android:id="@+id/tv_subtitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_muted" android:textSize="16sp" android:layout_marginBottom="32dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- NOTIFICAÇÃO GERAL DE ERRO -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cv_error_notification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:visibility="gone"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="#F36CC8"
+                        app:strokeWidth="2dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_clock" app:tint="#F36CC8" />
+                            <TextView android:id="@+id/tv_error_general" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:textColor="#F36CC8" android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Enfermeiro -->
+                    <TextView android:id="@+id/tv_label_nurse" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:textSize="13sp" android:layout_marginBottom="8dp"/>
+                    <FrameLayout android:layout_width="match_parent" android:layout_height="54dp" android:background="@drawable/bg_edittext">
+                        <Spinner android:id="@+id/spinner_nurse" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@android:color/transparent" android:spinnerMode="dropdown" />
+                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="end|center_vertical" android:layout_marginEnd="16dp" android:src="@drawable/ic_chevron_down" />
+                    </FrameLayout>
+                    <TextView android:id="@+id/tv_error_nurse" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F36CC8" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp" android:visibility="gone" />
+                    <View android:id="@+id/spacer_nurse" android:layout_width="match_parent" android:layout_height="24dp" />
+
+                    <!-- Motivo -->
+                    <TextView android:id="@+id/tv_label_reason" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:textSize="13sp" android:layout_marginBottom="8dp"/>
+                    <EditText android:id="@+id/et_reason" android:layout_width="match_parent" android:layout_height="54dp" android:background="@drawable/bg_edittext" android:paddingHorizontal="16dp" android:textSize="13sp" />
+                    <View android:layout_width="match_parent" android:layout_height="24dp" />
+
+                    <!-- Datas -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:baselineAligned="false">
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                            <TextView android:id="@+id/tv_label_start" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:textSize="13sp" android:layout_marginBottom="8dp"/>
+                            <EditText android:id="@+id/et_start_date" android:layout_width="match_parent" android:layout_height="54dp" android:background="@drawable/bg_edittext" android:paddingHorizontal="16dp" android:focusable="false" android:clickable="true" android:textSize="13sp" android:drawableEnd="@drawable/ic_calendar_lines" />
+                            <TextView android:id="@+id/tv_error_start" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F36CC8" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp" android:visibility="gone" />
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="8dp">
+                            <TextView android:id="@+id/tv_label_end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="@color/text_primary" android:textSize="13sp" android:layout_marginBottom="8dp"/>
+                            <EditText android:id="@+id/et_end_date" android:layout_width="match_parent" android:layout_height="54dp" android:background="@drawable/bg_edittext" android:paddingHorizontal="16dp" android:focusable="false" android:clickable="true" android:textSize="13sp" android:drawableEnd="@drawable/ic_calendar_lines" />
+                            <TextView android:id="@+id/tv_error_end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F36CC8" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp" android:visibility="gone" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_gravity="end"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null"
+                        android:background="@drawable/btn_login_gradient"
+                        app:cornerRadius="18dp"
+                        android:paddingHorizontal="32dp"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Success Toast (Escondido) -->
+    <LinearLayout android:id="@+id/ll_notification_toast" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="top|center_horizontal" android:layout_marginTop="20dp" android:orientation="horizontal" android:gravity="center" android:paddingHorizontal="24dp" android:paddingVertical="12dp" android:background="@drawable/bg_notification_toast" android:elevation="10dp" android:visibility="gone">
+        <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_check_small" android:layout_marginEnd="12dp" />
+        <TextView android:id="@+id/tv_notification_msg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F79B32" android:textStyle="bold" android:textSize="14sp" />
+    </LinearLayout>
+</FrameLayout>

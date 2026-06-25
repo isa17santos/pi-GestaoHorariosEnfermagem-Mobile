@@ -95,4 +95,20 @@ public interface ApiService {
 
     @POST("notifications/read-all")
     Call<Void> markAllAsRead();
+
+    @POST("medical-leaves")
+    Call<Void> createMedicalLeave(@Header("Authorization") String token, @Body Map<String, Object> body);
+
+    @GET("medical-leaves")
+    Call<MedicalLeavesResponse> getMedicalLeaves(@Header("Authorization") String token);
+
+    @PATCH("medical-leaves/{id}")
+    Call<Void> updateMedicalLeave(
+            @Header("Authorization") String token,
+            @Path("id") int id,
+            @Body Map<String, Object> body
+    );
+
+    @DELETE("medical-leaves/{id}")
+    Call<Void> deleteMedicalLeave(@Header("Authorization") String token, @Path("id") int id);
 }

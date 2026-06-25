@@ -207,7 +207,7 @@
                     app:icon="@drawable/ic_calendar_nurse"
                     app:iconTint="#7C3AED"
                     app:iconSize="18dp"
-                    app:iconGravity="textStart" 
+                    app:iconGravity="textStart"
                     app:iconPadding="8dp"
                     app:strokeColor="#337C3AED"
                     app:strokeWidth="1.5dp"

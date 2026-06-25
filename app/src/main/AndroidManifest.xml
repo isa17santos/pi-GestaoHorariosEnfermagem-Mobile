@@ -103,9 +103,20 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".AbsencesActivity"
+            android:name=".MedicalLeavesActivity"
             android:configChanges="locale|layoutDirection|orientation|screenSize"
             android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".MedicalLeaveCreateActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".MedicalLeaveEditActivity"
+            android:configChanges="locale|layoutDirection|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
 
         <!-- Shift types list with search input field -->
         <activity
