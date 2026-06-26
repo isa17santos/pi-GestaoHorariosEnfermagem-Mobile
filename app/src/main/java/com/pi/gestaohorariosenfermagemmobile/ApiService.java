@@ -83,6 +83,49 @@ public interface ApiService {
     );
 
 
+    // Shifts list
+    @GET("shifts")
+    Call<ShiftsResponse> getShifts(
+            @Header("Authorization") String token,
+            @Query("mine") Boolean mine,
+            @Query("future") Boolean future
+    );
+
+    @GET("shifts")
+    Call<ShiftsResponse> getShiftsFiltered(
+            @Header("Authorization") String token,
+            @Query("exclude_mine") Boolean excludeMine,
+            @Query("date") String date,
+            @Query("shift_type_id") Integer shiftTypeId
+    );
+
+    // Swap requests
+    @POST("swaps")
+    Call<Void> createSwap(@Header("Authorization") String token, @Body java.util.Map<String, Object> body);
+
+    @GET("swaps/validate")
+    Call<SwapValidationResponse> validateSwap(
+            @Header("Authorization") String token,
+            @Query("offered_shift_ids[]") List<Integer> offeredShiftIds,
+            @Query("requested_shift_ids[]") List<Integer> requestedShiftIds
+    );
+
+    @GET("swaps")
+    Call<SwapsResponse> getSwaps(
+            @Header("Authorization") String token,
+            @Query("direction") String direction,
+            @Query("status") String status
+    );
+
+    @POST("swaps/{id}/accept")
+    Call<Void> acceptSwap(@Header("Authorization") String token, @Path("id") int id);
+
+    @POST("swaps/{id}/reject")
+    Call<Void> rejectSwap(@Header("Authorization") String token, @Path("id") int id);
+
+    @POST("swaps/{id}/cancel")
+    Call<Void> cancelSwap(@Header("Authorization") String token, @Path("id") int id);
+
     // Notifications
     @GET("notifications")
     Call<NotificationsResponse> getNotifications();

@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_app_gradient"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <include layout="@layout/layout_navbar" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_back"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/back"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_strong"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconTint="@color/primary_strong"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                android:backgroundTint="#F8F5FF"
+                app:strokeColor="#E6E0F5"
+                app:strokeWidth="1dp"
+                app:cornerRadius="28dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="24dp" />
+
+            <!-- ─── Shift header card (2 panels for shift mode, 4 for dayoff mode) ─── -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeColor="#1A000000"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Top row: offered shift | arrow | target shift -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <!-- Offered shift panel -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_offered_shift"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="#F8F5FF"
+                            app:strokeColor="#E6E0F5"
+                            app:strokeWidth="1dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp">
+                                <TextView android:id="@+id/tv_label_offered" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_muted" android:layout_marginBottom="4dp"/>
+                                <TextView android:id="@+id/tv_offered_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary"/>
+                                <TextView android:id="@+id/tv_offered_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="@color/text_muted"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Swap arrow icon -->
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_marginHorizontal="6dp"
+                            android:src="@drawable/ic_shift_swaps"
+                            app:tint="@color/primary_strong" />
+
+                        <!-- Target/requested panel -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_target_shift"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="#F8F5FF"
+                            app:strokeColor="#E6E0F5"
+                            app:strokeWidth="1dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp">
+                                <TextView android:id="@+id/tv_label_target" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_muted" android:layout_marginBottom="4dp"/>
+                                <TextView android:id="@+id/tv_target_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary"/>
+                                <TextView android:id="@+id/tv_target_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="@color/text_muted"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+                    <!-- Bottom row (dayoff mode only): own dayoff | target work shift -->
+                    <LinearLayout
+                        android:id="@+id/ll_header_bottom_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:visibility="gone">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_own_dayoff"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="#F8F5FF"
+                            app:strokeColor="#E6E0F5"
+                            app:strokeWidth="1dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp">
+                                <TextView android:id="@+id/tv_label_own_dayoff" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_muted" android:layout_marginBottom="4dp"/>
+                                <TextView android:id="@+id/tv_own_dayoff_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary"/>
+                                <TextView android:id="@+id/tv_own_dayoff_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="@color/text_muted"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <View android:layout_width="28dp" android:layout_height="1dp" android:layout_marginHorizontal="6dp"/>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_target_work"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="#F8F5FF"
+                            app:strokeColor="#E6E0F5"
+                            app:strokeWidth="1dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp">
+                                <TextView android:id="@+id/tv_label_target_work" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_muted" android:layout_marginBottom="4dp"/>
+                                <TextView android:id="@+id/tv_target_work_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ─── STEP 1 (dayoff mode): calendar to pick own dayoff ─── -->
+            <LinearLayout
+                android:id="@+id/ll_step1_dayoff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_step1_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_step1_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_muted"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Week navigation -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_prev_week"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:icon="@drawable/ic_chevron_left"
+                        app:iconTint="#2D2054"
+                        app:iconSize="18dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:strokeColor="#337C3AED"
+                        app:strokeWidth="1.5dp"
+                        app:cornerRadius="10dp"
+                        app:backgroundTint="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/tv_week_range"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#2D2054" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_next_week"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:icon="@drawable/ic_chevron_left"
+                        app:iconTint="#2D2054"
+                        app:iconSize="18dp"
+                        android:rotation="180"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:strokeColor="#337C3AED"
+                        app:strokeWidth="1.5dp"
+                        app:cornerRadius="10dp"
+                        app:backgroundTint="#FFFFFF" />
+                </LinearLayout>
+
+                <!-- Agenda: all own shifts, day-offs highlighted -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_agenda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:layout_marginBottom="16dp" />
+
+            </LinearLayout>
+
+            <!-- ─── Candidate list section (shift mode + dayoff step 2) ─── -->
+            <LinearLayout
+                android:id="@+id/ll_candidate_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_candidates_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Back to dayoffs button (dayoff step 2 only) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_back_to_dayoffs"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="@string/swap_back_to_dayoffs"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primary_strong"
+                    android:textStyle="bold"
+                    android:backgroundTint="#F8F5FF"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:strokeColor="#E6E0F5"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="28dp"
+                    android:visibility="gone"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+
+                <!-- Search bar -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8F0"
+                    app:cardBackgroundColor="@color/white">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="14dp">
+                        <ImageView android:layout_width="18dp" android:layout_height="18dp" android:src="@drawable/ic_search" app:tint="#94A3B8" android:layout_marginEnd="10dp"/>
+                        <EditText
+                            android:id="@+id/et_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="@string/swap_search_nurse"
+                            android:background="@android:color/transparent"
+                            android:textSize="15sp"
+                            android:textColor="@color/text_primary"
+                            android:imeOptions="actionSearch"
+                            android:inputType="textPersonName"
+                            android:singleLine="true" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Create swap button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_create_swap"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/btn_create_swap"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:enabled="false"
+                    android:alpha="0.4"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/btn_login_gradient"
+                    app:cornerRadius="18dp" />
+
+                <!-- Select all row -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E2E8F0"
+                    app:cardBackgroundColor="@color/white">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_select_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp" />
+                        <TextView
+                            android:id="@+id/tv_select_all_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Filtro: Tipo de turno a receber -->
+                <FrameLayout
+                    android:id="@+id/fl_shift_type_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_edittext"
+                    android:visibility="gone">
+                    <Spinner
+                        android:id="@+id/spinner_shift_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:spinnerMode="dropdown"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@drawable/bg_dropdown_popup"
+                        android:dropDownVerticalOffset="4dp" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_chevron_down"
+                        android:padding="2dp" />
+                </FrameLayout>
+
+                <!-- Candidates RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_candidates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never" />
+
+                <!-- Pagination -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="40dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_prev"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_action_card"
+                        android:src="@drawable/ic_chevron_left"
+                        app:tint="@color/text_muted"
+                        android:padding="14dp"
+                        android:scaleType="centerInside"
+                        android:contentDescription="@string/prev" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_pagination_numbers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="12dp" />
+
+                    <ImageButton
+                        android:id="@+id/btn_next"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_action_card"
+                        android:src="@drawable/ic_chevron_left"
+                        android:rotation="180"
+                        app:tint="@color/text_muted"
+                        android:padding="14dp"
+                        android:scaleType="centerInside"
+                        android:contentDescription="@string/next" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Toast notification -->
+    <LinearLayout
+        android:id="@+id/ll_notification_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:background="@drawable/bg_notification_toast"
+        android:elevation="10dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_check_small"
+            android:layout_marginEnd="12dp"
+            app:tint="#7C3AED" />
+
+        <TextView
+            android:id="@+id/tv_notification_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#7C3AED"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+</FrameLayout>

@@ -310,6 +310,86 @@
     <string name="distribution_title">Shift Distribution by Day</string>
 
 
+    <!-- Swaps -->
+    <string name="swaps_page_title">Shift Swap Requests</string>
+    <string name="swaps_page_subtitle">Manage my sent and received requests</string>
+    <string name="btn_new_swap">+ New request</string>
+    <string name="filter_all_directions">All directions</string>
+    <string name="filter_sent">Sent</string>
+    <string name="filter_received">Received</string>
+    <string name="filter_all_statuses">All</string>
+    <string name="filter_pending">Pending</string>
+    <string name="filter_accepted">Accepted</string>
+    <string name="filter_rejected">Rejected</string>
+    <string name="filter_cancelled">Cancelled</string>
+    <string name="section_sent">Sent</string>
+    <string name="section_received">Received</string>
+    <string name="label_offered_shift">OFFERED SHIFT</string>
+    <string name="label_offered_dayoff">OFFERED DAY OFF</string>
+    <string name="label_requested_dayoff">REQUESTED DAY OFF</string>
+    <string name="label_requested_shift">SHIFT TO RECEIVE</string>
+    <string name="swap_with">With %s</string>
+    <string name="swap_by">By %s</string>
+    <string name="btn_accept_swap">Accept</string>
+    <string name="btn_reject_swap">Reject</string>
+    <string name="btn_cancel_swap">Cancel</string>
+    <string name="confirm_accept_swap_title">Accept swap</string>
+    <string name="confirm_reject_swap_title">Reject request</string>
+    <string name="confirm_cancel_swap_title">Cancel request</string>
+    <string name="confirm_accept_swap">Are you sure you want to accept this swap?</string>
+    <string name="confirm_reject_swap">Are you sure you want to reject this request?</string>
+    <string name="confirm_cancel_swap">Are you sure you want to cancel this request?</string>
+    <string name="btn_confirm_action">Confirm</string>
+    <string name="swap_accepted_success">Swap accepted successfully!</string>
+    <string name="swap_rejected_success">Request rejected.</string>
+    <string name="swap_cancelled_success">Request cancelled.</string>
+    <string name="err_loading_swaps">Error loading swap requests</string>
+
+    <!-- SwapSelectActivity -->
+    <string name="swap_select_title">Select Shift</string>
+    <string name="swap_select_subtitle">Choose the shift you want to swap</string>
+    <string name="swap_select_banner">Tap a work shift to start a swap request.</string>
+    <string name="swap_intent_title">Swap type</string>
+    <string name="swap_mode_shift_title">Same-day shift swap</string>
+    <string name="swap_mode_shift_desc">Propose swapping your shift for another nurse\'s shift on the same day</string>
+    <string name="swap_mode_dayoff_title">Shift for day off</string>
+    <string name="swap_mode_dayoff_desc">Propose giving your shift in exchange for another nurse\'s day off</string>
+
+    <!-- SwapCreateActivity -->
+    <string name="swap_create_title">New Swap Request</string>
+    <string name="swap_header_current_shift">CURRENT SHIFT</string>
+    <string name="swap_header_requested_shift">REQUESTED SHIFT</string>
+    <string name="swap_header_requested_dayoff">REQUESTED DAY OFF</string>
+    <string name="swap_header_own_dayoff">DAY OFF TO OFFER</string>
+    <string name="swap_header_target_work">SHIFT TO RECEIVE</string>
+    <string name="swap_label_dayoff_allday">Day off · All day</string>
+    <string name="swap_label_target_work">SHIFT TO RECEIVE:</string>
+    <string name="swap_also_dayoff">Also has a day off on that date</string>
+    <string name="swap_candidates_title">Available people</string>
+    <string name="swap_search_nurse">Search nurse…</string>
+    <string name="swap_select_all">Select all people (%1$d/%2$d)</string>
+    <string name="swap_back_to_dayoffs">← Back to my day offs</string>
+    <string name="btn_create_swap">Create request</string>
+    <string name="confirm_create_swap">Confirm swap request</string>
+    <string name="confirm_create_swap_msg">%1$d swap request(s) will be created.</string>
+    <string name="swap_note_label">Note (optional)</string>
+    <string name="swap_note_hint">Add a note...</string>
+    <string name="btn_confirm_swap">Confirm</string>
+    <string name="swap_created_success">Swap request(s) sent successfully!</string>
+    <string name="swap_created_partial">%1$d of %2$d requests sent successfully.</string>
+    <string name="swap_step1_title">Choose your day off to offer</string>
+    <string name="swap_breakdown_label">AVAILABLE FOR SWAP</string>
+    <string name="swap_breakdown_count">%1$d available</string>
+    <string name="swap_filter_all_types">All Shifts</string>
+    <string name="swap_step1_desc">To receive this shift, you must offer one of your day offs in return. Select the day off you want to give.</string>
+    <string name="picker_shift_type_title">Which shift do you want to receive?</string>
+    <string name="picker_shift_type_subtitle">Select the shift type you want in return</string>
+    <string name="dayoff_detail_subtitle">Selected day off to offer</string>
+    <string name="dayoff_detail_label_shift_to_receive">SHIFT TO RECEIVE</string>
+    <string name="dayoff_detail_label_candidates">AVAILABLE CANDIDATES</string>
+    <string name="dayoff_detail_candidate_count">%1$d nurse(s)</string>
+    <string name="dayoff_detail_btn_see_candidates">See candidates</string>
+
     <!-- notifications -->
     <string name="notifications_title">Notification Center</string>
     <string name="notifications_subtitle">View email messages and alerts sent by the system</string>
