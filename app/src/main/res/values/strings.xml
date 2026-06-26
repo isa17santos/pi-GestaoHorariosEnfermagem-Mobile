@@ -304,6 +304,86 @@
 
     <string name="distribution_title">Distribuição de Turnos por Dia</string>
 
+    <!-- Swaps -->
+    <string name="swaps_page_title">Pedidos de Troca de Turno</string>
+    <string name="swaps_page_subtitle">Gerir os meus pedidos enviados e recebidos</string>
+    <string name="btn_new_swap">+ Novo pedido</string>
+    <string name="filter_all_directions">Todas as direções</string>
+    <string name="filter_sent">Enviados</string>
+    <string name="filter_received">Recebidos</string>
+    <string name="filter_all_statuses">Todos</string>
+    <string name="filter_pending">Pendente</string>
+    <string name="filter_accepted">Aceite</string>
+    <string name="filter_rejected">Rejeitado</string>
+    <string name="filter_cancelled">Cancelado</string>
+    <string name="section_sent">Enviados</string>
+    <string name="section_received">Recebidos</string>
+    <string name="label_offered_shift">TURNO OFERECIDO</string>
+    <string name="label_offered_dayoff">FOLGA OFERECIDA</string>
+    <string name="label_requested_dayoff">FOLGA PRETENDIDA</string>
+    <string name="label_requested_shift">TURNO A RECEBER</string>
+    <string name="swap_with">Com %s</string>
+    <string name="swap_by">Por %s</string>
+    <string name="btn_accept_swap">Aceitar</string>
+    <string name="btn_reject_swap">Rejeitar</string>
+    <string name="btn_cancel_swap">Cancelar</string>
+    <string name="confirm_accept_swap_title">Aceitar troca</string>
+    <string name="confirm_reject_swap_title">Rejeitar pedido</string>
+    <string name="confirm_cancel_swap_title">Cancelar pedido</string>
+    <string name="confirm_accept_swap">Tens a certeza que queres aceitar esta troca?</string>
+    <string name="confirm_reject_swap">Tens a certeza que queres rejeitar este pedido?</string>
+    <string name="confirm_cancel_swap">Tens a certeza que queres cancelar este pedido?</string>
+    <string name="btn_confirm_action">Confirmar</string>
+    <string name="swap_accepted_success">Troca aceite com sucesso!</string>
+    <string name="swap_rejected_success">Pedido rejeitado.</string>
+    <string name="swap_cancelled_success">Pedido cancelado.</string>
+    <string name="err_loading_swaps">Erro ao carregar pedidos de troca</string>
+
+    <!-- SwapSelectActivity -->
+    <string name="swap_select_title">Selecionar Turno</string>
+    <string name="swap_select_subtitle">Escolha o turno que pretende trocar</string>
+    <string name="swap_select_banner">Clica num turno de trabalho para iniciar um pedido de troca.</string>
+    <string name="swap_intent_title">Tipo de troca</string>
+    <string name="swap_mode_shift_title">Troca de turno no mesmo dia</string>
+    <string name="swap_mode_shift_desc">Propõe trocar o teu turno por um turno de outro enfermeiro no mesmo dia</string>
+    <string name="swap_mode_dayoff_title">Turno por folga</string>
+    <string name="swap_mode_dayoff_desc">Propõe dar o teu turno em troca de uma folga do outro enfermeiro</string>
+
+    <!-- SwapCreateActivity -->
+    <string name="swap_create_title">Novo Pedido de Troca</string>
+    <string name="swap_header_current_shift">TURNO ACTUAL</string>
+    <string name="swap_header_requested_shift">TURNO PRETENDIDO</string>
+    <string name="swap_header_requested_dayoff">FOLGA PRETENDIDA</string>
+    <string name="swap_header_own_dayoff">FOLGA A OFERECER</string>
+    <string name="swap_header_target_work">TURNO A RECEBER</string>
+    <string name="swap_label_dayoff_allday">Folga · Dia inteiro</string>
+    <string name="swap_label_target_work">TURNO A RECEBER:</string>
+    <string name="swap_also_dayoff">Também está de folga nesse dia</string>
+    <string name="swap_candidates_title">Pessoas disponíveis</string>
+    <string name="swap_search_nurse">Procurar enfermeiro…</string>
+    <string name="swap_select_all">Selecionar todas as pessoas (%1$d/%2$d)</string>
+    <string name="swap_back_to_dayoffs">← Voltar às minhas folgas</string>
+    <string name="btn_create_swap">Criar pedido</string>
+    <string name="confirm_create_swap">Confirmar pedido de troca</string>
+    <string name="confirm_create_swap_msg">Serão criados %1$d pedido(s) de troca.</string>
+    <string name="swap_note_label">Nota (opcional)</string>
+    <string name="swap_note_hint">Adicionar nota...</string>
+    <string name="btn_confirm_swap">Confirmar</string>
+    <string name="swap_created_success">Pedido(s) de troca enviado(s) com sucesso!</string>
+    <string name="swap_created_partial">%1$d de %2$d pedidos enviados com sucesso.</string>
+    <string name="swap_step1_title">Escolhe a tua folga a oferecer</string>
+    <string name="swap_breakdown_label">DISPONÍVEIS PARA TROCA</string>
+    <string name="swap_breakdown_count">%1$d disponíveis</string>
+    <string name="swap_filter_all_types">Todos os Turnos</string>
+    <string name="swap_step1_desc">Para receberes este turno, tens de oferecer uma das tuas folgas em troca. Seleciona a folga que pretendes dar.</string>
+    <string name="picker_shift_type_title">Que turno pretendes receber?</string>
+    <string name="picker_shift_type_subtitle">Seleciona o tipo de turno que queres em troca</string>
+    <string name="dayoff_detail_subtitle">Folga selecionada para oferecer</string>
+    <string name="dayoff_detail_label_shift_to_receive">TURNO A RECEBER</string>
+    <string name="dayoff_detail_label_candidates">CANDIDATOS DISPONÍVEIS</string>
+    <string name="dayoff_detail_candidate_count">%1$d enfermeiro(s)</string>
+    <string name="dayoff_detail_btn_see_candidates">Ver candidatos</string>
+
     <!-- notifications -->
     <string name="notifications_title">Central de Notificações</string>
     <string name="notifications_subtitle">Consulte as mensagens e alertas de email enviados pelo sistema</string>
