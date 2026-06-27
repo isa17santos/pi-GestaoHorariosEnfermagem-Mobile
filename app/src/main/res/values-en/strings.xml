@@ -364,7 +364,7 @@
     <string name="swap_header_target_work">SHIFT TO RECEIVE</string>
     <string name="swap_label_dayoff_allday">Day off · All day</string>
     <string name="swap_label_target_work">SHIFT TO RECEIVE:</string>
-    <string name="swap_also_dayoff">Also has a day off on that date</string>
+    <string name="swap_also_non_working">Is on \"%s\" on that date</string>
     <string name="swap_candidates_title">Available people</string>
     <string name="swap_search_nurse">Search nurse…</string>
     <string name="swap_select_all">Select all people (%1$d/%2$d)</string>
@@ -389,6 +389,28 @@
     <string name="dayoff_detail_label_candidates">AVAILABLE CANDIDATES</string>
     <string name="dayoff_detail_candidate_count">%1$d nurse(s)</string>
     <string name="dayoff_detail_btn_see_candidates">See candidates</string>
+
+    <!-- SwapHistoryActivity -->
+    <string name="swap_history_title">Swap History</string>
+    <string name="swap_history_subtitle">Accepted swap requests between nurses</string>
+    <string name="swap_history_card_subtitle">Accepted swap requests</string>
+    <string name="filter_all_nurses">All nurses</string>
+    <string name="filter_all_months">All months</string>
+    <string name="swap_between">Between %1$s and %2$s</string>
+    <string-array name="months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 
     <!-- notifications -->
     <string name="notifications_title">Notification Center</string>

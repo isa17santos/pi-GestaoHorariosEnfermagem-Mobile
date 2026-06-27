@@ -59,6 +59,7 @@ public class HeadNurseDashboardActivity extends BaseActivity {
         tvHeadNurseSubtitle.setText(R.string.dashboard_head_nurse_subtitle);
 
         updateCardText(R.id.card_view_schedule, R.string.consult_schedule, R.string.consult_schedule_subtitle);
+        updateCardText(R.id.card_swap_history, R.string.swap_history_title, R.string.swap_history_card_subtitle);
         updateCardText(R.id.card_stats, R.string.statistics, R.string.head_nurse_stats_subtitle);
     }
 
@@ -74,6 +75,9 @@ public class HeadNurseDashboardActivity extends BaseActivity {
     private void setupClickListeners() {
         findViewById(R.id.card_view_schedule).setOnClickListener(v ->
                 startActivity(new Intent(this, ScheduleActivity.class)));
+
+        findViewById(R.id.card_swap_history).setOnClickListener(v ->
+                startActivity(new Intent(this, SwapHistoryActivity.class)));
 
         findViewById(R.id.card_stats).setOnClickListener(v ->
                 startActivity(new Intent(this, HeadNurseStatisticsActivity.class)));

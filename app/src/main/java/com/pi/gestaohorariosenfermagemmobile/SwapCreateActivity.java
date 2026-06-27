@@ -79,6 +79,7 @@ public class SwapCreateActivity extends BaseActivity {
     private Shift selectedOwnDayoff; // chosen in step 1
     private List<Shift> candidatesOnOfferedDate = new ArrayList<>(); // cached for step 2
     private Map<Integer, Shift> targetWorkShiftsMap = new HashMap<>(); // userId → work shift on dayoff date
+    private Map<Integer, Shift> targetNonWorkingShiftsMap = new HashMap<>(); // userId → non-working shift on dayoff date
     private List<Shift> preloadedCandidates = null; // permanent cache of candidates on offered date
     // date (yyyy-MM-dd) → (shiftTypeName → eligible candidate count)
     private Map<String, Map<String, Integer>> breakdownByDate = new HashMap<>();
@@ -97,6 +98,7 @@ public class SwapCreateActivity extends BaseActivity {
     private String token;
     private View loader;
     private LinearLayout llNotification;
+    private LinearLayout llErrorToast;
     private TextView tvTitle;
 
     // Header card views
@@ -173,6 +175,7 @@ public class SwapCreateActivity extends BaseActivity {
     private void bindViews() {
         loader           = findViewById(R.id.loader);
         llNotification   = findViewById(R.id.ll_notification_toast);
+        llErrorToast     = findViewById(R.id.ll_error_toast);
         tvTitle          = findViewById(R.id.tv_title);
 
         tvLabelOffered   = findViewById(R.id.tv_label_offered);
@@ -256,7 +259,7 @@ public class SwapCreateActivity extends BaseActivity {
                     }
                 }
                 if (offeredShift == null) {
-                    Toast.makeText(SwapCreateActivity.this, getString(R.string.err_loading_swaps), Toast.LENGTH_SHORT).show();
+                    showErrorNotification(getString(R.string.err_loading_swaps));
                     finish();
                     return;
                 }
@@ -271,7 +274,7 @@ public class SwapCreateActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ShiftsResponse> call, Throwable t) {
                 loader.setVisibility(View.GONE);
-                Toast.makeText(SwapCreateActivity.this, getString(R.string.err_network), Toast.LENGTH_SHORT).show();
+                showErrorNotification(getString(R.string.err_network));
                 finish();
             }
         });
@@ -341,7 +344,7 @@ public class SwapCreateActivity extends BaseActivity {
                     @Override
                     public void onFailure(Call<ShiftsResponse> call, Throwable t) {
                         loader.setVisibility(View.GONE);
-                        Toast.makeText(SwapCreateActivity.this, getString(R.string.err_network), Toast.LENGTH_SHORT).show();
+                        showErrorNotification(getString(R.string.err_network));
                     }
                 });
     }
@@ -371,7 +374,7 @@ public class SwapCreateActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ShiftsResponse> call, Throwable t) {
                 loader.setVisibility(View.GONE);
-                Toast.makeText(SwapCreateActivity.this, getString(R.string.err_network), Toast.LENGTH_SHORT).show();
+                showErrorNotification(getString(R.string.err_network));
             }
         });
     }
@@ -590,7 +593,7 @@ public class SwapCreateActivity extends BaseActivity {
                     @Override
                     public void onFailure(Call<ShiftsResponse> call, Throwable t) {
                         loader.setVisibility(View.GONE);
-                        Toast.makeText(SwapCreateActivity.this, getString(R.string.err_network), Toast.LENGTH_SHORT).show();
+                        showErrorNotification(getString(R.string.err_network));
                     }
                 });
     }
@@ -604,15 +607,19 @@ public class SwapCreateActivity extends BaseActivity {
                         loader.setVisibility(View.GONE);
                         List<Shift> raw = response.isSuccessful() && response.body() != null
                                 ? response.body().getData() : new ArrayList<>();
-                        // Index by shift id (adapter finds target work shift by user id)
                         targetWorkShiftsMap = new HashMap<>();
+                        targetNonWorkingShiftsMap = new HashMap<>();
                         for (Shift s : raw) {
-                            if (s.getShiftType() != null &&
-                                    !DAYOFF_NAMES.contains(s.getShiftType().getName().toLowerCase().trim())) {
+                            if (s.getShiftType() == null || s.getUsers() == null || s.getUsers().isEmpty()) continue;
+                            int userId = s.getUsers().get(0).getId();
+                            if (!DAYOFF_NAMES.contains(s.getShiftType().getName().toLowerCase().trim())) {
                                 targetWorkShiftsMap.put(s.getId(), s);
+                            } else {
+                                targetNonWorkingShiftsMap.put(userId, s);
                             }
                         }
                         adapter.setTargetWorkShifts(targetWorkShiftsMap);
+                        adapter.setTargetNonWorkingShifts(targetNonWorkingShiftsMap);
                         allCandidates = candidatesOnOfferedDate;
                         buildShiftTypeFilterChips();
                         applySearch("");
@@ -621,7 +628,7 @@ public class SwapCreateActivity extends BaseActivity {
                     @Override
                     public void onFailure(Call<ShiftsResponse> call, Throwable t) {
                         loader.setVisibility(View.GONE);
-                        Toast.makeText(SwapCreateActivity.this, getString(R.string.err_network), Toast.LENGTH_SHORT).show();
+                        showErrorNotification(getString(R.string.err_network));
                     }
                 });
     }
@@ -961,6 +968,19 @@ public class SwapCreateActivity extends BaseActivity {
 
     private int dpToPx(int dp) {
         return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
+
+    private void showErrorNotification(String message) {
+        if (llErrorToast == null) return;
+        TextView tvMsg = llErrorToast.findViewById(R.id.tv_error_toast_msg);
+        if (tvMsg != null) tvMsg.setText(message);
+        llErrorToast.setVisibility(View.VISIBLE);
+        llErrorToast.setAlpha(0f);
+        llErrorToast.setTranslationY(-100f);
+        llErrorToast.animate().alpha(1f).translationY(0f).setDuration(400).setListener(null);
+        new android.os.Handler().postDelayed(() ->
+                llErrorToast.animate().alpha(0f).translationY(-100f).setDuration(400)
+                        .withEndAction(() -> llErrorToast.setVisibility(View.GONE)), 3000);
     }
 
     // ─── BaseActivity ─────────────────────────────────────────────────────────

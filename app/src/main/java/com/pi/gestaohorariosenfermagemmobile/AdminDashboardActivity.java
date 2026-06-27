@@ -55,6 +55,7 @@ public class AdminDashboardActivity extends BaseActivity {
         updateCardText(R.id.card_vacations, R.string.vacations, R.string.vacations_subtitle);
         updateCardText(R.id.card_sick, R.string.absences, R.string.absences_subtitle);
         updateCardText(R.id.card_shifts, R.string.shift_types, R.string.shift_types_subtitle);
+        updateCardText(R.id.card_swap_history, R.string.swap_history_title, R.string.swap_history_card_subtitle);
         updateCardText(R.id.card_stats, R.string.statistics, R.string.statistics_subtitle);
     }
 
@@ -82,6 +83,10 @@ public class AdminDashboardActivity extends BaseActivity {
         // Tipos de Turno
         findViewById(R.id.card_shifts).setOnClickListener(v ->
                 startActivity(new Intent(this, ShiftTypesActivity.class)));
+
+        // Histórico de Trocas
+        findViewById(R.id.card_swap_history).setOnClickListener(v ->
+                startActivity(new Intent(this, SwapHistoryActivity.class)));
 
         // Estatísticas
         findViewById(R.id.card_stats).setOnClickListener(v ->

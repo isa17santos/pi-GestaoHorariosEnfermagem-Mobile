@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -44,7 +43,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/swaps_page_title"
+                android:text="@string/swap_history_title"
                 android:textColor="@color/text_primary"
                 android:textSize="32sp"
                 android:textStyle="bold" />
@@ -53,33 +52,19 @@
                 android:id="@+id/tv_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/swaps_page_subtitle"
+                android:text="@string/swap_history_subtitle"
                 android:textColor="@color/text_muted"
                 android:textSize="16sp"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Botão Novo pedido (gradient roxo, largura total) -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_new_swap"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="24dp"
-                android:text="@string/btn_new_swap"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                app:backgroundTint="@null"
-                android:background="@drawable/btn_login_gradient"
-                app:cornerRadius="18dp" />
-
-            <!-- Filtro: Direção -->
+            <!-- Filtro: Enfermeiro -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/bg_edittext">
                 <Spinner
-                    android:id="@+id/spinner_direction"
+                    android:id="@+id/spinner_nurse"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
@@ -96,14 +81,14 @@
                     android:padding="2dp" />
             </FrameLayout>
 
-            <!-- Filtro: Estado -->
+            <!-- Filtro: Mês -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/bg_edittext">
                 <Spinner
-                    android:id="@+id/spinner_status"
+                    android:id="@+id/spinner_month"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
@@ -120,9 +105,9 @@
                     android:padding="2dp" />
             </FrameLayout>
 
-            <!-- Lista de pedidos (cards individuais no adapter, sem wrapper) -->
+            <!-- Lista de trocas -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_swaps"
+                android:id="@+id/rv_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
@@ -169,37 +154,6 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- Toast de sucesso -->
-    <LinearLayout
-        android:id="@+id/ll_notification_toast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="12dp"
-        android:background="@drawable/bg_notification_toast"
-        android:elevation="10dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@drawable/ic_check_small"
-            android:layout_marginEnd="12dp"
-            app:tint="#F79B32" />
-
-        <TextView
-            android:id="@+id/tv_notification_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#F79B32"
-            android:textStyle="bold"
-            android:textSize="14sp" />
-    </LinearLayout>
 
     <!-- Toast de erro -->
     <LinearLayout

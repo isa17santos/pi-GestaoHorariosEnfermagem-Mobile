@@ -47,6 +47,7 @@ public class SwapsActivity extends BaseActivity {
 
     private LinearLayout llPaginationNumbers;
     private LinearLayout llNotification;
+    private LinearLayout llErrorToast;
 
     private Spinner spinnerDirection, spinnerStatus;
 
@@ -95,6 +96,7 @@ public class SwapsActivity extends BaseActivity {
         rvSwaps = findViewById(R.id.rv_swaps);
         llPaginationNumbers = findViewById(R.id.ll_pagination_numbers);
         llNotification = findViewById(R.id.ll_notification_toast);
+        llErrorToast = findViewById(R.id.ll_error_toast);
 
         tvTitle = findViewById(R.id.tv_title);
         tvSubtitle = findViewById(R.id.tv_subtitle);
@@ -134,8 +136,7 @@ public class SwapsActivity extends BaseActivity {
 
     private void setupFilterSpinners() {
         int dirPos = spinnersInitialized ? spinnerDirection.getSelectedItemPosition() : 0;
-        // Na primeira chamada abrir em "Pendente" (índice 1) para replicar a web
-        int statusPos = spinnersInitialized ? spinnerStatus.getSelectedItemPosition() : 1;
+        int statusPos = spinnersInitialized ? spinnerStatus.getSelectedItemPosition() : 0;
         spinnersInitialized = true;
 
         String[] directions = {
@@ -200,7 +201,7 @@ public class SwapsActivity extends BaseActivity {
             }
             @Override
             public void onFailure(Call<SwapsResponse> call, Throwable t) {
-                Toast.makeText(SwapsActivity.this, getString(R.string.err_loading_swaps), Toast.LENGTH_SHORT).show();
+                showErrorNotification(getString(R.string.err_loading_swaps));
             }
         });
     }
@@ -268,16 +269,47 @@ public class SwapsActivity extends BaseActivity {
             else received.add(swap);
         }
 
+        // Pendentes primeiro em cada secção
+        sortPendingFirst(sent);
+        sortPendingFirst(received);
+
+        long sentPending     = countPending(sent);
+        long receivedPending = countPending(received);
+
+        // A secção com mais pendentes aparece primeiro
         List<Object> mixed = new ArrayList<>();
-        if (!sent.isEmpty()) {
-            mixed.add(getString(R.string.section_sent));
-            mixed.addAll(sent);
-        }
-        if (!received.isEmpty()) {
-            mixed.add(getString(R.string.section_received));
-            mixed.addAll(received);
+        boolean receivedFirst = receivedPending > sentPending;
+
+        if (receivedFirst) {
+            addSection(mixed, getString(R.string.section_received), received);
+            addSection(mixed, getString(R.string.section_sent), sent);
+        } else {
+            addSection(mixed, getString(R.string.section_sent), sent);
+            addSection(mixed, getString(R.string.section_received), received);
         }
         return mixed;
+    }
+
+    private void sortPendingFirst(List<SwapRequest> list) {
+        list.sort((a, b) -> {
+            boolean aPending = "pending".equals(a.getStatus());
+            boolean bPending = "pending".equals(b.getStatus());
+            if (aPending == bPending) return 0;
+            return aPending ? -1 : 1;
+        });
+    }
+
+    private long countPending(List<SwapRequest> list) {
+        long count = 0;
+        for (SwapRequest s : list) if ("pending".equals(s.getStatus())) count++;
+        return count;
+    }
+
+    private void addSection(List<Object> mixed, String header, List<SwapRequest> items) {
+        if (!items.isEmpty()) {
+            mixed.add(header);
+            mixed.addAll(items);
+        }
     }
 
     private void hidePagination() {
@@ -399,12 +431,12 @@ public class SwapsActivity extends BaseActivity {
                     showSuccessNotification(msg);
                     loadSwaps();
                 } else {
-                    Toast.makeText(SwapsActivity.this, "Erro no servidor", Toast.LENGTH_SHORT).show();
+                    showErrorNotification(getString(R.string.err_network));
                 }
             }
             @Override
             public void onFailure(Call<Void> c, Throwable t) {
-                Toast.makeText(SwapsActivity.this, getString(R.string.err_network), Toast.LENGTH_SHORT).show();
+                showErrorNotification(getString(R.string.err_network));
             }
         });
     }
@@ -434,6 +466,19 @@ public class SwapsActivity extends BaseActivity {
         new android.os.Handler().postDelayed(() ->
                 llNotification.animate().alpha(0f).translationY(-100f).setDuration(400)
                         .withEndAction(() -> llNotification.setVisibility(View.GONE)), 3000);
+    }
+
+    private void showErrorNotification(String message) {
+        if (llErrorToast == null) return;
+        TextView tvMsg = llErrorToast.findViewById(R.id.tv_error_toast_msg);
+        if (tvMsg != null) tvMsg.setText(message);
+        llErrorToast.setVisibility(View.VISIBLE);
+        llErrorToast.setAlpha(0f);
+        llErrorToast.setTranslationY(-100f);
+        llErrorToast.animate().alpha(1f).translationY(0f).setDuration(400).setListener(null);
+        new android.os.Handler().postDelayed(() ->
+                llErrorToast.animate().alpha(0f).translationY(-100f).setDuration(400)
+                        .withEndAction(() -> llErrorToast.setVisibility(View.GONE)), 3000);
     }
 
     private int dpToPx(int dp) {

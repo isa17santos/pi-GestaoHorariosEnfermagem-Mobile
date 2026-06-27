@@ -38,11 +38,17 @@ public class SwapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final String currentUserName;
     private final OnSwapActionListener listener;
     private final Context context;
+    private final boolean readOnly;
 
     public SwapAdapter(String currentUserName, OnSwapActionListener listener, Context context) {
+        this(currentUserName, listener, context, false);
+    }
+
+    public SwapAdapter(String currentUserName, OnSwapActionListener listener, Context context, boolean readOnly) {
         this.currentUserName = currentUserName;
         this.listener = listener;
         this.context = context;
+        this.readOnly = readOnly;
     }
 
     public void setData(List<Object> data) {
@@ -105,9 +111,23 @@ public class SwapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private void bindHeader(SwapViewHolder h, SwapRequest swap, boolean isSent) {
-        h.tvCounterparty.setText(context.getString(R.string.swap_with, getCounterpartyName(swap, isSent)));
+        if (readOnly) {
+            String requester = getParticipantByRole(swap, "requester");
+            String target = getParticipantByRole(swap, "target");
+            h.tvCounterparty.setText(context.getString(R.string.swap_between, requester, target));
+        } else {
+            h.tvCounterparty.setText(context.getString(R.string.swap_with, getCounterpartyName(swap, isSent)));
+        }
         applyStatusBadge(h.tvStatusBadge, swap.getStatus());
         h.tvDate.setText(formatCreatedAt(swap.getCreatedAt()));
+    }
+
+    private String getParticipantByRole(SwapRequest swap, String role) {
+        if (swap.getParticipants() == null) return "—";
+        for (SwapRequest.SwapParticipant p : swap.getParticipants()) {
+            if (role.equals(p.getRole())) return p.getName();
+        }
+        return "—";
     }
 
     // Aplica cor de fundo e texto do badge conforme o estado
@@ -194,6 +214,10 @@ public class SwapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // Botões de ação: sent+pending → Cancelar; received+pending → Aceitar + Rejeitar
     private void bindActionButtons(SwapViewHolder h, SwapRequest swap, boolean isSent) {
+        if (readOnly) {
+            h.llActions.setVisibility(View.GONE);
+            return;
+        }
         boolean isPending = "pending".equals(swap.getStatus());
 
         h.btnCancel.setVisibility(isSent && isPending ? View.VISIBLE : View.GONE);

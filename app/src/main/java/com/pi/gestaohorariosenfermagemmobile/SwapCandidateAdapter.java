@@ -40,6 +40,8 @@ public class SwapCandidateAdapter extends RecyclerView.Adapter<SwapCandidateAdap
     private Shift ownDayoff = null; // nurse's selected day-off (dayoff mode only)
     // For dayoff mode: map from candidate shift id → target work shift on the dayoff date
     private Map<Integer, Shift> targetWorkShifts = new HashMap<>();
+    // For dayoff mode: map from userId → non-working shift on the dayoff date (sick leave, holidays, etc.)
+    private Map<Integer, Shift> targetNonWorkingShifts = new HashMap<>();
     private final Set<Integer> selectedShiftIds = new HashSet<>();
     // Validation warnings per candidate shift id
     private Map<Integer, List<String>> warningsMap = new HashMap<>();
@@ -65,6 +67,11 @@ public class SwapCandidateAdapter extends RecyclerView.Adapter<SwapCandidateAdap
 
     public void setTargetWorkShifts(Map<Integer, Shift> map) {
         this.targetWorkShifts = map;
+        notifyDataSetChanged();
+    }
+
+    public void setTargetNonWorkingShifts(Map<Integer, Shift> map) {
+        this.targetNonWorkingShifts = map != null ? map : new HashMap<>();
         notifyDataSetChanged();
     }
 
@@ -140,7 +147,11 @@ public class SwapCandidateAdapter extends RecyclerView.Adapter<SwapCandidateAdap
             } else {
                 h.llTargetRow.setVisibility(View.GONE);
                 h.tvAlsoDayoff.setVisibility(View.VISIBLE);
-                h.tvAlsoDayoff.setText(context.getString(R.string.swap_also_dayoff));
+                Shift nonWorking = targetNonWorkingShifts.get(getUserId(shift));
+                String shiftTypeName = nonWorking != null && nonWorking.getShiftType() != null
+                        ? getLocalizedName(nonWorking.getShiftType().getName())
+                        : (shift.getShiftType() != null ? getLocalizedName(shift.getShiftType().getName()) : "—");
+                h.tvAlsoDayoff.setText(context.getString(R.string.swap_also_non_working, shiftTypeName));
             }
         } else {
             h.llTargetRow.setVisibility(View.GONE);

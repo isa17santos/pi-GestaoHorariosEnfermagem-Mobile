@@ -266,6 +266,7 @@ public class SwapSelectActivity extends BaseActivity {
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.setMargins((int) (4 * density), (int) (4 * density), (int) (4 * density), (int) (4 * density));
                 card.setLayoutParams(lp);
+                if (!isFutureDate(date)) card.setAlpha(0.5f);
                 container.addView(card);
             }
         }
