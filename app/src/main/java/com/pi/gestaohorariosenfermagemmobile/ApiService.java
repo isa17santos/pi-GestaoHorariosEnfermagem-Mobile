@@ -117,6 +117,15 @@ public interface ApiService {
             @Query("status") String status
     );
 
+    @GET("swaps")
+    Call<SwapsResponse> getSwapHistory(
+            @Header("Authorization") String token,
+            @Query("status") String status,
+            @Query("user_id") Integer userId,
+            @Query("month") Integer month,
+            @Query("year") Integer year
+    );
+
     @POST("swaps/{id}/accept")
     Call<Void> acceptSwap(@Header("Authorization") String token, @Path("id") int id);
 

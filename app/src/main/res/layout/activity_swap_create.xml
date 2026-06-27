@@ -83,7 +83,7 @@
                             app:cardBackgroundColor="#F8F5FF"
                             app:strokeColor="#E6E0F5"
                             app:strokeWidth="1dp">
-                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp" android:minHeight="90dp">
                                 <TextView android:id="@+id/tv_label_offered" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_muted" android:layout_marginBottom="4dp"/>
                                 <TextView android:id="@+id/tv_offered_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary"/>
                                 <TextView android:id="@+id/tv_offered_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="@color/text_muted"/>
@@ -109,7 +109,7 @@
                             app:cardBackgroundColor="#F8F5FF"
                             app:strokeColor="#E6E0F5"
                             app:strokeWidth="1dp">
-                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp" android:minHeight="90dp">
                                 <TextView android:id="@+id/tv_label_target" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_muted" android:layout_marginBottom="4dp"/>
                                 <TextView android:id="@+id/tv_target_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary"/>
                                 <TextView android:id="@+id/tv_target_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="@color/text_muted"/>
@@ -136,7 +136,7 @@
                             app:cardBackgroundColor="#F8F5FF"
                             app:strokeColor="#E6E0F5"
                             app:strokeWidth="1dp">
-                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp" android:minHeight="90dp">
                                 <TextView android:id="@+id/tv_label_own_dayoff" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_muted" android:layout_marginBottom="4dp"/>
                                 <TextView android:id="@+id/tv_own_dayoff_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary"/>
                                 <TextView android:id="@+id/tv_own_dayoff_type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="@color/text_muted"/>
@@ -155,7 +155,7 @@
                             app:cardBackgroundColor="#F8F5FF"
                             app:strokeColor="#E6E0F5"
                             app:strokeWidth="1dp">
-                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="10dp" android:minHeight="90dp">
                                 <TextView android:id="@+id/tv_label_target_work" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_muted" android:layout_marginBottom="4dp"/>
                                 <TextView android:id="@+id/tv_target_work_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary"/>
                             </LinearLayout>
@@ -441,7 +441,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Toast notification -->
+    <!-- Toast de sucesso -->
     <LinearLayout
         android:id="@+id/ll_notification_toast"
         android:layout_width="wrap_content"
@@ -461,13 +461,44 @@
             android:layout_height="18dp"
             android:src="@drawable/ic_check_small"
             android:layout_marginEnd="12dp"
-            app:tint="#7C3AED" />
+            app:tint="#F79B32" />
 
         <TextView
             android:id="@+id/tv_notification_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#7C3AED"
+            android:textColor="#F79B32"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Toast de erro -->
+    <LinearLayout
+        android:id="@+id/ll_error_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:background="@drawable/bg_notification_toast_error"
+        android:elevation="10dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_clock"
+            android:layout_marginEnd="12dp"
+            app:tint="#F36CC8" />
+
+        <TextView
+            android:id="@+id/tv_error_toast_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#F36CC8"
             android:textStyle="bold"
             android:textSize="14sp" />
     </LinearLayout>

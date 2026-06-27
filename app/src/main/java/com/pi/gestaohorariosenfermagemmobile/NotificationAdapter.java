@@ -37,7 +37,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notification n = notifications.get(position);
         holder.tvTitle.setText(n.getSubject());
-        holder.tvDesc.setText(n.getBody());
+        holder.tvDesc.setText(translateShiftTypes(n.getBody()));
 
         // 1. Formatação de Data Bilingue
         try {
@@ -120,6 +120,19 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             btnReadContainer = v.findViewById(R.id.btn_read_container);
             ivEnvelope = v.findViewById(R.id.iv_notif_envelope);
         }
+    }
+
+    private String translateShiftTypes(String text) {
+        if (text == null) return null;
+        return text
+            .replaceAll("(?i)\\bmorning\\b", "Manhã")
+            .replaceAll("(?i)\\bafternoon\\b", "Tarde")
+            .replaceAll("(?i)\\bnight\\b", "Noite")
+            .replaceAll("(?i)\\bday off\\b", "Folga")
+            .replaceAll("(?i)\\bdayoff\\b", "Folga")
+            .replaceAll("(?i)\\bholidays\\b", "Férias")
+            .replaceAll("(?i)\\bsick leave\\b", "Baixa Médica")
+            .replaceAll("(?i)\\bparental leave\\b", "Licença Parental");
     }
 
     // Método auxiliar para o viewholder encontrar o container

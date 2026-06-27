@@ -257,7 +257,8 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:src="@drawable/ic_check_small"
-            android:layout_marginEnd="12dp" />
+            android:layout_marginEnd="12dp"
+            app:tint="#F79B32" />
         <TextView
             android:id="@+id/tv_notification_msg"
             android:layout_width="wrap_content"

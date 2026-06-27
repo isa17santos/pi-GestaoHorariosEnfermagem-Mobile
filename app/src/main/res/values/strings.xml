@@ -358,7 +358,7 @@
     <string name="swap_header_target_work">TURNO A RECEBER</string>
     <string name="swap_label_dayoff_allday">Folga · Dia inteiro</string>
     <string name="swap_label_target_work">TURNO A RECEBER:</string>
-    <string name="swap_also_dayoff">Também está de folga nesse dia</string>
+    <string name="swap_also_non_working">Está de \"%s\" nesse dia</string>
     <string name="swap_candidates_title">Pessoas disponíveis</string>
     <string name="swap_search_nurse">Procurar enfermeiro…</string>
     <string name="swap_select_all">Selecionar todas as pessoas (%1$d/%2$d)</string>
@@ -383,6 +383,28 @@
     <string name="dayoff_detail_label_candidates">CANDIDATOS DISPONÍVEIS</string>
     <string name="dayoff_detail_candidate_count">%1$d enfermeiro(s)</string>
     <string name="dayoff_detail_btn_see_candidates">Ver candidatos</string>
+
+    <!-- SwapHistoryActivity -->
+    <string name="swap_history_title">Histórico de Trocas</string>
+    <string name="swap_history_subtitle">Pedidos de troca aceites entre enfermeiros</string>
+    <string name="swap_history_card_subtitle">Pedidos de troca aceites</string>
+    <string name="filter_all_nurses">Todos os enfermeiros</string>
+    <string name="filter_all_months">Todos os meses</string>
+    <string name="swap_between">Entre %1$s e %2$s</string>
+    <string-array name="months_array">
+        <item>Janeiro</item>
+        <item>Fevereiro</item>
+        <item>Março</item>
+        <item>Abril</item>
+        <item>Maio</item>
+        <item>Junho</item>
+        <item>Julho</item>
+        <item>Agosto</item>
+        <item>Setembro</item>
+        <item>Outubro</item>
+        <item>Novembro</item>
+        <item>Dezembro</item>
+    </string-array>
 
     <!-- notifications -->
     <string name="notifications_title">Central de Notificações</string>
