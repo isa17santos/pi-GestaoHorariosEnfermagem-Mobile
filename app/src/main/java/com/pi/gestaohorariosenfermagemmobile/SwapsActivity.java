@@ -55,7 +55,7 @@ public class SwapsActivity extends BaseActivity {
     private String currentUserName;
 
     private int currentPage = 1;
-    private static final int ITEMS_PER_PAGE = 6;
+    private static final int ITEMS_PER_PAGE = 4;
 
     // Garante que setupFilterSpinners define statusPos=1 apenas na primeira chamada
     private boolean spinnersInitialized = false;
@@ -324,7 +324,25 @@ public class SwapsActivity extends BaseActivity {
         if (llPaginationNumbers == null) return;
         llPaginationNumbers.removeAllViews();
 
-        for (int i = 1; i <= maxPage; i++) {
+        // Lógica para mostrar apenas 3 números (janela deslizante)
+        int startPage, endPage;
+        if (maxPage <= 3) {
+            startPage = 1;
+            endPage = maxPage;
+        } else {
+            if (currentPage <= 2) {
+                startPage = 1;
+                endPage = 3;
+            } else if (currentPage >= maxPage - 1) {
+                startPage = maxPage - 2;
+                endPage = maxPage;
+            } else {
+                startPage = currentPage - 1;
+                endPage = currentPage + 1;
+            }
+        }
+
+        for (int i = startPage; i <= endPage; i++) {
             final int pageNum = i;
             TextView tv = new TextView(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dpToPx(44), dpToPx(44));
@@ -342,7 +360,10 @@ public class SwapsActivity extends BaseActivity {
                 tv.setBackgroundResource(R.drawable.bg_action_card);
                 tv.setTextColor(ContextCompat.getColor(this, R.color.primary_strong));
             }
-            tv.setOnClickListener(v -> { currentPage = pageNum; applyFilters(); });
+            tv.setOnClickListener(v -> {
+                currentPage = pageNum;
+                applyFilters();
+            });
             llPaginationNumbers.addView(tv);
         }
 

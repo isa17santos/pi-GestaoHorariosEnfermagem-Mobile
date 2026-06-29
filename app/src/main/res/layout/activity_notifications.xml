@@ -130,6 +130,44 @@
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
 
+            <!-- Paginação -->
+            <LinearLayout
+                android:id="@+id/ll_pagination_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="40dp"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/btn_prev"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_action_card"
+                    android:src="@drawable/ic_chevron_left"
+                    app:tint="#8E87A3"
+                    android:padding="14dp"
+                    android:scaleType="centerInside" />
+
+                <LinearLayout
+                    android:id="@+id/ll_pagination_numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="12dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_next"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_action_card"
+                    android:src="@drawable/ic_chevron_left"
+                    android:rotation="180"
+                    app:tint="#8E87A3"
+                    android:padding="14dp"
+                    android:scaleType="centerInside" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

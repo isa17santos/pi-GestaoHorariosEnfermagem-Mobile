@@ -74,6 +74,12 @@ public class ProfileActivity extends BaseActivity {
     private List<NursePreference> allPreferences = new ArrayList<>();
     private final Handler errorHideHandler = new Handler(Looper.getMainLooper());
 
+    private EditText etName;
+    private TextView tvEmailValue;
+    private String originalName;
+
+    private TextView tvErrorName, tvErrorEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,15 +111,21 @@ public class ProfileActivity extends BaseActivity {
         tvLangLabel = findViewById(R.id.tv_language_label);
         btnBack = findViewById(R.id.btn_back);
 
+        etName = findViewById(R.id.et_name);
+        tvNameValue = findViewById(R.id.tv_name_value);
+        etEmail = findViewById(R.id.et_email);
+        tvEmailValue = findViewById(R.id.tv_email_value);
+        btnSaveProfile = findViewById(R.id.btn_save_profile);
+
+        tvErrorName = findViewById(R.id.tv_error_name);
+        tvErrorEmail = findViewById(R.id.tv_error_email);
+
         // Profile Section
         tvTitle = findViewById(R.id.tv_title);
         tvSubtitle = findViewById(R.id.tv_subtitle);
         tvLabelName = findViewById(R.id.tv_label_name);
         tvLabelEmail = findViewById(R.id.tv_label_email);
-        tvNameValue = findViewById(R.id.tv_name_value);
-        etEmail = findViewById(R.id.et_email);
         btnChangePassword = findViewById(R.id.btn_change_password);
-        btnSaveProfile = findViewById(R.id.btn_save_profile);
         cvErrorNotification = findViewById(R.id.cv_error_notification);
         tvErrGeneral = findViewById(R.id.tv_error_general);
 
@@ -146,36 +158,41 @@ public class ProfileActivity extends BaseActivity {
 
     // Setup button actions
     private void setupActions() {
+        SharedPreferences sharedPrefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+        String role = sharedPrefs.getString("user_role", "");
+        boolean isAdmin = "admin".equals(role);
+
+        // Configura visibilidade baseada no perfil
+        if (isAdmin) {
+            etName.setVisibility(View.VISIBLE);
+            tvNameValue.setVisibility(View.GONE);
+            etEmail.setVisibility(View.VISIBLE);
+            tvEmailValue.setVisibility(View.GONE);
+            btnSaveProfile.setVisibility(View.VISIBLE);
+        } else {
+            etName.setVisibility(View.GONE);
+            tvNameValue.setVisibility(View.VISIBLE);
+            etEmail.setVisibility(View.GONE);
+            tvEmailValue.setVisibility(View.VISIBLE);
+            btnSaveProfile.setVisibility(View.GONE);
+        }
+
         btnSaveProfile.setOnClickListener(v -> handleSaveProfile());
         btnChangePassword.setOnClickListener(v -> handleChangePassword());
 
-        // Add new preference — only reachable by nurses (button is inside the nurse-only section)
         btnAddPreference.setOnClickListener(v -> {
-            // Guard: only nurses should be able to add preferences
-            SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
-            if (!"nurse".equals(prefs.getString("user_role", ""))) return;
+            if (!"nurse".equals(role)) return;
 
             PreferenceBottomSheet bottomSheet = new PreferenceBottomSheet(
-                null,  // No existing preference
-                false, // Not editing
-                this::savePreference // Save preference with callback data
+                    null, false, this::savePreference
             );
             bottomSheet.show(getSupportFragmentManager(), "add_preference");
         });
 
-        // Search preferences — pattern mirrors HumanResourcesActivity:
-        // filter is called in afterTextChanged so the full committed text is available.
         etSearchPreferences.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filterPreferences(s.toString());
-            }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) { filterPreferences(s.toString()); }
         });
     }
 
@@ -185,29 +202,48 @@ public class ProfileActivity extends BaseActivity {
         String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
         boolean isEn = currentLang.contains("en");
 
-        // Title and subtitle
+        // Títulos e Subtítulos
         if (tvTitle != null) tvTitle.setText(isEn ? "My Profile" : "Meu Perfil");
         if (tvSubtitle != null) tvSubtitle.setText(isEn ? "Manage account information and preferences" : "Gerir informações da conta e preferências");
 
-        // Personal data section labels (first form)
+        // Labels e Hints
         if (tvLabelName  != null) tvLabelName.setText(isEn  ? "Full Name"  : "Nome Completo");
         if (tvLabelEmail != null) tvLabelEmail.setText(isEn ? "Email"      : "Email");
-        if (etEmail      != null) etEmail.setHint(isEn      ? "email@example.com" : "email@exemplo.pt");
+        if (etName       != null) etName.setHint(isEn ? "Ex: John Doe" : "Ex: Maria Silva");
+        if (etEmail      != null) etEmail.setHint(isEn ? "email@example.com" : "email@exemplo.pt");
 
-        // Buttons
+        // Botões
         if (btnBack != null) btnBack.setText(isEn ? "Back" : "Voltar");
-        if (btnSaveProfile != null) btnSaveProfile.setText(isEn ? "Save" : "Guardar");
+        if (btnSaveProfile != null) btnSaveProfile.setText(isEn ? "Save Personal Data" : "Guardar Dados Pessoais");
         if (btnChangePassword != null) btnChangePassword.setText(isEn ? "Change Password" : "Alterar Senha");
         if (btnAddPreference != null) btnAddPreference.setText(isEn ? "Add" : "Adicionar");
 
-        // Preferences section
+        // Preferências
         if (tvPreferencesTitle != null) tvPreferencesTitle.setText(isEn ? "Monthly Preferences" : "Preferências Mensais");
         if (etSearchPreferences != null) etSearchPreferences.setHint(isEn ? "Search preferences..." : "Procurar preferências...");
         if (tvNoPreferences != null) tvNoPreferences.setText(isEn ? "No preferences defined" : "Nenhuma preferência definida");
 
-        // Error message
-        if (tvErrGeneral != null) tvErrGeneral.setText(isEn ? "Please fill all required fields correctly" : "Por favor preencha todos os campos corretamente");
+        // --- CORREÇÃO: Tradução dos Erros Ativos ---
 
+        // Erro de Nome
+        if (tvErrorName != null && tvErrorName.getVisibility() == View.VISIBLE) {
+            tvErrorName.setText(isEn ? "Name is required" : "O nome é obrigatório");
+        }
+
+        // Erro de Email (verifica se está vazio ou se é formato inválido)
+        if (tvErrorEmail != null && tvErrorEmail.getVisibility() == View.VISIBLE) {
+            String emailText = etEmail.getText().toString().trim();
+            if (emailText.isEmpty()) {
+                tvErrorEmail.setText(isEn ? "Email is required" : "O email é obrigatório");
+            } else {
+                tvErrorEmail.setText(isEn ? "Enter a valid email" : "Introduza um email válido");
+            }
+        }
+
+        // Mensagem de erro geral (banner)
+        if (tvErrGeneral != null) {
+            tvErrGeneral.setText(isEn ? "Please, correct the errors in the form." : "Por favor, corrija os erros no formulário.");
+        }
     }
 
     // Load user profile data from API
@@ -216,26 +252,20 @@ public class ProfileActivity extends BaseActivity {
         api.getProfile("Bearer " + token).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
-                if (response.isSuccessful() && response.body() != null
-                        && response.body().getData() != null) {
-                    // Unwrap the nested "data" object from the API envelope
+                if (response.isSuccessful() && response.body() != null) {
                     ProfileResponse.Data profile = response.body().getData();
 
-                    // Populate UI with profile data
+                    // Preenche ambos (Static e EditText)
                     tvNameValue.setText(profile.getName());
+                    etName.setText(profile.getName());
+                    tvEmailValue.setText(profile.getEmail());
                     etEmail.setText(profile.getEmail());
 
-                    // Store original email to detect changes
+                    originalName = profile.getName();
                     originalEmail = profile.getEmail();
-                } else {
-                    showErrorToast("Failed to load profile");
                 }
             }
-
-            @Override
-            public void onFailure(Call<ProfileResponse> call, Throwable t) {
-                showErrorToast("Network error");
-            }
+            @Override public void onFailure(Call<ProfileResponse> call, Throwable t) {}
         });
     }
 
@@ -416,69 +446,68 @@ public class ProfileActivity extends BaseActivity {
     // Handle save profile button.
     // Validates input, checks for actual changes, then fires the update API call.
     private void handleSaveProfile() {
-        // Cancel any in-flight auto-hide timer from a previous error before we might show a new one
-        errorHideHandler.removeCallbacksAndMessages(null);
-
+        String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
 
-        // Validate email not empty
+        boolean isEn = AppCompatDelegate.getApplicationLocales().toLanguageTags().contains("en");
+        boolean hasError = false;
+
+        tvErrorName.setVisibility(View.GONE);
+        tvErrorEmail.setVisibility(View.GONE);
+
+        if (name.isEmpty()) {
+            tvErrorName.setText(isEn ? "Name is required" : "O nome é obrigatório");
+            tvErrorName.setVisibility(View.VISIBLE);
+            hasError = true;
+        }
+
         if (email.isEmpty()) {
-            String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-            boolean isEn = currentLang.contains("en");
-            showFormError(isEn ? "Email cannot be empty" : "O email não pode estar vazio");
+            tvErrorEmail.setText(isEn ? "Email is required" : "O email é obrigatório");
+            tvErrorEmail.setVisibility(View.VISIBLE);
+            hasError = true;
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            tvErrorEmail.setText(isEn ? "Enter a valid email" : "Introduza um email válido");
+            tvErrorEmail.setVisibility(View.VISIBLE);
+            hasError = true;
+        }
+
+        if (hasError) {
+            showErrorToast(isEn ? "Please, correct the errors in the form." : "Por favor, corrija os erros no formulário.");
             return;
         }
 
-        // Check if email changed from original
-        if (email.equals(originalEmail)) {
-            String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-            boolean isEn = currentLang.contains("en");
+        if (name.equals(originalName) && email.equals(originalEmail)) {
             showFormError(isEn ? "No changes to save" : "Não existem alterações para guardar");
             return;
         }
 
-        // Disable button during request
         btnSaveProfile.setEnabled(false);
-        btnSaveProfile.setText("...");
-
-        // Prepare update data
         Map<String, Object> updates = new HashMap<>();
+        updates.put("name", name);
         updates.put("email", email);
 
-        // Call API
         ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
         api.updateProfile("Bearer " + token, updates).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 btnSaveProfile.setEnabled(true);
-                String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-                boolean isEn = currentLang.contains("en");
-                btnSaveProfile.setText(isEn ? "Save" : "Guardar");
-
                 if (response.isSuccessful()) {
-                    // Update original email
+                    originalName = name;
                     originalEmail = email;
-
-                    // Show success toast
-                    showSuccessToast(isEn ? "Profile updated successfully" : "Perfil atualizado com sucesso");
+                    tvNameValue.setText(name);
+                    tvEmailValue.setText(email);
+                    showSuccessToast(isEn ? "Profile updated" : "Perfil atualizado");
                 } else {
-                    // API returned a non-2xx status; surface a localised error via the standard
-                    // toast helper so the message text is always set before the card is shown.
-                    showErrorToast(isEn ? "Failed to update profile" : "Falha ao atualizar perfil");
+                    showErrorToast(isEn ? "Update failed" : "Falha ao atualizar");
                 }
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 btnSaveProfile.setEnabled(true);
-                String currentLang = AppCompatDelegate.getApplicationLocales().toLanguageTags();
-                boolean isEn = currentLang.contains("en");
-                btnSaveProfile.setText(isEn ? "Save" : "Guardar");
                 showErrorToast(isEn ? "Network error" : "Erro de rede");
             }
         });
     }
-
     // Handle change password button
     private void handleChangePassword() {
         Intent intent = new Intent(this, ChangePasswordActivity.class);

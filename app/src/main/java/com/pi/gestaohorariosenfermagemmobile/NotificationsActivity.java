@@ -28,6 +28,12 @@ public class NotificationsActivity extends BaseActivity {
     private ApiService api;
     private NavbarManager navbarManager;
 
+    private int currentPage = 1;
+    private static final int ITEMS_PER_PAGE = 4;
+    private android.widget.LinearLayout llPaginationNumbers;
+    private android.widget.ImageButton btnPrev, btnNext;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +51,41 @@ public class NotificationsActivity extends BaseActivity {
         rvNotifications = findViewById(R.id.rv_notifs);
         rvNotifications.setLayoutManager(new LinearLayoutManager(this));
 
+        llPaginationNumbers = findViewById(R.id.ll_pagination_numbers);
+        btnPrev = findViewById(R.id.btn_prev);
+        btnNext = findViewById(R.id.btn_next);
+
         findViewById(R.id.btn_back_notif).setOnClickListener(v -> finish());
         findViewById(R.id.btn_all).setOnClickListener(v -> setFilter("all"));
         findViewById(R.id.btn_unread).setOnClickListener(v -> setFilter("unread"));
         findViewById(R.id.btn_read).setOnClickListener(v -> setFilter("read"));
         findViewById(R.id.btn_mark_all).setOnClickListener(v -> markAllRead());
+
+        btnPrev.setOnClickListener(v -> {
+            if (currentPage > 1) {
+                currentPage--;
+                updateList();
+            }
+        });
+
+        btnNext.setOnClickListener(v -> {
+            List<Notification> filtered = getFilteredList();
+            int maxPage = (int) Math.ceil((double) filtered.size() / ITEMS_PER_PAGE);
+            if (currentPage < maxPage) {
+                currentPage++;
+                updateList();
+            }
+        });
+    }
+
+    private List<Notification> getFilteredList() {
+        if (currentFilter.equals("unread")) {
+            return allNotifications.stream().filter(n -> !n.isRead()).collect(java.util.stream.Collectors.toList());
+        } else if (currentFilter.equals("read")) {
+            return allNotifications.stream().filter(Notification::isRead).collect(java.util.stream.Collectors.toList());
+        } else {
+            return new ArrayList<>(allNotifications);
+        }
     }
 
     @Override
@@ -84,13 +120,17 @@ public class NotificationsActivity extends BaseActivity {
             @Override
             public void onResponse(Call<NotificationsResponse> call, Response<NotificationsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Aqui está o segredo: ir buscar a lista dentro do .getData()
+                    // Ir buscar a lista dentro do .getData()
                     allNotifications = response.body().getData();
                     if (allNotifications == null) allNotifications = new ArrayList<>();
+
+                    // Garantir que ao carregar do zero voltamos à primeira página
+                    currentPage = 1;
                     updateList();
                 }
             }
-            @Override public void onFailure(Call<NotificationsResponse> call, Throwable t) {
+            @Override
+            public void onFailure(Call<NotificationsResponse> call, Throwable t) {
                 android.util.Log.e("API_ERROR", "Falha ao carregar: " + t.getMessage());
             }
         });
@@ -99,6 +139,7 @@ public class NotificationsActivity extends BaseActivity {
 
     private void setFilter(String filter) {
         this.currentFilter = filter;
+        this.currentPage = 1;
         updateTabStyles();
         updateList();
     }
@@ -124,27 +165,90 @@ public class NotificationsActivity extends BaseActivity {
     }
 
     private void updateList() {
-        List<Notification> filtered;
-        if (currentFilter.equals("unread")) {
-            filtered = allNotifications.stream().filter(n -> !n.isRead()).collect(Collectors.toList());
-        } else if (currentFilter.equals("read")) {
-            filtered = allNotifications.stream().filter(Notification::isRead).collect(Collectors.toList());
-        } else {
-            filtered = allNotifications;
-        }
+        List<Notification> filtered = getFilteredList();
 
-        // Lógica de Visibilidade do Estado Vazio
         View emptyState = findViewById(R.id.cv_empty_state);
         if (filtered.isEmpty()) {
             emptyState.setVisibility(View.VISIBLE);
             rvNotifications.setVisibility(View.GONE);
+            hidePagination();
         } else {
             emptyState.setVisibility(View.GONE);
             rvNotifications.setVisibility(View.VISIBLE);
+
+            int totalItems = filtered.size();
+            int maxPage = (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
+            if (currentPage > maxPage && maxPage > 0) currentPage = maxPage;
+            if (currentPage < 1) currentPage = 1;
+
+            int start = (currentPage - 1) * ITEMS_PER_PAGE;
+            int end = Math.min(start + ITEMS_PER_PAGE, totalItems);
+
+            List<Notification> pagedList = filtered.subList(start, end);
+            adapter = new NotificationAdapter(pagedList, this::markAsRead);
+            rvNotifications.setAdapter(adapter);
+
+            renderPagination(maxPage);
+        }
+    }
+
+    private void renderPagination(int maxPage) {
+        if (llPaginationNumbers == null) return;
+        llPaginationNumbers.removeAllViews();
+        findViewById(R.id.ll_pagination_container).setVisibility(View.VISIBLE);
+
+        int startPage, endPage;
+        if (maxPage <= 3) {
+            startPage = 1; endPage = maxPage;
+        } else {
+            if (currentPage <= 2) {
+                startPage = 1; endPage = 3;
+            } else if (currentPage >= maxPage - 1) {
+                startPage = maxPage - 2; endPage = maxPage;
+            } else {
+                startPage = currentPage - 1; endPage = currentPage + 1;
+            }
         }
 
-        adapter = new NotificationAdapter(filtered, this::markAsRead);
-        rvNotifications.setAdapter(adapter);
+        for (int i = startPage; i <= endPage; i++) {
+            final int pageNum = i;
+            TextView tv = new TextView(this);
+            android.widget.LinearLayout.LayoutParams params = new android.widget.LinearLayout.LayoutParams(dpToPx(44), dpToPx(44));
+            params.setMargins(dpToPx(4), 0, dpToPx(4), 0);
+            tv.setLayoutParams(params);
+            tv.setGravity(android.view.Gravity.CENTER);
+            tv.setText(String.valueOf(i));
+            tv.setTextSize(16);
+            tv.setTypeface(null, android.graphics.Typeface.BOLD);
+
+            if (i == currentPage) {
+                tv.setBackgroundResource(R.drawable.bg_pagination);
+                tv.setTextColor(Color.WHITE);
+            } else {
+                tv.setBackgroundResource(R.drawable.bg_action_card);
+                tv.setTextColor(Color.parseColor("#7C3AED"));
+            }
+            tv.setOnClickListener(v -> {
+                currentPage = pageNum;
+                updateList();
+            });
+            llPaginationNumbers.addView(tv);
+        }
+
+        btnPrev.setEnabled(currentPage > 1);
+        btnPrev.setAlpha(currentPage > 1 ? 1.0f : 0.3f);
+        btnNext.setEnabled(currentPage < maxPage);
+        btnNext.setAlpha(currentPage < maxPage ? 1.0f : 0.3f);
+    }
+
+    private void hidePagination() {
+        if (llPaginationNumbers != null) llPaginationNumbers.removeAllViews();
+        View container = findViewById(R.id.ll_pagination_container);
+        if (container != null) container.setVisibility(View.GONE);
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
     }
 
     private void markAsRead(Notification notif) {

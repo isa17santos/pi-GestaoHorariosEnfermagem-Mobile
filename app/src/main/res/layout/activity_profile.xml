@@ -72,58 +72,48 @@
                     android:orientation="vertical"
                     android:padding="24dp">
 
-                    <!-- Error Notification -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cv_error_notification"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="24dp"
-                        android:visibility="gone"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        app:strokeColor="#F36CC8"
-                        app:strokeWidth="2dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="12dp">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/ic_clock"
-                                app:tint="#F36CC8" />
-                            <TextView
-                                android:id="@+id/tv_error_general"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:textColor="#F36CC8"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- Name (Read-only) — label text set in updateUIStrings() -->
+                    <!-- Nome Completo -->
                     <TextView
                         android:id="@+id/tv_label_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:text="Nome Completo" />
+
+                    <!-- Para Admin: Campo editável -->
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_edittext"
+                        android:paddingHorizontal="16dp"
+                        android:inputType="textPersonName"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_error_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#F36CC8"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone"
+                        tools:text="O nome é obrigatório" />
+
+                    <!-- Para Enfermeiros: Apenas texto -->
                     <TextView
                         android:id="@+id/tv_name_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_muted"
                         android:textSize="16sp"
-                        tools:text="João Silva" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="16dp" />
+                        android:visibility="visible" />
 
-                    <!-- Email — label text and hint set in updateUIStrings() -->
+                    <View android:layout_width="match_parent" android:layout_height="16dp" />
+
+                    <!-- Email -->
                     <TextView
                         android:id="@+id/tv_label_email"
                         android:layout_width="wrap_content"
@@ -131,7 +121,9 @@
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp"
-                        android:layout_marginTop="16dp" />
+                        android:text="Email" />
+
+                    <!-- Para Admin: Campo editável -->
                     <EditText
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
@@ -139,30 +131,40 @@
                         android:background="@drawable/bg_edittext"
                         android:paddingHorizontal="16dp"
                         android:inputType="textEmailAddress"
-                        android:importantForAutofill="no"
-                        android:autofillHints="" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="16dp" />
+                        android:visibility="gone" />
 
-                    <!-- Action Buttons — text set in updateUIStrings().
-                         Stacked vertically so both are always match_parent width,
-                         equal in size, and no text is ever cut in any language. -->
+                    <TextView
+                        android:id="@+id/tv_error_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#F36CC8"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone"
+                        tools:text="Introduza um email válido" />
+
+                    <!-- Para Enfermeiros: Apenas texto -->
+                    <TextView
+                        android:id="@+id/tv_email_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_muted"
+                        android:textSize="16sp"
+                        android:visibility="visible" />
+
+                    <!-- Botões de Ação -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="24dp">
 
-                        <!-- Secondary: soft-purple background, purple text -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_change_password"
                             android:layout_width="match_parent"
                             android:layout_height="56dp"
                             android:layout_marginBottom="12dp"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:minWidth="0dp"
+                            android:text="Alterar Palavra-passe"
                             android:textAllCaps="false"
                             android:textColor="@color/primary_strong"
                             android:textStyle="bold"
@@ -172,20 +174,18 @@
                             app:cornerRadius="20dp"
                             style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
 
-                        <!-- Primary: gradient background, white text -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_save_profile"
                             android:layout_width="match_parent"
                             android:layout_height="56dp"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:minWidth="0dp"
+                            android:text="Guardar Dados Pessoais"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textStyle="bold"
                             android:background="@drawable/btn_login_gradient"
                             app:backgroundTint="@null"
                             app:cornerRadius="20dp"
+                            android:visibility="gone"
                             style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
                     </LinearLayout>
                 </LinearLayout>
