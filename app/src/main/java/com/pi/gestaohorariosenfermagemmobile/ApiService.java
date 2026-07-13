@@ -163,4 +163,12 @@ public interface ApiService {
 
     @DELETE("medical-leaves/{id}")
     Call<Void> deleteMedicalLeave(@Header("Authorization") String token, @Path("id") int id);
+
+    // Dashboard
+    @GET("dashboard")
+    Call<DashboardResponse> getDashboard(@Header("Authorization") String token);
+
+    // Statistics
+    @GET("statistics")
+    Call<StatisticsResponse> getStatistics(@Header("Authorization") String token);
 }

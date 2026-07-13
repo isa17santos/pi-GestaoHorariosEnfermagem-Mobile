@@ -321,7 +321,7 @@
     <string name="label_offered_shift">TURNO OFERECIDO</string>
     <string name="label_offered_dayoff">FOLGA OFERECIDA</string>
     <string name="label_requested_dayoff">FOLGA PRETENDIDA</string>
-    <string name="label_requested_shift">TURNO A RECEBER</string>
+    <string name="label_requested_shift">TURNO PEDIDO</string>
     <string name="swap_with">Com %s</string>
     <string name="swap_by">Por %s</string>
     <string name="btn_accept_swap">Aceitar</string>
@@ -444,4 +444,54 @@
     <string name="edit_medical_leave_subtitle">Atualize as informações do período de ausência médica</string>
     <string name="update_medical_leave">Atualizar Baixa Médica</string>
     <string name="medical_leave_update_success">Baixa médica atualizada com sucesso</string>
+
+    <!-- NurseDashboard — Resumo do mês -->
+    <string name="date_of_separator">DE</string>
+    <string name="stat_placeholder_count">0 turnos</string>
+    <string name="dashboard_summary_title">RESUMO DO MÊS</string>
+    <string name="dashboard_summary_my_shifts">OS MEUS TURNOS</string>
+    <string name="dashboard_summary_shifts_by_type">TURNOS POR TIPO</string>
+    <string name="dashboard_summary_hours_label">Trabalhadas este mês</string>
+    <string name="dashboard_summary_shifts_unit">turnos</string>
+    <string name="dashboard_summary_swaps_label">Trocas realizadas este mês</string>
+    <string name="dashboard_summary_today">HOJE</string>
+    <string name="dashboard_summary_tomorrow">AMANHÃ</string>
+    <string name="dashboard_summary_no_shift">Folga</string>
+
+    <!-- HeadNurseDashboard — Dados de equipa -->
+    <string name="dashboard_team_section">A MINHA EQUIPA</string>
+    <string name="dashboard_team_pending_swaps_label">Trocas pendentes da equipa</string>
+    <string name="dashboard_team_swaps_month_label">Trocas da equipa este mês</string>
+
+    <!-- Statistics (admin + head nurse) -->
+    <string name="admin_statistics_subtitle">Indicadores de serviço e cobertura da equipa</string>
+    <string name="stat_quality_title">Qualidade de Horário</string>
+    <string name="stat_quality_note">Calibrado para equipas de referência; valores a confirmar com uso real</string>
+    <string name="stat_quality_based_on">Baseado em:</string>
+    <string name="stat_quality_score_label">Pontuação: %d/100</string>
+    <string name="stat_quality_score_label_empty">Pontuação: —/100</string>
+    <string name="stat_quality_good">Bom</string>
+    <string name="stat_quality_medium">Médio</string>
+    <string name="stat_quality_bad">Mau</string>
+    <string name="stat_acceptance_title">Taxa de aceitação de trocas</string>
+    <string name="stat_acceptance_legend">Pedidos aceites sobre o total de respondidos este mês</string>
+    <string name="stat_acceptance_no_data">Sem dados</string>
+    <string name="stat_hours_title">Horas por enfermeiro</string>
+    <string name="stat_hours_subtitle">Total de horas trabalhadas no mês atual</string>
+    <string name="stat_hours_col_name">Nome</string>
+    <string name="stat_hours_col_hours">Horas</string>
+    <string name="stat_hours_legend_above">Acima da média</string>
+    <string name="stat_hours_legend_below">Abaixo da média</string>
+    <string name="stat_hours_legend_threshold">Limiar: ±15%</string>
+    <string name="stat_hours_avg_label">Média: %sh</string>
+    <string name="stat_breakdown_swaps">trocas de turno este mês</string>
+    <string name="stat_breakdown_min_nurses">turnos com falta de enfermeiros</string>
+    <string name="stat_breakdown_pref_type">enfermeiros com preferências de turno não respeitadas</string>
+    <string name="stat_breakdown_pref_weekend">turnos de fim de semana contra preferência</string>
+    <string name="stat_nurses_label">Enfermeiros ativos</string>
+    <string name="stat_head_nurses_label">Enfermeiros Chefes ativos</string>
+    <string name="stat_medical_leaves_label">Baixas este mês</string>
+    <string name="stat_vacations_label">Férias este mês</string>
+    <string name="stat_inactive_users_label">Contas inativas</string>
+    <string name="stat_pending_password_label">Alteração de password pendente</string>
 </resources>
