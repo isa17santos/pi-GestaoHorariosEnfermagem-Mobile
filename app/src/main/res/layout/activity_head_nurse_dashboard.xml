@@ -13,13 +13,12 @@
         android:padding="24dp">
 
         <include layout="@layout/layout_navbar" />
-
         <!-- Greeting -->
         <TextView
             android:id="@+id/tv_greeting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dashboard_head_nurse_greeting"
+            android:text="Bem-vindo, Ana Antunes."
             android:textColor="@color/text_primary"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -29,45 +28,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:text="@string/dashboard_head_nurse_subtitle"
+            android:text="Gestão de Equipas e Escalas"
             android:textColor="@color/text_muted"
             android:textSize="16sp" />
 
-        <!-- Cards de navegação: Horário + Histórico lado a lado -->
+        <!-- Bento List -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <!-- Card Consultar Horário -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_view_schedule"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="28dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/white">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="32dp">
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bento_icon_sick"
-                        android:padding="12dp"
+                        android:padding="14dp"
                         android:src="@drawable/ic_calendar_lines" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="24dp"
                         android:text="@string/consult_schedule"
                         android:tag="title"
                         android:textColor="@color/text_primary"
-                        android:textSize="17sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -75,39 +73,38 @@
                         android:layout_marginTop="4dp"
                         android:tag="subtitle"
                         android:text="@string/consult_schedule_subtitle"
-                        android:textColor="@color/text_muted"
-                        android:textSize="13sp" />
+                        android:textColor="@color/text_muted" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Card Histórico de Trocas -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_swap_history"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="28dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/white">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="32dp">
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bento_icon_swaps"
-                        android:padding="12dp"
+                        android:padding="14dp"
                         android:src="@drawable/ic_shift_swaps" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="24dp"
                         android:tag="title"
                         android:text="@string/swap_history_title"
                         android:textColor="@color/text_primary"
-                        android:textSize="17sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -115,398 +112,49 @@
                         android:layout_marginTop="4dp"
                         android:tag="subtitle"
                         android:text="@string/swap_history_card_subtitle"
-                        android:textColor="@color/text_muted"
-                        android:textSize="13sp" />
+                        android:textColor="@color/text_muted" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Estatísticas -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_stats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="32dp">
+                    <ImageView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bento_icon_stats"
+                        android:padding="14dp"
+                        android:src="@drawable/ic_stats" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/statistics"
+                        android:tag="title"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:tag="subtitle"
+                        android:text="@string/head_nurse_stats_subtitle"
+                        android:textColor="@color/text_muted" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-
-        <!-- Card Estatísticas — full width, mantido -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_stats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/white">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bento_icon_stats"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_stats" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/statistics"
-                    android:tag="title"
-                    android:textColor="@color/text_primary"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:tag="subtitle"
-                    android:text="@string/head_nurse_stats_subtitle"
-                    android:textColor="@color/text_muted"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- ── Resumo do mês ── -->
-        <LinearLayout
-            android:id="@+id/section_dashboard_summary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/tv_summary_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="@string/dashboard_summary_title"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.08" />
-
-            <!-- ROW 1: Os meus turnos (hoje + amanhã) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/bg_action_card"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/tv_label_my_shifts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:text="@string/dashboard_summary_my_shifts"
-                    android:textColor="@color/primary_strong"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.08" />
-
-                <!-- Mini-card Hoje -->
-                <LinearLayout
-                    android:id="@+id/card_today_shift"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/bg_action_card"
-                    android:padding="0dp">
-                    <View
-                        android:id="@+id/view_today_color_bar"
-                        android:layout_width="4dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/primary_soft" />
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-                        <TextView
-                            android:id="@+id/tv_today_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dashboard_summary_today"
-                            android:textColor="@color/text_muted"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.06" />
-                        <TextView
-                            android:id="@+id/tv_today_shift_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="—"
-                            android:textColor="@color/primary_strong"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:id="@+id/tv_today_shift_hours"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text=""
-                            android:textColor="@color/text_muted"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Mini-card Amanhã -->
-                <LinearLayout
-                    android:id="@+id/card_tomorrow_shift"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/bg_action_card"
-                    android:padding="0dp">
-                    <View
-                        android:id="@+id/view_tomorrow_color_bar"
-                        android:layout_width="4dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/primary_soft" />
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-                        <TextView
-                            android:id="@+id/tv_tomorrow_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dashboard_summary_tomorrow"
-                            android:textColor="@color/text_muted"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.06" />
-                        <TextView
-                            android:id="@+id/tv_tomorrow_shift_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="—"
-                            android:textColor="@color/primary_strong"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:id="@+id/tv_tomorrow_shift_hours"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text=""
-                            android:textColor="@color/text_muted"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- ROW 2: Turnos por tipo (full width) -->
-            <LinearLayout
-                android:id="@+id/col_breakdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/bg_action_card"
-                android:padding="14dp">
-
-                <TextView
-                    android:id="@+id/tv_label_shifts_by_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/dashboard_summary_shifts_by_type"
-                    android:textColor="@color/primary_strong"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.08" />
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp" android:orientation="horizontal" android:gravity="center_vertical">
-                    <View android:id="@+id/dot_morning" android:layout_width="8dp" android:layout_height="8dp"
-                        android:layout_marginEnd="8dp" android:background="@drawable/bg_circle_primary" />
-                    <TextView android:id="@+id/tv_label_shift_morning" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                        android:text="@string/shift_morning" android:textColor="@color/text_primary" android:textSize="12sp" />
-                    <TextView android:id="@+id/tv_breakdown_morning" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="@string/stat_placeholder_count"
-                        android:textColor="@color/text_muted" android:textSize="11sp" />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp" android:orientation="horizontal" android:gravity="center_vertical">
-                    <View android:id="@+id/dot_afternoon" android:layout_width="8dp" android:layout_height="8dp"
-                        android:layout_marginEnd="8dp" android:background="@drawable/bg_circle_primary" />
-                    <TextView android:id="@+id/tv_label_shift_afternoon" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                        android:text="@string/shift_afternoon" android:textColor="@color/text_primary" android:textSize="12sp" />
-                    <TextView android:id="@+id/tv_breakdown_afternoon" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="@string/stat_placeholder_count"
-                        android:textColor="@color/text_muted" android:textSize="11sp" />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp" android:orientation="horizontal" android:gravity="center_vertical">
-                    <View android:id="@+id/dot_night" android:layout_width="8dp" android:layout_height="8dp"
-                        android:layout_marginEnd="8dp" android:background="@drawable/bg_circle_primary" />
-                    <TextView android:id="@+id/tv_label_shift_night" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                        android:text="@string/shift_night" android:textColor="@color/text_primary" android:textSize="12sp" />
-                    <TextView android:id="@+id/tv_breakdown_night" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="@string/stat_placeholder_count"
-                        android:textColor="@color/text_muted" android:textSize="11sp" />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:gravity="center_vertical">
-                    <View android:id="@+id/dot_dayoff" android:layout_width="8dp" android:layout_height="8dp"
-                        android:layout_marginEnd="8dp" android:background="@drawable/bg_circle_primary" />
-                    <TextView android:id="@+id/tv_label_shift_dayoff" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                        android:text="@string/shift_dayoff" android:textColor="@color/text_primary" android:textSize="12sp" />
-                    <TextView android:id="@+id/tv_breakdown_dayoff" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="@string/stat_placeholder_count"
-                        android:textColor="@color/text_muted" android:textSize="11sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- ROW 3: Horas + Trocas pessoais lado a lado -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="10dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/bg_action_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
-                    <TextView
-                        android:id="@+id/tv_monthly_hours"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/primary_strong"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp" />
-                    <TextView
-                        android:id="@+id/tv_label_hours"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/dashboard_summary_hours_label"
-                        android:textColor="@color/text_muted"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:background="@drawable/bg_action_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
-                    <TextView
-                        android:id="@+id/tv_swaps_this_month"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/primary_strong"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp" />
-                    <TextView
-                        android:id="@+id/tv_label_swaps"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/dashboard_summary_swaps_label"
-                        android:textColor="@color/text_muted"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- DADOS DE EQUIPA -->
-            <TextView
-                android:id="@+id/tv_team_section_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="@string/dashboard_team_section"
-                android:textColor="@color/primary_strong"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.08" />
-
-            <!-- ROW 4: Trocas pendentes da equipa -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal"
-                android:background="@drawable/bg_action_card"
-                android:padding="14dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tv_team_pending_swaps"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="—"
-                    android:textColor="@color/primary_strong"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="10dp" />
-
-                <TextView
-                    android:id="@+id/tv_label_team_pending_swaps"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/dashboard_team_pending_swaps_label"
-                    android:textColor="@color/text_muted"
-                    android:textSize="11sp" />
-
-            </LinearLayout>
-
-            <!-- ROW 5: Trocas da equipa este mês -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/bg_action_card"
-                android:padding="14dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tv_team_swaps_month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="—"
-                    android:textColor="@color/primary_strong"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="10dp" />
-
-                <TextView
-                    android:id="@+id/tv_label_team_swaps_month"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/dashboard_team_swaps_month_label"
-                    android:textColor="@color/text_muted"
-                    android:textSize="11sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

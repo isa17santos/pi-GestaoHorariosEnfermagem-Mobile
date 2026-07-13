@@ -31,14 +31,6 @@
     <color name="bento_stat_lavender">#A18CD1</color>
     <color name="bento_stat_pink">#FBC2EB</color>
 
-    <!-- Quality indicator colors -->
-    <color name="quality_good">#4CAF82</color>
-    <color name="quality_good_bg">#EAF7F0</color>
-    <color name="quality_medium">#D4872A</color>
-    <color name="quality_medium_bg">#FDF0DC</color>
-    <color name="quality_bad">#C8702A</color>
-    <color name="quality_bad_bg">#FAEADE</color>
-
     <color name="bg_role_nurse">#F45FB3</color>
     <color name="bg_role_head_nurse">#DE50FA</color>
     <color name="bg_status_active">#F4A42C</color>

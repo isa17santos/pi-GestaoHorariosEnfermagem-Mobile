@@ -179,10 +179,10 @@ public class SwapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     context.getString(R.string.label_offered_shift), offered.get(0));
         }
 
-        // Índice 0 das pretendidas: "TURNO A RECEBER"
+        // Índice 0 das pretendidas: "FOLGA PRETENDIDA"
         if (requested != null && !requested.isEmpty()) {
             bindShiftSubCard(h.cardRequested0, h.tvLabelRequested0, h.tvDateRequested0, h.tvTypeRequested0, h.tvOwnerRequested0,
-                    context.getString(R.string.label_requested_shift), requested.get(0));
+                    context.getString(R.string.label_requested_dayoff), requested.get(0));
         }
 
         // Troca dupla: mostrar segundo par de cards em cada coluna
@@ -230,17 +230,18 @@ public class SwapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         h.btnAccept.setOnClickListener(v -> listener.onAccept(swap));
     }
 
+    // Mapeia nomes de tipo de turno crus da API para nomes localizados em português
     private String getLocalizedShiftTypeName(String name) {
         if (name == null) return "—";
         switch (name.toLowerCase().trim()) {
-            case "morning":        return context.getString(R.string.shift_morning);
-            case "afternoon":      return context.getString(R.string.shift_afternoon);
-            case "night":          return context.getString(R.string.shift_night);
+            case "morning":        return "Manhã";
+            case "afternoon":      return "Tarde";
+            case "night":          return "Noite";
             case "dayoff":
-            case "day off":        return context.getString(R.string.shift_dayoff);
-            case "holidays":       return context.getString(R.string.shift_holidays);
-            case "sick leave":     return context.getString(R.string.shift_sick_leave);
-            case "parental leave": return context.getString(R.string.shift_parental_leave);
+            case "day off":        return "Folga";
+            case "holidays":       return "Férias";
+            case "sick leave":     return "Baixa Médica";
+            case "parental leave": return "Licença Parental";
             default:               return name;
         }
     }

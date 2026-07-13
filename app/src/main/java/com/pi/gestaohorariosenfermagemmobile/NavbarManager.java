@@ -96,35 +96,46 @@ public class NavbarManager {
 
     private void toggleLanguage() {
         String current = AppCompatDelegate.getApplicationLocales().toLanguageTags();
+        // Se estiver em Inglês, muda para PT. Caso contrário (se for PT ou vazio), muda para EN.
         String next = current.contains("en") ? "pt" : "en";
+
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(next));
-        // onConfigurationChanged na activity trata do resto
+
+        // IMPORTANTE: Atualizar a UI imediatamente para refletir a mudança
+        updateLanguageUI();
+        updateRoleUI();
     }
 
-    public void updateRoleUI() {
+    private void updateRoleUI() {
         TextView tvRole = activity.findViewById(R.id.nav_tv_user_role);
         if (tvRole != null) {
             String role = prefs.getString("user_role", "").toLowerCase().trim();
+
+            // Deteção robusta de idioma: Se não contiver "en", assumimos que é "pt"
+            String tags = AppCompatDelegate.getApplicationLocales().toLanguageTags();
+            boolean isEn = tags.contains("en");
+
             String translatedRole;
             if (role.equals("admin")) {
-                translatedRole = activity.getString(R.string.role_admin);
+                translatedRole = "Admin";
             } else if (role.equals("nurse")) {
-                translatedRole = activity.getString(R.string.role_nurse);
+                translatedRole = isEn ? "Nurse" : "Enfermeiro";
             } else if (role.equals("head_nurse") || role.equals("head nurse")) {
-                translatedRole = activity.getString(R.string.role_head_nurse);
+                translatedRole = isEn ? "Head nurse" : "Enfermeiro chefe";
             } else {
+                // Fallback: Primeira letra maiúscula para cargos desconhecidos
                 translatedRole = role.isEmpty() ? "" :
                         role.substring(0, 1).toUpperCase() + role.substring(1);
             }
+
             tvRole.setText(translatedRole);
         }
     }
 
-    public void updateLanguageUI() {
+
+    private void updateLanguageUI() {
         boolean isEn = AppCompatDelegate.getApplicationLocales().toLanguageTags().contains("en");
-        TextView tvFlag = activity.findViewById(R.id.nav_tv_lang_flag);
-        TextView tvLabel = activity.findViewById(R.id.nav_tv_lang_label);
-        if (tvFlag != null) tvFlag.setText(isEn ? "pt" : "en");
-        if (tvLabel != null) tvLabel.setText(isEn ? "Português" : "English");
+        ((TextView) activity.findViewById(R.id.nav_tv_lang_flag)).setText(isEn ? "pt" : "en");
+        ((TextView) activity.findViewById(R.id.nav_tv_lang_label)).setText(isEn ? "Português" : "English");
     }
 }

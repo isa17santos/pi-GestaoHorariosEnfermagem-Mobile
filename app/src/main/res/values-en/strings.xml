@@ -93,65 +93,12 @@
     <string name="consult_schedule_subtitle">View schedule</string>
     <string name="head_nurse_stats_subtitle">Team coverage reports</string>
 
-    <!-- Date separator -->
-    <string name="date_of_separator">OF</string>
-
-    <string name="stat_placeholder_count">0 shifts</string>
-
-    <!-- Dashboard — Resumo do mês -->
-    <string name="dashboard_summary_title">MONTHLY SUMMARY</string>
-    <string name="dashboard_summary_my_shifts">MY SHIFTS</string>
-    <string name="dashboard_summary_shifts_by_type">SHIFTS BY TYPE</string>
-    <string name="dashboard_summary_hours_label">Worked this month</string>
-    <string name="dashboard_summary_shifts_unit">shifts</string>
-    <string name="dashboard_summary_swaps_label">Swaps made this month</string>
-    <string name="dashboard_summary_today">TODAY</string>
-    <string name="dashboard_summary_tomorrow">TOMORROW</string>
-    <string name="dashboard_summary_no_shift">Day off</string>
-
-    <!-- Dashboard — Team section (Head Nurse) -->
-    <string name="dashboard_team_section">MY TEAM</string>
-    <string name="dashboard_team_pending_swaps_label">Team pending swaps</string>
-    <string name="dashboard_team_swaps_month_label">Team swaps this month</string>
-
     <!-- Cards Nurse -->
     <string name="schedule">Schedule</string>
     <string name="schedule_subtitle">View schedule</string>
     <string name="swaps">Shift Swaps</string>
     <string name="swaps_subtitle">Manage shift swap requests</string>
     <string name="my_statistics_subtitle">My statistics and hours</string>
-
-    <!-- Statistics (admin + head nurse) -->
-    <string name="admin_statistics_subtitle">Service and team coverage indicators</string>
-    <string name="stat_quality_title">Schedule Quality</string>
-    <string name="stat_quality_note">Calibrated for reference teams; values to confirm with real usage</string>
-    <string name="stat_quality_based_on">Based on:</string>
-    <string name="stat_quality_score_label">Score: %d/100</string>
-    <string name="stat_quality_good">Good</string>
-    <string name="stat_quality_medium">Average</string>
-    <string name="stat_quality_bad">Poor</string>
-    <string name="stat_acceptance_title">Swap acceptance rate</string>
-    <string name="stat_acceptance_legend">Accepted requests over total responded this month</string>
-    <string name="stat_acceptance_no_data">No data</string>
-    <string name="stat_hours_title">Hours per nurse</string>
-    <string name="stat_hours_subtitle">Total hours worked in the current month</string>
-    <string name="stat_hours_col_name">Name</string>
-    <string name="stat_hours_col_hours">Hours</string>
-    <string name="stat_hours_legend_above">Above average</string>
-    <string name="stat_hours_legend_below">Below average</string>
-    <string name="stat_hours_legend_threshold">Threshold: ±15%</string>
-    <string name="stat_hours_avg_label">Average: %sh</string>
-    <string name="stat_breakdown_swaps">shift swaps this month</string>
-    <string name="stat_breakdown_min_nurses">shifts with insufficient nurses</string>
-    <string name="stat_breakdown_pref_type">nurses with shift type preferences not respected</string>
-    <string name="stat_breakdown_pref_weekend">weekend shifts against preference</string>
-    <string name="stat_nurses_label">Active nurses</string>
-    <string name="stat_head_nurses_label">Active Head Nurses</string>
-    <string name="stat_medical_leaves_label">Medical leaves this month</string>
-    <string name="stat_vacations_label">Vacations this month</string>
-    <string name="stat_inactive_users_label">Inactive accounts</string>
-    <string name="stat_pending_password_label">Pending password change</string>
-    <string name="stat_quality_score_label_empty">Score: —/100</string>
 
     <!-- Human Resources -->
     <string name="hr_page_subtitle">Nursing profiles administration</string>
@@ -380,7 +327,7 @@
     <string name="label_offered_shift">OFFERED SHIFT</string>
     <string name="label_offered_dayoff">OFFERED DAY OFF</string>
     <string name="label_requested_dayoff">REQUESTED DAY OFF</string>
-    <string name="label_requested_shift">REQUESTED SHIFT</string>
+    <string name="label_requested_shift">SHIFT TO RECEIVE</string>
     <string name="swap_with">With %s</string>
     <string name="swap_by">By %s</string>
     <string name="btn_accept_swap">Accept</string>
