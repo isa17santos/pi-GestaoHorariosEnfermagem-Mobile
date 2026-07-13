@@ -229,25 +229,46 @@ public class SwapsActivity extends BaseActivity {
     private void applyFilters() {
         boolean isAllDirections = spinnerDirection.getSelectedItemPosition() == 0;
 
-        if (isAllDirections) {
-            // Modo secções: mostrar todos sem paginação, com cabeçalhos "Enviados"/"Recebidos"
-            adapter.setData(buildSectionedList(allSwaps));
-            hidePagination();
-        } else {
-            // Modo lista simples: paginar normalmente
-            int totalItems = allSwaps.size();
-            int maxPage = (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
-            if (currentPage > maxPage && maxPage > 0) currentPage = maxPage;
-            if (currentPage < 1) currentPage = 1;
+        // Lista base: seccionada ("Todas") ou plana (filtro específico)
+        List<Object> baseList = isAllDirections
+                ? buildSectionedList(allSwaps)
+                : new ArrayList<>(allSwaps);
 
-            int start = (currentPage - 1) * ITEMS_PER_PAGE;
-            int end = Math.min(start + ITEMS_PER_PAGE, totalItems);
+        // Conta apenas items reais (ignora cabeçalhos de secção String)
+        int totalItems = 0;
+        for (Object o : baseList) if (o instanceof SwapRequest) totalItems++;
 
-            List<Object> flat = new ArrayList<>();
-            if (start < totalItems) flat.addAll(allSwaps.subList(start, end));
-            adapter.setData(flat);
-            renderPagination(maxPage);
+        int maxPage = (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
+        if (maxPage < 1) maxPage = 1;
+        if (currentPage > maxPage) currentPage = maxPage;
+        if (currentPage < 1) currentPage = 1;
+
+        // Constrói a página: percorre baseList mantendo cabeçalhos à frente dos seus items
+        List<Object> page = new ArrayList<>();
+        int itemCount = 0;
+        int skip = (currentPage - 1) * ITEMS_PER_PAGE;
+        String pendingHeader = null;
+
+        for (Object o : baseList) {
+            if (o instanceof String) {
+                // Guarda o cabeçalho mas só o adiciona se houver items desta secção na página
+                pendingHeader = (String) o;
+            } else {
+                // Item real
+                if (itemCount >= skip && itemCount < skip + ITEMS_PER_PAGE) {
+                    if (pendingHeader != null) {
+                        page.add(pendingHeader);
+                        pendingHeader = null;
+                    }
+                    page.add(o);
+                }
+                itemCount++;
+                if (itemCount >= skip + ITEMS_PER_PAGE) break;
+            }
         }
+
+        adapter.setData(page);
+        renderPagination(maxPage);
     }
 
     // Constrói lista mista com cabeçalhos de secção quando direction = "Todas"

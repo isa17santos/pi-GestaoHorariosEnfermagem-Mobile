@@ -85,8 +85,19 @@ public class SwapHistoryActivity extends BaseActivity {
 
     @Override
     protected void updateUIStrings() {
+        if (navbarManager != null) {
+            navbarManager.updateRoleUI();
+            navbarManager.updateLanguageUI();
+        }
         ((TextView) findViewById(R.id.tv_title)).setText(R.string.swap_history_title);
         ((TextView) findViewById(R.id.tv_subtitle)).setText(R.string.swap_history_subtitle);
+        // Re-monta os spinners com o idioma atualizado e força re-bind dos cards
+        if (spinnerNurse != null && spinnerMonth != null && !allSwaps.isEmpty()) {
+            setupNurseSpinner();
+        }
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void setupAdapter() {
