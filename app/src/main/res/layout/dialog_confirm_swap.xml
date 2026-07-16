@@ -57,6 +57,8 @@
                 android:textSize="14sp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_muted"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_marginBottom="24dp" />
 
             <LinearLayout

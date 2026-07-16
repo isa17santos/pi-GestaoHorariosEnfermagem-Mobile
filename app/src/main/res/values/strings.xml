@@ -365,7 +365,7 @@
     <string name="swap_back_to_dayoffs">← Voltar às minhas folgas</string>
     <string name="btn_create_swap">Criar pedido</string>
     <string name="confirm_create_swap">Confirmar pedido de troca</string>
-    <string name="confirm_create_swap_msg">Serão criados %1$d pedido(s) de troca.</string>
+    <string name="confirm_create_swap_msg">Vais propor a troca do teu turno a %1$d colega(s). Cada um recebe um pedido individual — assim que um aceitar, os restantes são automaticamente cancelados. O turno mantém-se teu até lá.</string>
     <string name="swap_note_label">Nota (opcional)</string>
     <string name="swap_note_hint">Adicionar nota...</string>
     <string name="btn_confirm_swap">Confirmar</string>
@@ -466,23 +466,22 @@
     <!-- Statistics (admin + head nurse) -->
     <string name="admin_statistics_subtitle">Indicadores de serviço e cobertura da equipa</string>
     <string name="stat_quality_title">Qualidade de Horário</string>
-    <string name="stat_quality_note">Calibrado para equipas de referência; valores a confirmar com uso real</string>
-    <string name="stat_quality_based_on">Baseado em:</string>
+    <string name="stat_quality_note">Estes são apenas os dados que podem alimentar uma futura fórmula de qualidade de horário — não há pontuação nem classificação calculada</string>
+    <string name="stat_quality_based_on">Dados disponíveis:</string>
     <string name="stat_quality_score_label">Pontuação: %d/100</string>
     <string name="stat_quality_score_label_empty">Pontuação: —/100</string>
     <string name="stat_quality_good">Bom</string>
     <string name="stat_quality_medium">Médio</string>
     <string name="stat_quality_bad">Mau</string>
     <string name="stat_acceptance_title">Taxa de aceitação de trocas</string>
-    <string name="stat_acceptance_legend">Pedidos aceites sobre o total de respondidos este mês</string>
+    <string name="stat_acceptance_legend">Percentagem de turnos trocados com sucesso, considerando pedidos concorrentes pelo mesmo turno</string>
     <string name="stat_acceptance_no_data">Sem dados</string>
+    <string name="stat_acceptance_accepted">%1$d trocas aceites</string>
+    <string name="stat_acceptance_rejected">%1$d trocas rejeitadas</string>
     <string name="stat_hours_title">Horas por enfermeiro</string>
     <string name="stat_hours_subtitle">Total de horas trabalhadas no mês atual</string>
     <string name="stat_hours_col_name">Nome</string>
     <string name="stat_hours_col_hours">Horas</string>
-    <string name="stat_hours_legend_above">Acima da média</string>
-    <string name="stat_hours_legend_below">Abaixo da média</string>
-    <string name="stat_hours_legend_threshold">Limiar: ±15%</string>
     <string name="stat_hours_avg_label">Média: %sh</string>
     <string name="stat_breakdown_swaps">trocas de turno este mês</string>
     <string name="stat_breakdown_min_nurses">turnos com falta de enfermeiros</string>
@@ -490,8 +489,8 @@
     <string name="stat_breakdown_pref_weekend">turnos de fim de semana contra preferência</string>
     <string name="stat_nurses_label">Enfermeiros ativos</string>
     <string name="stat_head_nurses_label">Enfermeiros Chefes ativos</string>
-    <string name="stat_medical_leaves_label">Baixas este mês</string>
-    <string name="stat_vacations_label">Férias este mês</string>
+    <string name="stat_medical_leaves_label">Pessoas estão de baixa este mês</string>
+    <string name="stat_vacations_label">Pessoas estão de férias este mês</string>
     <string name="stat_inactive_users_label">Contas inativas</string>
     <string name="stat_pending_password_label">Alteração de password pendente</string>
 </resources>

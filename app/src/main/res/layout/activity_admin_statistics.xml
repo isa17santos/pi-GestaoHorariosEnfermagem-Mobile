@@ -39,6 +39,7 @@
             android:id="@+id/tv_page_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/statistics"
             android:textColor="@color/text_primary"
             android:textSize="32sp"
@@ -48,10 +49,72 @@
             android:id="@+id/tv_page_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
             android:text="@string/admin_statistics_subtitle"
             android:textColor="@color/text_muted"
             android:textSize="16sp" />
+
+        <!-- Paginação de mês (sempre visível) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_prev_month"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:padding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_chevron_left"
+                app:iconTint="@color/primary_strong"
+                app:iconSize="20dp"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:strokeColor="#337C3AED"
+                app:strokeWidth="1.5dp"
+                app:cornerRadius="12dp"
+                app:backgroundTint="#FFFFFF"
+                app:rippleColor="#1A7C3AED" />
+
+            <TextView
+                android:id="@+id/tv_month_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                android:textColor="@color/primary_strong"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_next_month"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:padding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:rotation="180"
+                app:icon="@drawable/ic_chevron_left"
+                app:iconTint="@color/primary_strong"
+                app:iconSize="20dp"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:strokeColor="#337C3AED"
+                app:strokeWidth="1.5dp"
+                app:cornerRadius="12dp"
+                app:backgroundTint="#FFFFFF"
+                app:rippleColor="#1A7C3AED" />
+
+        </LinearLayout>
 
         <!-- Secção de estatísticas -->
         <LinearLayout
@@ -62,19 +125,6 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <!-- Mês actual centrado -->
-            <TextView
-                android:id="@+id/tv_month_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:gravity="center"
-                android:text="JULHO DE 2026"
-                android:textColor="@color/primary_strong"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.1" />
-
             <!-- ROW 1: Enfermeiros + Enfermeiros Chefe -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -84,29 +134,42 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginEnd="10dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="@drawable/bg_action_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
+                    android:padding="14dp">
 
-                    <TextView
-                        android:id="@+id/tv_nurses_count"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/primary_strong"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/tv_nurses_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/primary_strong"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="6dp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/primary_strong" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_label_nurses"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/stat_nurses_label"
                         android:textColor="@color/text_muted"
                         android:textSize="11sp" />
@@ -115,28 +178,41 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="@drawable/bg_action_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
+                    android:padding="14dp">
 
-                    <TextView
-                        android:id="@+id/tv_head_nurses_count"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/primary_strong"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/tv_head_nurses_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/primary_strong"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="6dp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_people"
+                            app:tint="@color/primary_strong" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_label_head_nurses"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/stat_head_nurses_label"
                         android:textColor="@color/text_muted"
                         android:textSize="11sp" />
@@ -154,29 +230,42 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginEnd="10dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="@drawable/bg_action_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
+                    android:padding="14dp">
 
-                    <TextView
-                        android:id="@+id/tv_medical_leaves"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/primary_strong"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/tv_medical_leaves"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/primary_strong"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="6dp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/primary_strong" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_label_medical_leaves"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/stat_medical_leaves_label"
                         android:textColor="@color/text_muted"
                         android:textSize="11sp" />
@@ -185,28 +274,41 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="@drawable/bg_action_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
+                    android:padding="14dp">
 
-                    <TextView
-                        android:id="@+id/tv_vacations"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/primary_strong"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/tv_vacations"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/primary_strong"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="6dp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/primary_strong" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_label_vacations"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/stat_vacations_label"
                         android:textColor="@color/text_muted"
                         android:textSize="11sp" />
@@ -223,29 +325,42 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginEnd="10dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="@drawable/bg_action_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
+                    android:padding="14dp">
 
-                    <TextView
-                        android:id="@+id/tv_inactive_users"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/primary_strong"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/tv_inactive_users"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/primary_strong"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="6dp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/primary_strong" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_label_inactive_users"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/stat_inactive_users_label"
                         android:textColor="@color/text_muted"
                         android:textSize="11sp" />
@@ -254,28 +369,41 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="@drawable/bg_action_card"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
+                    android:padding="14dp">
 
-                    <TextView
-                        android:id="@+id/tv_pending_password"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/primary_strong"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/tv_pending_password"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/primary_strong"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="6dp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/primary_strong" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_label_pending_password"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/stat_pending_password_label"
                         android:textColor="@color/text_muted"
                         android:textSize="11sp" />

@@ -124,22 +124,21 @@
     <!-- Statistics (admin + head nurse) -->
     <string name="admin_statistics_subtitle">Service and team coverage indicators</string>
     <string name="stat_quality_title">Schedule Quality</string>
-    <string name="stat_quality_note">Calibrated for reference teams; values to confirm with real usage</string>
-    <string name="stat_quality_based_on">Based on:</string>
+    <string name="stat_quality_note">These are only the data points that can feed a future schedule quality formula — no score or rating is calculated</string>
+    <string name="stat_quality_based_on">Available data:</string>
     <string name="stat_quality_score_label">Score: %d/100</string>
     <string name="stat_quality_good">Good</string>
     <string name="stat_quality_medium">Average</string>
     <string name="stat_quality_bad">Poor</string>
     <string name="stat_acceptance_title">Swap acceptance rate</string>
-    <string name="stat_acceptance_legend">Accepted requests over total responded this month</string>
+    <string name="stat_acceptance_legend">Percentage of successfully swapped shifts, considering concurrent requests for the same shift</string>
     <string name="stat_acceptance_no_data">No data</string>
+    <string name="stat_acceptance_accepted">%1$d swaps accepted</string>
+    <string name="stat_acceptance_rejected">%1$d swaps rejected</string>
     <string name="stat_hours_title">Hours per nurse</string>
     <string name="stat_hours_subtitle">Total hours worked in the current month</string>
     <string name="stat_hours_col_name">Name</string>
     <string name="stat_hours_col_hours">Hours</string>
-    <string name="stat_hours_legend_above">Above average</string>
-    <string name="stat_hours_legend_below">Below average</string>
-    <string name="stat_hours_legend_threshold">Threshold: ±15%</string>
     <string name="stat_hours_avg_label">Average: %sh</string>
     <string name="stat_breakdown_swaps">shift swaps this month</string>
     <string name="stat_breakdown_min_nurses">shifts with insufficient nurses</string>
@@ -147,8 +146,8 @@
     <string name="stat_breakdown_pref_weekend">weekend shifts against preference</string>
     <string name="stat_nurses_label">Active nurses</string>
     <string name="stat_head_nurses_label">Active Head Nurses</string>
-    <string name="stat_medical_leaves_label">Medical leaves this month</string>
-    <string name="stat_vacations_label">Vacations this month</string>
+    <string name="stat_medical_leaves_label">People on sick leave this month</string>
+    <string name="stat_vacations_label">People on vacation this month</string>
     <string name="stat_inactive_users_label">Inactive accounts</string>
     <string name="stat_pending_password_label">Pending password change</string>
     <string name="stat_quality_score_label_empty">Score: —/100</string>
@@ -424,7 +423,7 @@
     <string name="swap_back_to_dayoffs">← Back to my day offs</string>
     <string name="btn_create_swap">Create request</string>
     <string name="confirm_create_swap">Confirm swap request</string>
-    <string name="confirm_create_swap_msg">%1$d swap request(s) will be created.</string>
+    <string name="confirm_create_swap_msg">You are proposing to swap your shift with %1$d colleague(s). Each receives an individual request — as soon as one accepts, the others are automatically cancelled. Your shift remains yours until then.</string>
     <string name="swap_note_label">Note (optional)</string>
     <string name="swap_note_hint">Add a note...</string>
     <string name="btn_confirm_swap">Confirm</string>

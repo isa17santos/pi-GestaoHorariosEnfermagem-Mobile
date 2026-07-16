@@ -2,8 +2,6 @@ package com.pi.gestaohorariosenfermagemmobile;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -45,11 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -795,25 +788,17 @@ public class SwapCreateActivity extends BaseActivity {
     private void confirmCreateSwaps() {
         int selectedCount = adapter.getSelectedShiftIds().size();
 
-        View decorView = getWindow().getDecorView();
-        Bitmap screenshot = Bitmap.createBitmap(decorView.getWidth(), decorView.getHeight(), Bitmap.Config.ARGB_8888);
-        decorView.draw(new Canvas(screenshot));
-        Bitmap blurred = blur(screenshot);
-
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirm_swap, null);
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .create();
         dialog.show();
 
         if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(
-                    new android.graphics.drawable.BitmapDrawable(getResources(), blurred));
-            dialog.getWindow().setLayout(
-                    android.view.WindowManager.LayoutParams.MATCH_PARENT,
-                    android.view.WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            dialog.getWindow().setDimAmount(0.4f);
+            dialog.getWindow().setDimAmount(0.5f);
         }
-        dialog.setContentView(dialogView);
 
         ((TextView) dialogView.findViewById(R.id.tv_dialog_title)).setText(R.string.confirm_create_swap);
         ((TextView) dialogView.findViewById(R.id.tv_dialog_message))
@@ -950,20 +935,6 @@ public class SwapCreateActivity extends BaseActivity {
             case "parental leave": return getString(R.string.shift_parental_leave);
             default:               return name;
         }
-    }
-
-    private Bitmap blur(Bitmap image) {
-        Bitmap output = Bitmap.createBitmap(image);
-        RenderScript rs = RenderScript.create(this);
-        ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-        Allocation allIn = Allocation.createFromBitmap(rs, image);
-        Allocation allOut = Allocation.createFromBitmap(rs, output);
-        blurScript.setRadius(20f);
-        blurScript.setInput(allIn);
-        blurScript.forEach(allOut);
-        allOut.copyTo(output);
-        rs.destroy();
-        return output;
     }
 
     private int dpToPx(int dp) {

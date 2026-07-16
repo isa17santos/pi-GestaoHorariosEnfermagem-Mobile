@@ -22,6 +22,10 @@ public class AdminStatisticsActivity extends BaseActivity {
     private TextView tvLabelInactiveUsers, tvLabelPendingPassword;
     private String token;
     private NavbarManager navbarManager;
+    private int currentMonth;
+    private int currentYear;
+    private View btnNextMonth;
+    private boolean hasEverLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,16 @@ public class AdminStatisticsActivity extends BaseActivity {
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
 
+        Calendar now = Calendar.getInstance();
+        currentMonth = now.get(Calendar.MONTH) + 1;
+        currentYear = now.get(Calendar.YEAR);
+
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        View btnPrev = findViewById(R.id.btn_prev_month);
+        btnNextMonth = findViewById(R.id.btn_next_month);
+        if (btnPrev != null) btnPrev.setOnClickListener(v -> navigateMonth(-1));
+        if (btnNextMonth != null) btnNextMonth.setOnClickListener(v -> navigateMonth(1));
+        updateNextMonthButton();
         updateUIStrings();
     }
 
@@ -66,16 +79,19 @@ public class AdminStatisticsActivity extends BaseActivity {
 
     private void loadStatistics() {
         ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
-        api.getStatistics("Bearer " + token).enqueue(new Callback<StatisticsResponse>() {
+        Calendar now = Calendar.getInstance();
+        int nowMonth = now.get(Calendar.MONTH) + 1;
+        int nowYear = now.get(Calendar.YEAR);
+        Call<StatisticsResponse> call = (currentMonth == nowMonth && currentYear == nowYear)
+                ? api.getStatistics("Bearer " + token)
+                : api.getStatisticsForMonth("Bearer " + token, currentMonth, currentYear);
+        call.enqueue(new Callback<StatisticsResponse>() {
             @Override
             public void onResponse(Call<StatisticsResponse> call, Response<StatisticsResponse> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    sectionStats.setVisibility(View.GONE);
-                    return;
-                }
-                StatisticsData data = response.body().getData();
+                StatisticsData data = (response.isSuccessful() && response.body() != null)
+                        ? response.body().getData() : null;
                 if (data == null) {
-                    sectionStats.setVisibility(View.GONE);
+                    setStatsNoData();
                     return;
                 }
 
@@ -86,14 +102,25 @@ public class AdminStatisticsActivity extends BaseActivity {
                 tvInactiveUsers.setText(data.getInactiveUsersCount() != null ? String.valueOf(data.getInactiveUsersCount()) : "—");
                 tvPendingPassword.setText(data.getPendingPasswordChangeCount() != null ? String.valueOf(data.getPendingPasswordChangeCount()) : "—");
 
+                hasEverLoaded = true;
                 sectionStats.setVisibility(View.VISIBLE);
+                sectionStats.setAlpha(1f);
             }
 
             @Override
             public void onFailure(Call<StatisticsResponse> call, Throwable t) {
-                sectionStats.setVisibility(View.GONE);
+                setStatsNoData();
             }
         });
+    }
+
+    private void setStatsNoData() {
+        if (!hasEverLoaded) {
+            sectionStats.setVisibility(View.GONE);
+            return;
+        }
+        sectionStats.setVisibility(View.VISIBLE);
+        sectionStats.setAlpha(0.35f);
     }
 
     private static Locale getAppLocale() {
@@ -104,9 +131,27 @@ public class AdminStatisticsActivity extends BaseActivity {
     private String buildMonthLabel() {
         Locale locale = getAppLocale();
         Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, currentMonth - 1);
+        cal.set(Calendar.YEAR, currentYear);
         String month = new SimpleDateFormat("MMMM", locale).format(cal.getTime()).toUpperCase(locale);
-        int year = cal.get(Calendar.YEAR);
-        return month + " " + getString(R.string.date_of_separator) + " " + year;
+        return month + " " + getString(R.string.date_of_separator) + " " + currentYear;
+    }
+
+    private void updateNextMonthButton() {
+        if (btnNextMonth == null) return;
+        Calendar now = Calendar.getInstance();
+        boolean isCurrentMonth = currentMonth == now.get(Calendar.MONTH) + 1 && currentYear == now.get(Calendar.YEAR);
+        btnNextMonth.setEnabled(!isCurrentMonth);
+        btnNextMonth.setAlpha(isCurrentMonth ? 0.35f : 1f);
+    }
+
+    private void navigateMonth(int delta) {
+        currentMonth += delta;
+        if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+        else if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+        if (tvMonthLabel != null) tvMonthLabel.setText(buildMonthLabel());
+        updateNextMonthButton();
+        loadStatistics();
     }
 
     @Override
