@@ -33,6 +33,12 @@ public class HeadNurseDashboardActivity extends BaseActivity {
     private String currentUserName;
     private String token;
     private NavbarManager navbarManager;
+    private int currentMonth;
+    private int currentYear;
+    private View btnPrevMonth;
+    private View btnNextMonth;
+    private TextView tvMonthNavLabel;
+    private boolean hasEverLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,10 @@ public class HeadNurseDashboardActivity extends BaseActivity {
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         currentUserName = prefs.getString("user_name", "Enfermeiro Chefe");
         token = prefs.getString("token", "");
+
+        Calendar now = Calendar.getInstance();
+        currentMonth = now.get(Calendar.MONTH) + 1;
+        currentYear = now.get(Calendar.YEAR);
 
         updateUIStrings();
         setupClickListeners();
@@ -63,6 +73,7 @@ public class HeadNurseDashboardActivity extends BaseActivity {
         tvHeadNurseSubtitle = findViewById(R.id.tv_head_nurse_subtitle);
         sectionDashboardSummary = findViewById(R.id.section_dashboard_summary);
         tvSummaryTitle = findViewById(R.id.tv_summary_title);
+        tvMonthNavLabel = findViewById(R.id.tv_month_nav_label);
         tvMonthlyHours = findViewById(R.id.tv_monthly_hours);
         tvSwapsThisMonth = findViewById(R.id.tv_swaps_this_month);
         tvBreakdownMorning = findViewById(R.id.tv_breakdown_morning);
@@ -98,16 +109,19 @@ public class HeadNurseDashboardActivity extends BaseActivity {
 
     private void loadDashboardSummary() {
         ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
-        api.getDashboard("Bearer " + token).enqueue(new Callback<DashboardResponse>() {
+        Calendar now = Calendar.getInstance();
+        int nowMonth = now.get(Calendar.MONTH) + 1;
+        int nowYear = now.get(Calendar.YEAR);
+        Call<DashboardResponse> call = (currentMonth == nowMonth && currentYear == nowYear)
+                ? api.getDashboard("Bearer " + token)
+                : api.getDashboardForMonth("Bearer " + token, currentMonth, currentYear);
+        call.enqueue(new Callback<DashboardResponse>() {
             @Override
             public void onResponse(Call<DashboardResponse> call, Response<DashboardResponse> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    sectionDashboardSummary.setVisibility(View.GONE);
-                    return;
-                }
-                DashboardData data = response.body().getData();
+                DashboardData data = (response.isSuccessful() && response.body() != null)
+                        ? response.body().getData() : null;
                 if (data == null) {
-                    sectionDashboardSummary.setVisibility(View.GONE);
+                    setDashboardNoData();
                     return;
                 }
 
@@ -131,14 +145,25 @@ public class HeadNurseDashboardActivity extends BaseActivity {
                 Integer teamSwaps = data.getTeamSwapsThisMonth();
                 tvTeamSwapsMonth.setText(teamSwaps != null ? String.valueOf(teamSwaps) : "—");
 
+                hasEverLoaded = true;
                 sectionDashboardSummary.setVisibility(View.VISIBLE);
+                sectionDashboardSummary.setAlpha(1f);
             }
 
             @Override
             public void onFailure(Call<DashboardResponse> call, Throwable t) {
-                sectionDashboardSummary.setVisibility(View.GONE);
+                setDashboardNoData();
             }
         });
+    }
+
+    private void setDashboardNoData() {
+        if (!hasEverLoaded) {
+            sectionDashboardSummary.setVisibility(View.GONE);
+            return;
+        }
+        sectionDashboardSummary.setVisibility(View.VISIBLE);
+        sectionDashboardSummary.setAlpha(0.35f);
     }
 
     private void loadTodayTomorrowShifts() {
@@ -344,7 +369,8 @@ public class HeadNurseDashboardActivity extends BaseActivity {
         if (tvTeamSectionLabel != null) tvTeamSectionLabel.setText(R.string.dashboard_team_section);
         if (tvLabelTeamPendingSwaps != null) tvLabelTeamPendingSwaps.setText(R.string.dashboard_team_pending_swaps_label);
         if (tvLabelTeamSwapsMonth != null) tvLabelTeamSwapsMonth.setText(R.string.dashboard_team_swaps_month_label);
-        if (tvSummaryTitle != null) tvSummaryTitle.setText(buildSummaryTitle());
+        if (tvSummaryTitle != null) tvSummaryTitle.setText(R.string.dashboard_summary_title);
+        if (tvMonthNavLabel != null) tvMonthNavLabel.setText(buildMonthNavLabel());
         if (tvTodayLabel != null) tvTodayLabel.setText(buildDayLabel(Calendar.getInstance()));
         if (tvTomorrowLabel != null) {
             Calendar tomorrow = Calendar.getInstance();
@@ -360,12 +386,13 @@ public class HeadNurseDashboardActivity extends BaseActivity {
         loadTodayTomorrowShifts();
     }
 
-    private String buildSummaryTitle() {
+    private String buildMonthNavLabel() {
         Locale locale = getAppLocale();
         Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, currentMonth - 1);
+        cal.set(Calendar.YEAR, currentYear);
         String month = new SimpleDateFormat("MMMM", locale).format(cal.getTime()).toUpperCase(locale);
-        int year = cal.get(Calendar.YEAR);
-        return getString(R.string.dashboard_summary_title) + " - " + month + " " + getString(R.string.date_of_separator) + " " + year;
+        return month + " " + getString(R.string.date_of_separator) + " " + currentYear;
     }
 
     private void updateCardText(int cardId, int titleRes, int subRes) {
@@ -383,5 +410,28 @@ public class HeadNurseDashboardActivity extends BaseActivity {
                 startActivity(new Intent(this, SwapHistoryActivity.class)));
         findViewById(R.id.card_stats).setOnClickListener(v ->
                 startActivity(new Intent(this, HeadNurseStatisticsActivity.class)));
+        btnPrevMonth = findViewById(R.id.btn_prev_month);
+        btnNextMonth = findViewById(R.id.btn_next_month);
+        if (btnPrevMonth != null) btnPrevMonth.setOnClickListener(v -> navigateMonth(-1));
+        if (btnNextMonth != null) btnNextMonth.setOnClickListener(v -> navigateMonth(1));
+        updateNextMonthButton();
+    }
+
+    private void updateNextMonthButton() {
+        if (btnNextMonth == null) return;
+        Calendar now = Calendar.getInstance();
+        boolean isCurrentMonth = currentMonth == now.get(Calendar.MONTH) + 1 && currentYear == now.get(Calendar.YEAR);
+        btnNextMonth.setEnabled(!isCurrentMonth);
+        btnNextMonth.setAlpha(isCurrentMonth ? 0.35f : 1f);
+    }
+
+    private void navigateMonth(int delta) {
+        currentMonth += delta;
+        if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+        else if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+        if (tvSummaryTitle != null) tvSummaryTitle.setText(R.string.dashboard_summary_title);
+        if (tvMonthNavLabel != null) tvMonthNavLabel.setText(buildMonthNavLabel());
+        updateNextMonthButton();
+        loadDashboardSummary();
     }
 }

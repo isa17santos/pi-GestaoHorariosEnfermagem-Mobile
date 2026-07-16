@@ -2,9 +2,11 @@ package com.pi.gestaohorariosenfermagemmobile;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -61,7 +63,13 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Update language button state when language changes.
      * Override this if your activity has a language switcher.
      */
-    protected void updateLanguageButton() {}
+    protected void updateLanguageButton() {
+        boolean isEn = AppCompatDelegate.getApplicationLocales().toLanguageTags().contains("en");
+        TextView tvFlag = findViewById(R.id.nav_tv_lang_flag);
+        TextView tvLabel = findViewById(R.id.nav_tv_lang_label);
+        if (tvFlag != null) tvFlag.setText(isEn ? "pt" : "en");
+        if (tvLabel != null) tvLabel.setText(isEn ? "Português" : "English");
+    }
 
     @Override
     protected void onResume() {

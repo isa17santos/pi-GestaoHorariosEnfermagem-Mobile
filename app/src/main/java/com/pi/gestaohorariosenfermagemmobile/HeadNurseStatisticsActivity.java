@@ -1,12 +1,9 @@
 package com.pi.gestaohorariosenfermagemmobile;
 
 import android.content.SharedPreferences;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -23,21 +20,23 @@ public class HeadNurseStatisticsActivity extends BaseActivity {
     private TextView tvPageTitle, tvPageSubtitle, tvMonthLabel;
     private View sectionStats;
     // Card Qualidade
-    private TextView tvQualityCardTitle, tvQualityBadge, tvQualityScore, tvQualityNote, tvQualityBasedOn;
-    private View viewScoreMarker;
+    private TextView tvQualityCardTitle, tvQualityNote, tvQualityBasedOn;
     private TextView tvBreakdownSwaps, tvBreakdownMinNurses, tvBreakdownPrefType, tvBreakdownPrefWeekend;
     private TextView tvLabelBreakdownSwaps, tvLabelBreakdownMinNurses, tvLabelBreakdownPrefType, tvLabelBreakdownPrefWeekend;
     // Card Aceitação
     private CircularProgressIndicator progressAcceptance;
     private TextView tvAcceptanceTitle, tvAcceptanceRate, tvAcceptanceLegend;
+    private TextView tvSwapsAccepted, tvSwapsRejected;
     // Card Horas
     private LinearLayout llNurseHours;
     private TextView tvHoursTitle, tvHoursSubtitle, tvHoursColName, tvHoursColHours;
-    private TextView tvLegendAbove, tvLegendBelow, tvLegendThreshold, tvAvgHours;
-    private View dotAboveAvg, dotBelowAvg;
 
     private String token;
     private NavbarManager navbarManager;
+    private int currentMonth;
+    private int currentYear;
+    private View btnNextMonth;
+    private boolean hasEverLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,16 @@ public class HeadNurseStatisticsActivity extends BaseActivity {
         SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
         token = prefs.getString("token", "");
 
+        Calendar now = Calendar.getInstance();
+        currentMonth = now.get(Calendar.MONTH) + 1;
+        currentYear = now.get(Calendar.YEAR);
+
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        View btnPrev = findViewById(R.id.btn_prev_month);
+        btnNextMonth = findViewById(R.id.btn_next_month);
+        if (btnPrev != null) btnPrev.setOnClickListener(v -> navigateMonth(-1));
+        if (btnNextMonth != null) btnNextMonth.setOnClickListener(v -> navigateMonth(1));
+        updateNextMonthButton();
         updateUIStrings();
     }
 
@@ -67,11 +75,8 @@ public class HeadNurseStatisticsActivity extends BaseActivity {
         tvMonthLabel = findViewById(R.id.tv_month_label);
         sectionStats = findViewById(R.id.section_stats);
         tvQualityCardTitle = findViewById(R.id.tv_quality_card_title);
-        tvQualityBadge = findViewById(R.id.tv_quality_badge);
-        tvQualityScore = findViewById(R.id.tv_quality_score);
         tvQualityNote = findViewById(R.id.tv_quality_note);
         tvQualityBasedOn = findViewById(R.id.tv_quality_based_on);
-        viewScoreMarker = findViewById(R.id.view_score_marker);
         tvBreakdownSwaps = findViewById(R.id.tv_breakdown_swaps);
         tvBreakdownMinNurses = findViewById(R.id.tv_breakdown_min_nurses);
         tvBreakdownPrefType = findViewById(R.id.tv_breakdown_pref_type);
@@ -84,104 +89,58 @@ public class HeadNurseStatisticsActivity extends BaseActivity {
         tvAcceptanceTitle = findViewById(R.id.tv_acceptance_title);
         tvAcceptanceRate = findViewById(R.id.tv_acceptance_rate);
         tvAcceptanceLegend = findViewById(R.id.tv_acceptance_legend);
+        tvSwapsAccepted = findViewById(R.id.tv_swaps_accepted);
+        tvSwapsRejected = findViewById(R.id.tv_swaps_rejected);
         llNurseHours = findViewById(R.id.ll_nurse_hours);
         tvHoursTitle = findViewById(R.id.tv_hours_title);
         tvHoursSubtitle = findViewById(R.id.tv_hours_subtitle);
         tvHoursColName = findViewById(R.id.tv_hours_col_name);
         tvHoursColHours = findViewById(R.id.tv_hours_col_hours);
-        tvLegendAbove = findViewById(R.id.tv_legend_above);
-        tvLegendBelow = findViewById(R.id.tv_legend_below);
-        tvLegendThreshold = findViewById(R.id.tv_legend_threshold);
-        tvAvgHours = findViewById(R.id.tv_avg_hours);
-        dotAboveAvg = findViewById(R.id.dot_above_avg);
-        dotBelowAvg = findViewById(R.id.dot_below_avg);
-
-        // Dots das legendas com as cores correctas
-        setOvalColor(dotAboveAvg, getColor(R.color.quality_medium));
-        setOvalColor(dotBelowAvg, getColor(R.color.primary_strong));
     }
 
     private void loadStatistics() {
         ApiService api = RetrofitClient.getClient(this).create(ApiService.class);
-        api.getStatistics("Bearer " + token).enqueue(new Callback<StatisticsResponse>() {
+        Calendar now = Calendar.getInstance();
+        int nowMonth = now.get(Calendar.MONTH) + 1;
+        int nowYear = now.get(Calendar.YEAR);
+        Call<StatisticsResponse> call = (currentMonth == nowMonth && currentYear == nowYear)
+                ? api.getStatistics("Bearer " + token)
+                : api.getStatisticsForMonth("Bearer " + token, currentMonth, currentYear);
+        call.enqueue(new Callback<StatisticsResponse>() {
             @Override
             public void onResponse(Call<StatisticsResponse> call, Response<StatisticsResponse> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    sectionStats.setVisibility(View.GONE);
-                    return;
-                }
-                StatisticsData data = response.body().getData();
+                StatisticsData data = (response.isSuccessful() && response.body() != null)
+                        ? response.body().getData() : null;
                 if (data == null) {
-                    sectionStats.setVisibility(View.GONE);
+                    setStatsNoData();
                     return;
                 }
 
                 bindQualityCard(data);
                 bindAcceptanceCard(data);
                 bindNurseHoursCard(data);
+                hasEverLoaded = true;
                 sectionStats.setVisibility(View.VISIBLE);
+                sectionStats.setAlpha(1f);
             }
 
             @Override
             public void onFailure(Call<StatisticsResponse> call, Throwable t) {
-                sectionStats.setVisibility(View.GONE);
+                setStatsNoData();
             }
         });
     }
 
+    private void setStatsNoData() {
+        if (!hasEverLoaded) {
+            sectionStats.setVisibility(View.GONE);
+            return;
+        }
+        sectionStats.setVisibility(View.VISIBLE);
+        sectionStats.setAlpha(0.35f);
+    }
+
     private void bindQualityCard(StatisticsData data) {
-        Integer score = data.getQualityScore();
-        String indicator = data.getQualityIndicator();
-
-        int badgeTextColor, badgeBgColor;
-        String badgeText;
-
-        if (indicator != null && (indicator.equalsIgnoreCase("good") || indicator.equalsIgnoreCase("bom"))) {
-            badgeText = getString(R.string.stat_quality_good);
-            badgeTextColor = getColor(R.color.quality_good);
-            badgeBgColor = getColor(R.color.quality_good_bg);
-        } else if (indicator != null && (indicator.equalsIgnoreCase("medium") || indicator.equalsIgnoreCase("médio"))) {
-            badgeText = getString(R.string.stat_quality_medium);
-            badgeTextColor = getColor(R.color.quality_medium);
-            badgeBgColor = getColor(R.color.quality_medium_bg);
-        } else {
-            badgeText = getString(R.string.stat_quality_bad);
-            badgeTextColor = getColor(R.color.quality_bad);
-            badgeBgColor = getColor(R.color.quality_bad_bg);
-        }
-
-        tvQualityBadge.setText(badgeText);
-        tvQualityBadge.setTextColor(badgeTextColor);
-        GradientDrawable badgeBg = new GradientDrawable();
-        badgeBg.setShape(GradientDrawable.RECTANGLE);
-        badgeBg.setColor(badgeBgColor);
-        badgeBg.setCornerRadius(dpToPx(24));
-        tvQualityBadge.setBackground(badgeBg);
-
-        tvQualityScore.setText(score != null
-                ? getString(R.string.stat_quality_score_label, score)
-                : getString(R.string.stat_quality_score_label_empty));
-
-        if (score != null) {
-            final int clampedScore = Math.max(0, Math.min(100, score));
-            viewScoreMarker.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    viewScoreMarker.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    View bar = viewScoreMarker.getParent() instanceof FrameLayout
-                            ? (View) viewScoreMarker.getParent() : null;
-                    if (bar == null) return;
-                    int barWidth = bar.getWidth();
-                    int markerWidth = viewScoreMarker.getWidth();
-                    int leftOffset = (int) (barWidth * clampedScore / 100f) - markerWidth / 2;
-                    leftOffset = Math.max(0, Math.min(leftOffset, barWidth - markerWidth));
-                    FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) viewScoreMarker.getLayoutParams();
-                    lp.leftMargin = leftOffset;
-                    viewScoreMarker.setLayoutParams(lp);
-                }
-            });
-        }
-
         QualityBreakdown bd = data.getQualityBreakdown();
         if (bd != null) {
             tvBreakdownSwaps.setText(bd.getSwapsThisMonth() != null ? String.valueOf(bd.getSwapsThisMonth()) : "—");
@@ -204,31 +163,21 @@ public class HeadNurseStatisticsActivity extends BaseActivity {
             tvAcceptanceRate.setText(formatted);
             tvAcceptanceRate.setTextColor(getColor(R.color.primary_strong));
         }
+
+        Integer accepted = data.getSwapsAccepted();
+        Integer rejected = data.getSwapsRejected();
+        tvSwapsAccepted.setText(accepted != null
+                ? getString(R.string.stat_acceptance_accepted, accepted)
+                : getString(R.string.stat_acceptance_no_data));
+        tvSwapsRejected.setText(rejected != null
+                ? getString(R.string.stat_acceptance_rejected, rejected)
+                : getString(R.string.stat_acceptance_no_data));
     }
 
     private void bindNurseHoursCard(StatisticsData data) {
         List<NurseHours> list = data.getAvgHoursPerNurse();
         if (list == null || list.isEmpty()) return;
 
-        // Calcula média
-        double sum = 0;
-        int count = 0;
-        for (NurseHours nh : list) {
-            if (nh.getHours() != null) {
-                sum += nh.getHours();
-                count++;
-            }
-        }
-        double avg = count > 0 ? sum / count : 0;
-        double threshold = avg * 0.15;
-
-        // Label da média
-        String avgFormatted = avg == Math.floor(avg)
-                ? String.valueOf((int) avg)
-                : String.format(new Locale("pt", "PT"), "%.1f", avg);
-        tvAvgHours.setText(getString(R.string.stat_hours_avg_label, avgFormatted));
-
-        // Constrói as linhas programaticamente
         llNurseHours.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
 
@@ -244,32 +193,9 @@ public class HeadNurseStatisticsActivity extends BaseActivity {
             double hours = nh.getHours() != null ? nh.getHours() : 0;
             tvHours.setText((int) Math.round(hours) + "h");
 
-            int color;
-            if (hours > avg + threshold) {
-                color = getColor(R.color.quality_medium);    // laranja — acima
-            } else if (hours < avg - threshold) {
-                color = getColor(R.color.primary_strong);    // roxo — abaixo
-            } else {
-                color = getColor(R.color.text_primary);
-            }
-            tvName.setTextColor(color);
-            tvHours.setTextColor(color);
-
             divider.setVisibility(i < list.size() - 1 ? View.VISIBLE : View.GONE);
-
             llNurseHours.addView(row);
         }
-    }
-
-    private void setOvalColor(View v, int color) {
-        GradientDrawable d = new GradientDrawable();
-        d.setShape(GradientDrawable.OVAL);
-        d.setColor(color);
-        v.setBackground(d);
-    }
-
-    private float dpToPx(int dp) {
-        return dp * getResources().getDisplayMetrics().density;
     }
 
     private static Locale getAppLocale() {
@@ -280,9 +206,27 @@ public class HeadNurseStatisticsActivity extends BaseActivity {
     private String buildMonthLabel() {
         Locale locale = getAppLocale();
         Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, currentMonth - 1);
+        cal.set(Calendar.YEAR, currentYear);
         String month = new SimpleDateFormat("MMMM", locale).format(cal.getTime()).toUpperCase(locale);
-        int year = cal.get(Calendar.YEAR);
-        return month + " " + getString(R.string.date_of_separator) + " " + year;
+        return month + " " + getString(R.string.date_of_separator) + " " + currentYear;
+    }
+
+    private void updateNextMonthButton() {
+        if (btnNextMonth == null) return;
+        Calendar now = Calendar.getInstance();
+        boolean isCurrentMonth = currentMonth == now.get(Calendar.MONTH) + 1 && currentYear == now.get(Calendar.YEAR);
+        btnNextMonth.setEnabled(!isCurrentMonth);
+        btnNextMonth.setAlpha(isCurrentMonth ? 0.35f : 1f);
+    }
+
+    private void navigateMonth(int delta) {
+        currentMonth += delta;
+        if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+        else if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+        if (tvMonthLabel != null) tvMonthLabel.setText(buildMonthLabel());
+        updateNextMonthButton();
+        loadStatistics();
     }
 
     @Override
@@ -307,9 +251,6 @@ public class HeadNurseStatisticsActivity extends BaseActivity {
         if (tvHoursSubtitle != null) tvHoursSubtitle.setText(R.string.stat_hours_subtitle);
         if (tvHoursColName != null) tvHoursColName.setText(R.string.stat_hours_col_name);
         if (tvHoursColHours != null) tvHoursColHours.setText(R.string.stat_hours_col_hours);
-        if (tvLegendAbove != null) tvLegendAbove.setText(R.string.stat_hours_legend_above);
-        if (tvLegendBelow != null) tvLegendBelow.setText(R.string.stat_hours_legend_below);
-        if (tvLegendThreshold != null) tvLegendThreshold.setText(R.string.stat_hours_legend_threshold);
         loadStatistics();
     }
 }

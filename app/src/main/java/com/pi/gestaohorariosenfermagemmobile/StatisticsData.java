@@ -28,6 +28,12 @@ public class StatisticsData {
     @SerializedName("acceptance_rate")
     private Double acceptanceRate;
 
+    @SerializedName("swaps_accepted")
+    private Integer swapsAccepted;
+
+    @SerializedName("swaps_rejected")
+    private Integer swapsRejected;
+
     @SerializedName("avg_hours_per_nurse")
     private List<NurseHours> avgHoursPerNurse;
 
@@ -48,6 +54,8 @@ public class StatisticsData {
     public Integer getInactiveUsersCount() { return inactiveUsersCount; }
     public Integer getPendingPasswordChangeCount() { return pendingPasswordChangeCount; }
     public Double getAcceptanceRate() { return acceptanceRate; }
+    public Integer getSwapsAccepted() { return swapsAccepted; }
+    public Integer getSwapsRejected() { return swapsRejected; }
     public List<NurseHours> getAvgHoursPerNurse() { return avgHoursPerNurse; }
     public Integer getQualityScore() { return qualityScore; }
     public String getQualityIndicator() { return qualityIndicator; }

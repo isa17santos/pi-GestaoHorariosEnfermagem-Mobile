@@ -172,6 +172,7 @@
             android:orientation="vertical"
             android:visibility="gone">
 
+            <!-- Título separado -->
             <TextView
                 android:id="@+id/tv_summary_title"
                 android:layout_width="wrap_content"
@@ -299,6 +300,67 @@
                             android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Paginação de mês (centrada) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="10dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_prev_month"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:padding="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:icon="@drawable/ic_chevron_left"
+                    app:iconTint="@color/primary_strong"
+                    app:iconSize="20dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:strokeColor="#337C3AED"
+                    app:strokeWidth="1.5dp"
+                    app:cornerRadius="12dp"
+                    app:backgroundTint="#FFFFFF"
+                    app:rippleColor="#1A7C3AED" />
+
+                <TextView
+                    android:id="@+id/tv_month_nav_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="center"
+                    android:textColor="@color/primary_strong"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_next_month"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:padding="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:rotation="180"
+                    app:icon="@drawable/ic_chevron_left"
+                    app:iconTint="@color/primary_strong"
+                    app:iconSize="20dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:strokeColor="#337C3AED"
+                    app:strokeWidth="1.5dp"
+                    app:cornerRadius="12dp"
+                    app:backgroundTint="#FFFFFF"
+                    app:rippleColor="#1A7C3AED" />
 
             </LinearLayout>
 

@@ -168,7 +168,21 @@ public interface ApiService {
     @GET("dashboard")
     Call<DashboardResponse> getDashboard(@Header("Authorization") String token);
 
+    @GET("dashboard")
+    Call<DashboardResponse> getDashboardForMonth(
+            @Header("Authorization") String token,
+            @Query("month") int month,
+            @Query("year") int year
+    );
+
     // Statistics
     @GET("statistics")
     Call<StatisticsResponse> getStatistics(@Header("Authorization") String token);
+
+    @GET("statistics")
+    Call<StatisticsResponse> getStatisticsForMonth(
+            @Header("Authorization") String token,
+            @Query("month") int month,
+            @Query("year") int year
+    );
 }
